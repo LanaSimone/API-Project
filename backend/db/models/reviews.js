@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: 'CASCADE',
       });
 
-      Reviews.belongsTo(models.Spot, { // Reference 'Spot', not 'Spots'
+      Reviews.belongsTo(models.Spots, { // Reference 'Spot', not 'Spots'
         foreignKey: 'spotId',
         onDelete: 'CASCADE',
       });
