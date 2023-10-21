@@ -22,7 +22,7 @@ module.exports = {
     await queryInterface.addColumn('Users', 'lastName', {
       type: Sequelize.STRING,
       allowNull: true, // You can set this to false if last names are required.
-    });
+    })
   },
 
   async down (queryInterface, Sequelize) {
