@@ -1,4 +1,3 @@
-// db/models/Booking.js
 'use strict';
 const { Model, Validator } = require('sequelize');
 
@@ -10,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: 'CASCADE',
       });
 
-      Booking.belongsTo(models.Spot, { // Reference 'Spot', not 'Spots'
+      Booking.belongsTo(models.Spots, { // Reference 'Spot', not 'Spots'
         foreignKey: 'spotId',
         onDelete: 'CASCADE',
       });
@@ -28,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-          model: 'Spot',
+          model: 'Spots',
           key: 'id'
         }
        }, // foreign key for spot
@@ -36,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-          model: 'User',
+          model: 'Users',
           key: 'id'
         }
       },
