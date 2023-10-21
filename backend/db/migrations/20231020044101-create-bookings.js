@@ -1,7 +1,8 @@
 'use strict';
-
-const { DataTypes } = require('sequelize');
-const { sequelize } = require('../models/index');
+let options = {};
+if (process.env.NODE_ENV === 'production') {
+  options.schema = process.env.SCHEMA;  // define your schema in options object
+}
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -20,7 +21,7 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       spotId: {
-        type: DataTypes.INTEGER,
+        type: Sequelize.INTEGER,
         allowNull: false,
         references: {
           model: 'Spots',
@@ -28,7 +29,7 @@ module.exports = {
         }
        }, // foreign key for spot
       userId: {
-        type: DataTypes.INTEGER,
+        type: Sequelize.INTEGER,
         allowNull: false,
         references: {
           model: 'Users',
@@ -37,16 +38,17 @@ module.exports = {
       },
       startDate: {
         type: Sequelize.DATE,
+        allowNull: false
       },
       createdAt: {
         type: Sequelize.DATE,
-        defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
+       
       },
       updatedAt: {
         type: Sequelize.DATE,
-        defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
+
       },
-    });
+    }, options);
   },
 
   async down (queryInterface, Sequelize) {
@@ -56,6 +58,7 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
-    await queryInterface.dropTable('Bookings');
+    options.tableName = "Bookings"
+    return queryInterface.dropTable('Bookings');
   }
 };

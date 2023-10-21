@@ -1,5 +1,9 @@
 'use strict';
 
+if (process.env.NODE_ENV === 'production') {
+  options.schema = process.env.SCHEMA;  // Define your schema in the options object
+}
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
@@ -27,6 +31,7 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
+  
     await queryInterface.removeColumn('Users', 'firstName');
     await queryInterface.removeColumn('Users', 'lastName');
   }
