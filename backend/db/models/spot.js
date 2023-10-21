@@ -4,7 +4,7 @@ const { Model, Validator } = require('sequelize');
 
 
 module.exports = (sequelize, DataTypes) => {
-  class Spot extends Model {
+  class Spots extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -12,13 +12,13 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Spot.belongsTo(models.User, {
+      Spots.belongsTo(models.User, {
         foreignKey: 'ownerId',
         onDelete: 'CASCADE',
       });
     }
   }
-  Spot.init({
+  Spots.init({
     id: {
       allowNull: false,
       autoIncrement: true,
@@ -77,7 +77,7 @@ module.exports = (sequelize, DataTypes) => {
     },
   }, {
     sequelize,
-    modelName: 'Spot',
+    modelName: 'Spots',
   });
-  return Spot;
+  return Spots;
 };

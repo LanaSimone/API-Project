@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: 'CASCADE',
       });
 
-      Review.belongsTo(models.Spot, { // Reference 'Spot', not 'Spots'
+      Review.belongsTo(models.Spots, { // Reference 'Spot', not 'Spots'
         foreignKey: 'spotId',
         onDelete: 'CASCADE',
       });
@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
     spotId: {
       type: DataTypes.INTEGER,
       references: {
-        model: 'Spot',
+        model: 'Spots',
         key: 'id'
       }
     },
