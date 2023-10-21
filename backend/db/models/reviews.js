@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
     spotId: {
       type: DataTypes.INTEGER,
       references: {
-        model: 'Spots',
+        model: 'Spot',
         key: 'id'
       }
     },
