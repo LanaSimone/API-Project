@@ -1,4 +1,3 @@
-
 'use strict';
 const {
   Model, Sequelize
@@ -12,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Booking.belongsTo(models.User, { // Reference 'User', not 'Users'
+      Spot.belongsTo(models.User, { // Reference 'User', not 'Users'
         foreignKey: 'ownerId',
         onDelete: 'CASCADE',
       });
