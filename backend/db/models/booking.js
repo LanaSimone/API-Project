@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       Booking.belongsTo(models.Spots, { // Reference 'Spot', not 'Spots'
         foreignKey: 'spotId',
         onDelete: 'CASCADE',
-      });
+      })
     }
   }
 
