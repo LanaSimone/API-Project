@@ -1,5 +1,10 @@
-
 'use strict';
+
+
+let options = {};
+if (process.env.NODE_ENV === 'production') {
+  options.schema = process.env.SCHEMA;  // define your schema in options object
+}
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -10,42 +15,6 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      address: {
-        type: Sequelize.STRING(100),
-        allowNull: false
-      },
-      city: {
-        type: Sequelize.STRING(100),
-        allowNull: false
-      },
-      state: {
-        type: Sequelize.STRING(100),
-        allowNull: false
-      },
-      country: {
-        type: Sequelize.STRING(100),
-        allowNull: false
-      },
-      lat: {
-        type: Sequelize.DECIMAL,
-        allowNull: false
-      },
-      lng: {
-        type: Sequelize.DECIMAL,
-        allowNull: false
-      },
-      name: {
-        type: Sequelize.STRING(100),
-        allowNull: false
-      },
-      description: {
-        type: Sequelize.STRING(100),
-        allowNull: false
-      },
-      price: {
-        type: Sequelize.DECIMAL,
-        allowNull: false
-      },
       ownerId: {
         type: Sequelize.INTEGER,
         references: {
@@ -53,17 +22,50 @@ module.exports = {
           key: 'id'
         }
       },
-      createdAt: {
-        type: Sequelize.DATE,
+      address: {
+        type: Sequelize.STRING(100),
         allowNull: false
       },
-      updatedAt: {
-        type: Sequelize.DATE,
+      city: {
+        type: Sequelize.STRING(100)
+      },
+      state: {
+        type: Sequelize.STRING(100),
+        allowNull: false,
+      },
+      country: {
+        type: Sequelize.STRING(100),
         allowNull: false
+      },
+      lat: {
+        type: Sequelize.DECIMAL,
+        allowNull: false,
+      },
+      lng: {
+        type: Sequelize.DECIMAL,
+        allowNull: false,
+      },
+      name: {
+        type: Sequelize.STRING(100)
+      },
+      description: {
+        type: Sequelize.STRING(200)
+      },
+      price: {
+        type: Sequelize.DECIMAL,
+        allowNull: false,
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
       }
     });
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Spots');
   }
-}
+};

@@ -1,7 +1,8 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+
+const { Model, Validator } = require('sequelize');
+
+
 module.exports = (sequelize, DataTypes) => {
   class Spot extends Model {
     /**
@@ -17,19 +18,26 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
   }
-  Spot.init( {
+  Spot.init({
     id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
+      allowNull: false,
       autoIncrement: true,
+      primaryKey: true,
+      type: DataTypes.INTEGER
+    },
+    ownerId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: 'Users',
+        key: 'id'
+      }
     },
     address: {
       type: DataTypes.STRING(100),
-      allowNull: false,
+      allowNull: false
     },
     city: {
-      type: DataTypes.STRING(100),
-      allowNull: false,
+      type: DataTypes.STRING(100)
     },
     state: {
       type: DataTypes.STRING(100),
@@ -37,7 +45,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     country: {
       type: DataTypes.STRING(100),
-      allowNull: false,
+      allowNull: false
     },
     lat: {
       type: DataTypes.DECIMAL,
@@ -49,33 +57,27 @@ module.exports = (sequelize, DataTypes) => {
     },
     name: {
       type: DataTypes.STRING(100),
-      allowNull: false,
+      allowNull: false
     },
     description: {
-      type: DataTypes.STRING(100),
-      allowNull: false,
+      type: DataTypes.STRING(200),
+      allowNull: false
     },
     price: {
       type: DataTypes.DECIMAL,
       allowNull: false,
     },
-    ownerId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
     createdAt: {
       type: DataTypes.DATE,
-      defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
+      defaultValue: sequelize.literal('CURRENT_TIMESTAMP'), // Capital 'S' for Sequelize
     },
     updatedAt: {
       type: DataTypes.DATE,
-      defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
+      defaultValue: sequelize.literal('CURRENT_TIMESTAMP'), // Capital 'S' for Sequelize
     },
-  },
-  {
+  }, {
     sequelize,
     modelName: 'Spot',
-    }
-  );
+  });
   return Spot;
 };
