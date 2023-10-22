@@ -48,4 +48,4 @@ module.exports = {
     options.tableName = 'Reviews'
     await queryInterface.dropTable('Reviews');
   }
-};
+}
