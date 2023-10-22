@@ -14,7 +14,7 @@ module.exports = {
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
-    await queryInterface.addColumn('bookings', 'endDate', {
+    await queryInterface.addColumn('Bookings', 'endDate', {
       type: Sequelize.DATE,
       allowNull: false, // Adjust allowNull as needed
     }, options);
