@@ -10,7 +10,8 @@ if (process.env.NODE_ENV === 'production') {
 
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await User.bulkCreate([
+    // Create user records, allowing them to auto-increment their IDs
+    const users = await User.bulkCreate([
       {
         email: 'demo@user.io',
         username: 'Demo-lition',
@@ -27,6 +28,11 @@ module.exports = {
         hashedPassword: bcrypt.hashSync('password3')
       }
     ], { validate: true });
+
+    // Extract user IDs
+    const userIds = users.map((user) => user.id);
+
+    // Continue with any other seeding logic or return if not needed
   },
 
   async down (queryInterface, Sequelize) {
