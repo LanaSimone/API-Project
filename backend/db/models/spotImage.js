@@ -1,5 +1,5 @@
 'use strict';
-const { Model, Validator, Sequelize } = require('sequelize');
+const { Model, Sequelize} = require('sequelize');
 
 
 module.exports = (sequelize, DataTypes) => {
@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     url: {
-      type: DataTypes.STRING(500),
+      type: DataTypes.STRING(50),
       allowNull: false,
     },
     preview: {
@@ -35,16 +35,17 @@ module.exports = (sequelize, DataTypes) => {
     },
     createdAt: {
       type: DataTypes.DATE,
-      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'), // Capital 'S' for Sequelize
+      defaultValue: DataTypes.NOW,
     },
     updatedAt: {
       type: DataTypes.DATE,
-      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'), // Capital 'S' for Sequelize
+      defaultValue: DataTypes.NOW,
     },
-
   },{
     sequelize,
     modelName: 'SpotImage',
+
+
   });
   return SpotImage;
 };

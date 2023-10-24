@@ -4,47 +4,55 @@ let options = {};
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;  // define your schema in the options object
 }
+'use strict';
 
 module.exports = {
-  up: (queryInterface, Sequelize) => {
+  up: async (queryInterface, Sequelize) => {
+    // Assuming you have already retrieved user IDs in this file
+    const spotIds = [1, 2, 3]; // Use actual spot IDs
+
+
     const spotImages = [
       {
-        spotId: 1, // Replace with an existing Spot ID from your database
-        url: 'sample-image-url-1',
+        spotId: spotIds[0], // Use the ID of the first user
+        url: 'url-1',
         preview: true,
       },
       {
-        spotId: 1, // Replace with an existing Spot ID from your database
-        url: 'sample-image-url-2',
-        preview: false,
-      },
-      {
-        spotId: 2, // Replace with an existing Spot ID from your database
-        url: 'sample-image-url-3',
+        spotId: spotIds[1], // Use the ID of the second spot
+        url: 'url-2',
         preview: true,
       },
       {
-        spotId: 2, // Replace with an existing Spot ID from your database
-        url: 'sample-image-url-4',
+        spotId: spotIds[2], // Use the ID of the third spot
+        url: 'url-3',
         preview: false,
       },
-      {
-        spotId: 3, // Replace with an existing Spot ID from your database
-        url: 'sample-image-url-5',
-        preview: true,
-      },
-      {
-        spotId: 3, // Replace with an existing Spot ID from your database
-        url: 'sample-image-url-6',
-        preview: false,
-      },
-      // Add more associations as needed
+      // Add more data objects for Spots as needed
     ];
 
-    return queryInterface.bulkInsert('SpotImages', spotImages, {});
+
+
+    try {
+      await queryInterface.bulkInsert('SpotImages', spotImages, {});
+
+    } catch (error) {
+      console.error('Error during SpotImages seeding:');
+      console.error(error);
+    }
   },
 
-  down: (queryInterface, Sequelize) => {
-    return queryInterface.bulkDelete('SpotImages', null, {});
-  },
+  down: async (queryInterface, Sequelize) => {
+
+
+    // Corrected this line
+    options.tableName = 'SpotImages';
+
+    try {
+      await queryInterface.bulkDelete('SpotImages', null, {});
+
+    } catch (error) {
+
+    }
+  }
 };

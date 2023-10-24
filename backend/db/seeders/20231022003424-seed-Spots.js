@@ -64,7 +64,7 @@ module.exports = {
     options.tableName = 'Spots';
 
     return Promise.all([
-      queryInterface.bulkDelete(options),
+      queryInterface.bulkDelete('Spots', null, {}),
       // Any other table deletions if needed
     ]);
   }

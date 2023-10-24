@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
       });
       Spots.hasMany(models.SpotImage, {
         foreignKey: 'spotId',
-        as: 'SpotImages'
+        as: 'SpotImage'
       });
     }
   }
@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
     ownerId: {
       type: DataTypes.INTEGER,
       references: {
-        model: 'Users',
+        model: 'User',
         key: 'id'
       }
     },
