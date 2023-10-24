@@ -1,5 +1,8 @@
 
 'use strict';
+
+const { sequelize } = require('../models');
+
 let options = {};
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;  // define your schema in options object
@@ -19,6 +22,12 @@ module.exports = {
       },
       email: {
         type: Sequelize.STRING
+      },
+      firstName: {
+        type: Sequelize.STRING, // Add the firstName field
+      },
+      lastName: {
+        type: Sequelize.STRING, // Add the lastName field
       },
       hashedPassword: {
         type: Sequelize.STRING

@@ -30,6 +30,15 @@ module.exports = (sequelize, DataTypes) => {
           isEmail: true
         }
       },
+      firstName: {
+        type: DataTypes.STRING, // Add the firstName field
+        allowNull: false,
+      },
+      lastName: {
+        type: DataTypes.STRING, // Add the lastName field
+        allowNull: false,
+      },
+
       hashedPassword: {
         type: DataTypes.STRING.BINARY,
         allowNull: false,
@@ -50,5 +59,3 @@ module.exports = (sequelize, DataTypes) => {
   )
   return User
 };
-
-
