@@ -2,7 +2,7 @@
 
 let options = {};
 if (process.env.NODE_ENV === 'production') {
-  options.schema = process.env.SCHEMA;  // define your schema in options object
+  options.schema = process.env.SCHEMA;  // define your schema in the options object
 }
 
 module.exports = {
@@ -60,8 +60,11 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
+    // Corrected this line
+    options.tableName = 'Spots';
+
     return Promise.all([
-      queryInterface.bulkDelete('Spots', null, {}),
+      queryInterface.bulkDelete(options),
       // Any other table deletions if needed
     ]);
   }

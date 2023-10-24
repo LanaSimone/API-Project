@@ -16,6 +16,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'ownerId',
         onDelete: 'CASCADE',
       });
+      Spots.hasMany(models.SpotImage, {
+        foreignKey: 'spotId',
+        as: 'SpotImages'
+      });
     }
   }
   Spots.init({
@@ -78,6 +82,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Spots',
+    tableName: 'Spots'
   });
   return Spots;
 };
