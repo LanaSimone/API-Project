@@ -6,57 +6,45 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 module.exports = {
-  async up(queryInterface, Sequelize) {
-    // Assuming you have already retrieved user IDs in this file
-    const spotId = await queryInterface.rawSelect('Spots', {
-      where: {
-        
-      },
-    }, ['id']);
-    return Promise.all([
-      queryInterface.bulkInsert('SpotImages', [
-        {
-          spotId: 1, // Replace with the appropriate spotId
-        url: 'image_url_1',
+  up: (queryInterface, Sequelize) => {
+    const spotImages = [
+      {
+        spotId: 1, // Replace with an existing Spot ID from your database
+        url: 'sample-image-url-1',
         preview: true,
-        },
-        {
-          spotId: 1, // Replace with the appropriate spotId
-          url: 'image_url_2',
-          preview: false,
-        },
-        {
-          spotId: 2, // Replace with the appropriate spotId
-          url: 'image_url_3',
-          preview: true,
-        },
-        {
-          spotId: 2, // Replace with the appropriate spotId
-          url: 'image_url_4',
-          preview: true,
-        },
-        {
-          spotId: 3, // Replace with the appropriate spotId
-          url: 'image_url_5',
-          preview: true,
-        },
-        {
-          spotId: 3, // Replace with the appropriate spotId
-          url: 'image_url_6',
-          preview: true,
-        },
-        // Add more data objects for Spots as needed
-      ]),
-    ]);
+      },
+      {
+        spotId: 1, // Replace with an existing Spot ID from your database
+        url: 'sample-image-url-2',
+        preview: false,
+      },
+      {
+        spotId: 2, // Replace with an existing Spot ID from your database
+        url: 'sample-image-url-3',
+        preview: true,
+      },
+      {
+        spotId: 2, // Replace with an existing Spot ID from your database
+        url: 'sample-image-url-4',
+        preview: false,
+      },
+      {
+        spotId: 3, // Replace with an existing Spot ID from your database
+        url: 'sample-image-url-5',
+        preview: true,
+      },
+      {
+        spotId: 3, // Replace with an existing Spot ID from your database
+        url: 'sample-image-url-6',
+        preview: false,
+      },
+      // Add more associations as needed
+    ];
+
+    return queryInterface.bulkInsert('SpotImages', spotImages, {});
   },
 
-  async down(queryInterface, Sequelize) {
-    // Corrected this line
-    options.tableName = 'SpotImages';
-
-    return Promise.all([
-      queryInterface.bulkDelete(options),
-      // Any other table deletions if needed
-    ]);
-  }
+  down: (queryInterface, Sequelize) => {
+    return queryInterface.bulkDelete('SpotImages', null, {});
+  },
 };
