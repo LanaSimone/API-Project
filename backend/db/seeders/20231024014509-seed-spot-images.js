@@ -4,7 +4,7 @@ let options = {};
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;  // define your schema in the options object
 }
-'use strict';
+
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
