@@ -2,7 +2,7 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
-const { Spots, User, SpotImage } = require('../../db/models');
+const { Spots, User, SpotImage, Review, ReviewImage } = require('../../db/models');
 
 const router = express.Router();
 
@@ -350,4 +350,114 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
   }
 });
 
+
+router.get('/:spotId/reviews', async (req, res) => {
+  const spotId = req.params.spotId;
+
+  try {
+      // Find the spot by ID
+      const spot = await Spots.findByPk(spotId);
+
+      if (!spot) {
+          // Spot not found
+          return res.status(404).json({ message: "Spot couldn't be found" });
+      }
+
+      // Find all reviews for the spot, including associated user and review images
+      const reviews = await Review.findAll({
+          where: { spotId },
+          include: [
+              {
+                  model: User,
+                  attributes: ['id', 'firstName', 'lastName'],
+              },
+              {
+                  model: ReviewImage,
+                  attributes: ['id', 'url'],
+              },
+          ],
+      });
+
+      res.status(200).json({ Reviews: reviews });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
+router.post('/:spotId/reviews', requireAuth, async (req, res) => {
+  try {
+    const spotId = req.params.spotId;
+    const userId = req.user.id;
+
+    // Check if the spot exists
+    const spot = await Spots.findByPk(spotId);
+
+    if (!spot) {
+      return res.status(404).json({ message: "Spot couldn't be found" });
+    }
+
+    // Check if the user already has a review for this spot
+    const existingReview = await Review.findOne({
+      where: {
+        spotId,
+        userId,
+      },
+    });
+
+    if (existingReview) {
+      return res.status(500).json({ message: "User already has a review for this spot" });
+    }
+
+    const { review, stars } = req.body;
+
+    if (!review || typeof stars !== 'number' || stars < 1 || stars > 5) {
+      return res.status(400).json({
+        message: "Bad Request",
+        errors: {
+          review: "Review text is required",
+          stars: "Stars must be an integer from 1 to 5",
+        },
+      });
+    }
+
+    // Create a new review
+    const newReview = await Review.create({
+      spotId,
+      userId,
+      review,
+      stars,
+    });
+
+    // Format the response as needed
+    const formattedResponse = {
+      id: newReview.id,
+      userId: newReview.userId,
+      spotId: newReview.spotId,
+      review: newReview.review,
+      stars: newReview.stars,
+      createdAt: newReview.createdAt.toISOString(), // Convert to ISO format
+      updatedAt: newReview.updatedAt.toISOString(), // Convert to ISO format
+    };
+
+    res.status(201).json(formattedResponse);
+  } catch (error) {
+    console.error(error);
+
+    if (error.name === 'SequelizeValidationError') {
+      const errors = {};
+      error.errors.forEach((err) => {
+        errors[err.path] = err.message;
+      });
+
+      res.status(400).json({
+        message: 'Validation error',
+        errors,
+      });
+    } else {
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  }
+});
 module.exports = router;

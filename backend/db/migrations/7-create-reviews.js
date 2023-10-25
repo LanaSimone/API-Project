@@ -34,12 +34,17 @@ module.exports = {
         type: Sequelize.STRING(500),
         allowNull: false
       },
+      stars: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
       createdAt: {
         type: Sequelize.DATE,
         allowNull: false
       },
       updatedAt: {
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        
       },
 
     }, options);

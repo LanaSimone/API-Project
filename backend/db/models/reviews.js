@@ -43,6 +43,10 @@ module.exports = (sequelize, DataTypes) => {
     review: {
       type: DataTypes.STRING(500)
     },
+    stars: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
     createdAt: {
       type: DataTypes.DATE,
       defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),

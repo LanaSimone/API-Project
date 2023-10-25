@@ -8,6 +8,7 @@ module.exports = {
         userId: 1, // Replace with the actual userId
         spotId: 1, // Replace with the actual spotId
         review: 'This is a sample review.',
+        stars: 4,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -15,6 +16,7 @@ module.exports = {
         userId: 2, // Replace with the actual userId
         spotId: 2, // Replace with the actual spotId
         review: 'This is a sample review.',
+        stars: 5,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -22,6 +24,7 @@ module.exports = {
         userId: 3, // Replace with the actual userId
         spotId: 3, // Replace with the actual spotId
         review: 'This is a sample review.',
+        stars: 2,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
