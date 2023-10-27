@@ -25,6 +25,7 @@ module.exports = {
           price: 20.0,
           createdAt: new Date(),
           updatedAt: new Date(),
+          avgStarRating: 3,
         },
         {
           ownerId: userIds[1], // Use the ID of the second user
@@ -39,6 +40,7 @@ module.exports = {
           price: 80.0,
           createdAt: new Date(),
           updatedAt: new Date(),
+          avgStarRating: 5,
         },
         {
           ownerId: userIds[2], // Use the ID of the third user
@@ -53,6 +55,7 @@ module.exports = {
           price: 192.2,
           createdAt: new Date(),
           updatedAt: new Date(),
+          avgStarRating: 2,
         },
         // Add more data objects for Spots as needed
       ]),

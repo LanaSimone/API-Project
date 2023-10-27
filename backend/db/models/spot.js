@@ -85,6 +85,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       defaultValue: sequelize.literal('CURRENT_TIMESTAMP'), // Capital 'S' for Sequelize
     },
+    avgStarRating: {
+      type: DataTypes.FLOAT, // or another appropriate data type
+      allowNull: true, // or false, depending on your requirements
+    },
   }, {
     sequelize,
     modelName: 'Spots',

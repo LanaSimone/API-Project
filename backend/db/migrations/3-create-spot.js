@@ -62,7 +62,11 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
-      }
+      },
+      avgStarRating: {
+        type: Sequelize.FLOAT, // or another appropriate data type
+        allowNull: true, // or false, depending on your requirements
+      },
     }, options)
   },
   async down(queryInterface, Sequelize) {

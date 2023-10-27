@@ -17,4 +17,10 @@ router.get("/api/csrf/restore", (req, res) => {
   const spotsRouter = require('./api/spots');
   router.use('/api/spots', spotsRouter);
 
+  // const spotsRouter = require('./api/spots');
+  // router.use('/api/spots', spotsRouter);
+
+  // const spotsRouter = require('./api/spots');
+  // router.use('/api/spots', spotsRouter);
+
 module.exports = router;
