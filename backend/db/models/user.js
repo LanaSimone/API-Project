@@ -48,7 +48,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       lastName: {
         type: DataTypes.STRING(50), // Add the lastName field
-        allowNull: false,
+        allowNull: false
       },
 
       hashedPassword: {
