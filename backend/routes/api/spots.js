@@ -55,16 +55,14 @@ router.get('/', async (req, res) => {
     const minPrice = parseFloat(req.query.minPrice);
     const maxPrice = parseFloat(req.query.maxPrice);
 
-    // Validate query parameters
+    // Remove the validation check for parameters if none are provided
     if (
-      !req.query.hasOwnProperty('page') ||
-      !req.query.hasOwnProperty('size') ||
-      parseInt(req.query.page) <= 0 ||
-      parseInt(req.query.size) <= 0 ||
-      (minLat && maxLat && minLat > maxLat) ||
-      (minLng && maxLng && minLng > maxLng) ||
-      (minPrice && minPrice < 0) ||
-      (maxPrice && maxPrice < 0)
+      ((req.query.hasOwnProperty('page') && parseInt(req.query.page) <= 0) ||
+      (req.query.hasOwnProperty('size') && parseInt(req.query.size) <= 0)) ||
+      ((req.query.hasOwnProperty('minLat') && minLat > maxLat) ||
+      (req.query.hasOwnProperty('minLng') && minLng > maxLng) ||
+      (req.query.hasOwnProperty('minPrice') && minPrice < 0) ||
+      (req.query.hasOwnProperty('maxPrice') && maxPrice < 0))
     ) {
       return res.status(400).json({
         message: 'Bad Request',
@@ -80,51 +78,6 @@ router.get('/', async (req, res) => {
         },
       });
     }
-    // Prepare filters based on valid query parameters
-    const whereFilters = {};
-
-    if (minLat && maxLat) {
-      whereFilters.lat = { [Op.between]: [minLat, maxLat] };
-    }
-
-    if (minLng && maxLng) {
-      whereFilters.lng = { [Op.between]: [minLng, maxLng] };
-    }
-
-    if (minPrice && maxPrice) {
-      whereFilters.price = { [Op.between]: [minPrice, maxPrice] };
-    }
-
-    // Query the database to get spots based on filters and include SpotImages
-    const spots = await Spots.findAndCountAll({
-      offset: (page - 1) * size,
-      limit: size,
-      where: whereFilters,
-      include: [
-        // Include SpotImages if needed
-      ],
-    });
-
-    // Prepare the response with avgRating and previewImage from SpotImages
-    const response = {
-      Spots: spots.rows.map((spot) => ({
-        id: spot.id,
-        ownerId: spot.ownerId,
-        address: spot.address,
-        city: spot.city,
-        state: spot.state,
-        country: spot.country,
-        lat: spot.lat,
-        lng: spot.lng,
-        name: spot.name,
-        description: spot.description,
-        price: spot.price,
-        createdAt: spot.createdAt,
-        updatedAt: spot.updatedAt,
-        avgRating: 4.5, // Calculate or retrieve the actual average rating
-        previewImage: 'image url', // Replace with the actual URL
-      })),
-    };
 
     if (Object.keys(req.query).length === 0) {
       // No search parameters, so exclude page, size, and totalCount
