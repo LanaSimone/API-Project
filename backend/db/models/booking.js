@@ -12,11 +12,11 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Booking.belongsTo(models.Spots, {
         foreignKey: 'spotId',
-        onDelete: 'CASCADE'
+        // onDelete: 'CASCADE'
       });
       Booking.belongsTo(models.User, {
         foreignKey: 'userId',
-        onDelete: 'CASCADE'
+        // onDelete: 'CASCADE'
       });
     }
   }
@@ -39,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'Users',
+        model: 'User',
         key: 'id'
       }
     },

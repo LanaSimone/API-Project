@@ -67,6 +67,10 @@ module.exports = {
         type: Sequelize.FLOAT, // or another appropriate data type
         allowNull: true, // or false, depending on your requirements
       },
+      previewImage: {
+        type: Sequelize.STRING(500),
+        allowNull: true,
+      }
     }, options)
   },
   async down(queryInterface, Sequelize) {

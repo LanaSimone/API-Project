@@ -35,23 +35,61 @@ router.post(
   '/',
   validateSignup,
   async (req, res) => {
-    const { email, password, username } = req.body;
+    const { email, password, username, firstName, lastName } = req.body;
     const hashedPassword = bcrypt.hashSync(password);
-    const user = await User.create({ email, username, hashedPassword });
 
-    const safeUser = {
-      id: user.id,
-      email: user.email,
-      username: user.username,
-    };
+    // Validation for required fields
+    if (!email || !username || !firstName || !lastName) {
+      return res.status(400).json({
+        message: 'Bad Request',
+        errors: {
+          email: email ? undefined : 'Invalid email',
+          username: username ? undefined : 'Username is required',
+          firstName: firstName ? undefined : 'First Name is required',
+          lastName: lastName ? undefined : 'Last Name is required',
+        },
+      });
+    }
 
-    await setTokenCookie(res, safeUser);
+    try {
+      const user = await User.create({ email, username, hashedPassword, firstName, lastName });
 
-    return res.json({
-      user: safeUser
-    });
+      const safeUser = {
+        id: user.id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        username: user.username,
+      };
+
+      await setTokenCookie(res, safeUser);
+
+      return res.json({
+        user: safeUser,
+      });
+    } catch (err) {
+      if (err.name === 'SequelizeUniqueConstraintError') {
+        const errors = {};
+        if (err.fields.includes('email')) {
+          return res.status(500).json({
+            message: 'User already exists with the specified email',
+            errors: {
+              email: 'User with that email already exists',
+            },
+          });
+        }
+        if (err.fields.includes('username')) {
+          return res.status(500).json({
+            message: 'User already exists with the specified username',
+            errors: {
+              username: 'User with that username already exists',
+            },
+          });
+        }
+      }
+
+      throw err; // Re-throw other errors
+    }
   }
 );
-
-
   module.exports = router;

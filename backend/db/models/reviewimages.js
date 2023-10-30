@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       ReviewImage.belongsTo(models.Review, { // Reference 'User', not 'Users'
         foreignKey: 'reviewId',
-        onDelete: 'CASCADE',
+        // onDelete: 'CASCADE',
       });
     }
   }

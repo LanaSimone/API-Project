@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       SpotImage.belongsTo(models.Spots, { // Reference 'User', not 'Users'
         foreignKey: 'spotId',
-        onDelete: 'CASCADE',
+        // onDelete: 'CASCADE',
       });
     }
   }

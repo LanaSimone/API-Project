@@ -35,16 +35,20 @@ router.post('/:reviewId/images', requireAuth, async (req, res) => {
     const reviewId = req.params.reviewId;
     const userId = req.user.id; // Assuming you have user information available via requireAuth middleware
 
-    // Check if the review exists and belongs to the current user
+    // Check if the review exists
     const review = await Review.findOne({
       where: {
         id: reviewId,
-        userId: userId,
       },
     });
 
     if (!review) {
       return res.status(404).json({ message: "Review couldn't be found" });
+    }
+
+    // Check if the review belongs to the current user
+    if (review.userId !== userId) {
+      return res.status(403).json({ message: "You are not authorized to add images to this review" });
     }
 
     // Check the maximum number of images per resource
@@ -80,16 +84,38 @@ router.put('/:reviewId', requireAuth, async (req, res) => {
 
     const { review, stars } = req.body;
 
-    // Check if the review exists and belongs to the current user
+    // Check if the review exists
     const existingReview = await Review.findOne({
       where: {
         id: reviewId,
-        userId: userId,
       },
     });
 
     if (!existingReview) {
       return res.status(404).json({ message: "Review couldn't be found" });
+    }
+
+    // Check if the review belongs to the current user
+    if (existingReview.userId !== userId) {
+      return res.status(403).json({ message: "You don't have permission to edit this review" });
+    }
+
+    // Validate the request body
+    if (!review) {
+      return res.status(400).json({
+        message: 'Bad Request',
+        errors: {
+          review: 'Review text is required',
+        },
+      });
+    }
+    if (!Number.isInteger(stars) || stars < 1 || stars > 5) {
+      return res.status(400).json({
+        message: 'Bad Request',
+        errors: {
+          stars: 'Stars must be an integer from 1 to 5',
+        },
+      });
     }
 
     // Update the review
@@ -106,26 +132,13 @@ router.put('/:reviewId', requireAuth, async (req, res) => {
       spotId: existingReview.spotId,
       review: existingReview.review,
       stars: existingReview.stars,
-      createdAt: existingReview.createdAt.toISOString(),
-      updatedAt: updatedAtDate.toISOString(), // Format updatedAt as an ISO string
+      createdAt: new Date(),
+      updatedAt: new Date(), // Format updatedAt as an ISO string
     });
   } catch (error) {
     console.error(error);
 
-    // Handle validation errors
-    if (error.name === 'SequelizeValidationError') {
-      const errors = {};
-      error.errors.forEach((err) => {
-        errors[err.path] = err.message;
-      });
-
-      res.status(400).json({
-        message: 'Bad Request',
-        errors,
-      });
-    } else {
-      res.status(500).json({ message: 'Internal server error' });
-    }
+    res.status(500).json({ message: 'Internal server error' });
   }
 });
 
@@ -135,16 +148,20 @@ router.delete('/:reviewId', requireAuth, async (req, res) => {
     const reviewId = req.params.reviewId;
     const userId = req.user.id; // Assuming you have user information available via requireAuth middleware
 
-    // Check if the review exists and belongs to the current user
+    // Check if the review exists
     const existingReview = await Review.findOne({
       where: {
         id: reviewId,
-        userId: userId,
       },
     });
 
     if (!existingReview) {
       return res.status(404).json({ message: "Review couldn't be found" });
+    }
+
+    // Check if the review belongs to the current user
+    if (existingReview.userId !== userId) {
+      return res.status(403).json({ message: "You are not authorized to delete this review" });
     }
 
     // Delete related ReviewImages
@@ -161,7 +178,5 @@ router.delete('/:reviewId', requireAuth, async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 });
-
-
 
 module.exports = router;
