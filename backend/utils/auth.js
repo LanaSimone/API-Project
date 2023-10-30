@@ -29,7 +29,7 @@ const setTokenCookie = (res, user) => {
       httpOnly: true,
       secure: isProduction,
       sameSite: isProduction && "Lax"
-    });
+    })
 
     return token;
   };
