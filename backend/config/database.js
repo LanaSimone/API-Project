@@ -1,19 +1,19 @@
 const {Sequelize, col} = require('sequelize');
 const config = require('./index');
 
-const sequelize = new Sequelize({
-  dialect: 'sqlite',
-  storage: config.dbFile,
-});
+// const sequelize = new Sequelize({
+//   dialect: 'sqlite',
+//   storage: config.dbFile,
+// });
 
-// Enable foreign key constraints for SQLite
-sequelize.query('PRAGMA foreign_keys = ON;')
-  .then(() => {
-    console.log('Foreign key constraints are enabled');
-  })
-  .catch((error) => {
-    console.error('Error enabling foreign key constraints:', error);
-  });
+// // Enable foreign key constraints for SQLite
+// sequelize.query('PRAGMA foreign_keys = ON;')
+//   .then(() => {
+//     console.log('Foreign key constraints are enabled');
+//   })
+//   .catch((error) => {
+//     console.error('Error enabling foreign key constraints:', error);
+//   });
 
 module.exports = {
   development: {
