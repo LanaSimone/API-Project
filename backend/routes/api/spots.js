@@ -55,6 +55,8 @@ router.get('/', async (req, res) => {
     const minPrice = parseFloat(req.query.minPrice);
     const maxPrice = parseFloat(req.query.maxPrice);
 
+    let response = {}; // Define the response object
+
     // Remove the validation check for parameters if none are provided
     if (
       ((req.query.hasOwnProperty('page') && parseInt(req.query.page) <= 0) ||
@@ -85,7 +87,7 @@ router.get('/', async (req, res) => {
       // Search parameters are provided, so include page, size, and totalCount
       response.page = page;
       response.size = size;
-      response.totalCount = spots.count;
+      response.totalCount = Spots.count;
     }
 
     res.status(200).json(response);
