@@ -25,14 +25,14 @@ module.exports = {
         type: Sequelize.STRING(100),
         unique: true
       },
-      firstName: {
-        type: Sequelize.STRING(50),
-        allowNull: false, // Add the firstName field
-      },
-      lastName: {
-        type: Sequelize.STRING(50),
-        allowNull: false // Add the lastName field
-      },
+      // firstName: {
+      //   type: Sequelize.STRING(50),
+      //   allowNull: false, // Add the firstName field
+      // },
+      // lastName: {
+      //   type: Sequelize.STRING(50),
+      //   allowNull: false // Add the lastName field
+      // },
       hashedPassword: {
         type: Sequelize.STRING
       },

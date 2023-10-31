@@ -1,0 +1,16 @@
+                                          Table "public.Users"
+     Column     |           Type           | Collation | Nullable |               Default               
+----------------+--------------------------+-----------+----------+-------------------------------------
+ id             | integer                  |           | not null | nextval('"Users_id_seq"'::regclass)
+ username       | character varying(255)   |           |          | 
+ email          | character varying(255)   |           |          | 
+ hashedPassword | character varying(255)   |           |          | 
+ createdAt      | timestamp with time zone |           | not null | 
+ updatedAt      | timestamp with time zone |           | not null | 
+Indexes:
+    "Users_pkey" PRIMARY KEY, btree (id)
+Referenced by:
+    TABLE ""Bookings"" CONSTRAINT "Bookings_userId_fkey" FOREIGN KEY ("userId") REFERENCES "Users"(id)
+    TABLE ""Reviews"" CONSTRAINT "Reviews_userId_fkey" FOREIGN KEY ("userId") REFERENCES "Users"(id)
+    TABLE ""Spots"" CONSTRAINT "Spots_ownerId_fkey" FOREIGN KEY ("ownerId") REFERENCES "Users"(id)
+
