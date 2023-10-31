@@ -93,11 +93,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     createdAt: {
       type: DataTypes.DATE,
-      defaultValue: sequelize.literal('CURRENT_TIMESTAMP'), // Capital 'S' for Sequelize
+      defaultValue: sequelize.literal('CURRENT_TIMESTAMP'), 
     },
     updatedAt: {
       type: DataTypes.DATE,
-      defaultValue: sequelize.literal('CURRENT_TIMESTAMP'), // Capital 'S' for Sequelize
+      defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
     },
     avgStarRating: {
       type: DataTypes.FLOAT, // or another appropriate data type
