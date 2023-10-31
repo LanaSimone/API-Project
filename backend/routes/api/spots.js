@@ -317,18 +317,18 @@ const validateRequestBody = [
 //update spot
 router.put('/:spotId', requireAuth, async (req, res) => {
   try {
-    const spotId = req.params.spotId; // Get the spotId from the route parameters
+    // Get the spotId from the route parameters
+    const spotId = req.params.spotId;
 
     // Check if the spot with the provided spotId exists
     const existingSpot = await Spot.findByPk(spotId);
 
     if (!existingSpot) {
-      return res.status(404).json({
-        message: 'Spot couldn\'t be found',
-      });
+      // The spot does not exist, so return a 404 error response
+      return res.status(404).json({ message: 'Spot couldn\'t be found' });
     }
 
-    // Validation of request body fields
+    // Validate the request body fields
     const {
       address,
       city,
@@ -380,15 +380,12 @@ router.put('/:spotId', requireAuth, async (req, res) => {
     }
 
     if (Object.keys(errors).length > 0) {
-      return res.status(400).json({
-        message: 'Bad Request',
-        errors,
-      });
+      // There are validation errors, so return a 400 Bad Request response
+      return res.status(400).json({ message: 'Bad Request', errors });
     }
 
     // Get the owner ID from the authenticated user
     const ownerId = req.user.id;
-    const now = new Date();
 
     // Update the existing spot with the new data
     existingSpot.ownerId = ownerId;
@@ -401,9 +398,26 @@ router.put('/:spotId', requireAuth, async (req, res) => {
     existingSpot.name = name;
     existingSpot.description = description;
     existingSpot.price = price;
-    existingSpot.updatedAt = now;
 
-    await existingSpot.save();
+    // Try to save the updated spot
+    try {
+      await existingSpot.save();
+    } catch (error) {
+      // Handle the error
+      if (error instanceof SequelizeValidationError) {
+        // Return a 400 Bad Request response with the validation errors
+        const errors = error.errors.reduce((acc, e) => {
+          acc[e.path] = e.message;
+          return acc;
+        }, {});
+
+        return res.status(400).json({ message: 'Bad Request', errors });
+      } else {
+        // Log the error and return a 500 Internal Server Error response
+        console.error(error);
+        return res.status(500).json({ error: 'Internal Server Error', message: error.message });
+      }
+    }
 
     // Format the response body
     const formattedSpot = {
@@ -419,20 +433,17 @@ router.put('/:spotId', requireAuth, async (req, res) => {
       description: existingSpot.description,
       price: existingSpot.price,
       createdAt: existingSpot.createdAt,
-      updatedAt: now,
+      updatedAt: existingSpot.updatedAt,
     };
 
+    // Return a 200 OK response with the updated spot
     return res.status(200).json(formattedSpot);
   } catch (error) {
-    if (error.name === 'NotFoundError') {
-      return res.status(404).json({ message: 'Spot couldn\'t be found' });
-    } else {
-      console.error(error);
-      return res.status(500).json({ error: 'Internal Server Error', message: error.message });
-    }
+    // Something went wrong, so return a 500 Internal Server Error response
+    console.error(error);
+    return res.status(500).json({ error: 'Internal Server Error', message: error.message });
   }
 });
-
 
 async function deleteOrphanedBookings() {
   // Get all of the bookings that are not associated with any spots.
