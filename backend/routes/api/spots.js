@@ -324,7 +324,7 @@ router.put('/:spotId', requireAuth, async (req, res) => {
 
     if (!existingSpot) {
       return res.status(404).json({
-        message: "Spot couldn't be found",
+        message: 'Spot couldn\'t be found',
       });
     }
 
@@ -424,8 +424,12 @@ router.put('/:spotId', requireAuth, async (req, res) => {
 
     return res.status(200).json(formattedSpot);
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: 'Internal Server Error', message: error.message });
+    if (error.name === 'NotFoundError') {
+      return res.status(404).json({ message: 'Spot couldn\'t be found' });
+    } else {
+      console.error(error);
+      return res.status(500).json({ error: 'Internal Server Error', message: error.message });
+    }
   }
 });
 
