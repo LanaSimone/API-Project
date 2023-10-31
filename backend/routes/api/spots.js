@@ -214,7 +214,6 @@ router.post('/', requireAuth, async (req, res) => {
       });
     }
 
-
     // Get the authenticated user's ID (assuming it's set by your authentication middleware)
     const ownerId = req.user.id;
 
