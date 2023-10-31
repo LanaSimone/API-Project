@@ -165,9 +165,19 @@ router.get('/:spotId', async (req, res) => {
 // Create a Spot
 router.post('/', requireAuth, async (req, res) => {
   try {
-    const { address, city, state, country, lat, lng, name, description, price } = req.body;
+    const {
+      address,
+      city,
+      state,
+      country,
+      lat,
+      lng,
+      name,
+      description,
+      price,
+    } = req.body;
 
-    // Validate all fields
+    // Validate the request body
     const errors = {};
 
     if (!address) {
@@ -217,7 +227,6 @@ router.post('/', requireAuth, async (req, res) => {
     // Get the authenticated user's ID (assuming it's set by your authentication middleware)
     const ownerId = req.user.id;
 
-    // Create a new spot in the database
     const now = new Date();
 
     const newSpot = await Spots.create({
