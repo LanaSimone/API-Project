@@ -164,86 +164,98 @@ router.get('/:spotId', async (req, res) => {
 
 router.post('/', requireAuth, async (req, res) => {
   try {
-    // Check if any of the request body fields are empty
-    const emptyFields = [];
-    for (const key in req.body) {
-      if (req.body[key] === null || typeof req.body[key] !== 'string' || isEmpty(req.body[key])) {
-        emptyFields.push(key);
+    const {
+      address,
+      city,
+      state,
+      country,
+      lat,
+      lng,
+      name,
+      description,
+      price,
+    } = req.body;
+
+    const errors = {};
+
+    function validateField(value, fieldName, errorMessage) {
+      if (!value || value.trim() === '') {
+        errors[fieldName] = errorMessage;
       }
     }
 
-    // If any of the request body fields are empty, return an error response
-    if (emptyFields.length > 0) {
-      return res.status(400).json({
-        message: 'Bad Request',
-        errors: {
-          emptyFields: `The following fields cannot be empty: ${emptyFields.join(', ')}`,
-        },
-      });
-    }
-
-    // Check for all of the required fields in the request body
-    const requiredFields = ['address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'description', 'price'];
-    const missingFields = [];
-    for (const field of requiredFields) {
-      if (!req.body[field]) {
-        missingFields.push(field);
+    function validateNumericField(value, fieldName, errorMessage) {
+      if (isNaN(value)) {
+        errors[fieldName] = errorMessage;
       }
     }
 
-    // If any of the required fields are missing, return an error response
-    if (missingFields.length > 0) {
-      return res.status(400).json({
-        message: 'Bad Request',
-        errors: {
-          missingFields: `The following fields are required: ${missingFields.join(', ')}`,
-        },
-      });
+    validateField(address, 'address', 'Street address is required');
+    validateField(city, 'city', 'City is required');
+    validateField(state, 'state', 'State is required');
+    validateField(country, 'country', 'Country is required');
+    validateNumericField(lat, 'lat', 'Latitude is not valid');
+    validateNumericField(lng, 'lng', 'Longitude is not valid');
+
+    if (!name || name.trim() === '') {
+      errors.name = 'Name is required';
+    } else if (name.length > 50) {
+      errors.name = 'Name must be less than 50 characters';
     }
 
-    // Get the owner ID from the authenticated user
-    const ownerId = req.user.id;
+    validateField(description, 'description', 'Description is required');
 
-    // Create a new spot in the database
-    const now = new Date();
+    if (price === undefined) {
+      errors.price = 'Price per day is required';
+    }
 
-    const newSpot = await Spot.create({
-      owner_id: ownerId,
-      ...req.body,
-      created_at: now,
-      updated_at: now,
-    });
-
-    // Format the response body
-    const formattedSpot = {
-      id: newSpot.id,
-      owner_id: newSpot.ownerId,
-      ...newSpot.get(),
-      created_at: newSpot.createdAt,
-      updated_at: now,
-    };
-
-    return res.status(201).json(formattedSpot);
-  } catch (error) {
-    if (error.name === 'SequelizeValidationError') {
-      // Handle Sequelize validation errors
-      const errors = error.errors.reduce((acc, e) => {
-        acc[e.path] = e.message;
-        return acc;
-      }, {});
-
+    if (Object.keys(errors).length > 0) {
       return res.status(400).json({
         message: 'Bad Request',
         errors,
       });
-    } else {
-      console.error(error);
-      return res.status(500).json({ error: 'Internal Server Error', message: error.message });
     }
+
+    const ownerId = req.user.id;
+    const now = new Date();
+
+    const newSpot = await Spots.create({
+      ownerId,
+      address,
+      city,
+      state,
+      country,
+      lat,
+      lng,
+      name,
+      description,
+      price,
+      createdAt: now,
+      updatedAt: now,
+    });
+
+    const formattedSpot = {
+      id: newSpot.id,
+      ownerId: newSpot.ownerId,
+      address: newSpot.address,
+      city: newSpot.city,
+      state: newSpot.state,
+      country: newSpot.country,
+      lat: newSpot.lat,
+      lng: newSpot.lng,
+      name: newSpot.name,
+      description: newSpot.description,
+      price: newSpot.price,
+      createdAt: newSpot.createdAt,
+      updatedAt: new Date(),
+    };
+
+    return res.status(201).json(formattedSpot);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Internal Server Error', message: error.message });
   }
 });
-
-
 //create a spot image
 router.post('/:spotId/images', requireAuth, async (req, res) => {
   try {
@@ -303,37 +315,8 @@ const validateRequestBody = [
   // Add more validation checks for other fields if needed
 ];
 //update spot
-router.put('/:spotId', requireAuth, validateRequestBody, async (req, res) => {
-  const errors = validationResult(req);
-
-  if (!errors.isEmpty()) {
-    const errorResponse = {
-      message: 'Bad Request',
-      errors: {},
-    };
-    errors.array().forEach((error) => {
-      errorResponse.errors[error.param] = error.msg;
-    });
-    return res.status(400).json(errorResponse);
-  }
-
+router.put('/:spotId', requireAuth, async (req, res) => {
   try {
-    const { spotId } = req.params;
-
-    // Ensure that the spot exists
-    const existingSpot = await Spots.findByPk(spotId);
-    if (!existingSpot) {
-      return res.status(404).json({ message: "Spot couldn't be found" });
-    }
-
-    // Ensure that the current user is the owner of the spot
-    const userId = req.user.id;
-
-    if (existingSpot.ownerId !== userId) {
-      return res.status(403).json({ message: "You don't have permission to modify this spot" });
-    }
-
-    // Continue with the update logic
     const {
       address,
       city,
@@ -346,47 +329,86 @@ router.put('/:spotId', requireAuth, validateRequestBody, async (req, res) => {
       price,
     } = req.body;
 
-    // Update the spot's properties
-    existingSpot.address = address;
-    existingSpot.city = city;
-    existingSpot.state = state;
-    existingSpot.country = country;
-    existingSpot.lat = lat;
-    existingSpot.lng = lng;
-    existingSpot.name = name;
-    existingSpot.description = description;
-    existingSpot.price = price;
+    const errors = {};
 
-    try {
-      // Save the changes to the database
-      await existingSpot.save();
-
-      return res.status(200).json({
-        id: existingSpot.id,
-        ownerId: existingSpot.ownerId,
-        address: existingSpot.address,
-        city: existingSpot.city,
-        state: existingSpot.state,
-        country: existingSpot.country,
-        lat: existingSpot.lat,
-        lng: existingSpot.lng,
-        name: existingSpot.name,
-        description: existingSpot.description,
-        price: existingSpot.price,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      });
-    } catch (validationError) {
-      // Handle Sequelize validation errors
-      const errorResponse = {
-        message: 'Bad Request',
-        errors: {},
-      };
-      validationError.errors.forEach((error) => {
-        errorResponse.errors[error.path] = error.message;
-      });
-      return res.status(400).json(errorResponse);
+    if (!address) {
+      errors.address = 'Street address is required';
     }
+
+    if (!city) {
+      errors.city = 'City is required';
+    }
+
+    if (!state) {
+      errors.state = 'State is required';
+    }
+
+    if (!country) {
+      errors.country = 'Country is required';
+    }
+
+    if (isNaN(lat)) {
+      errors.lat = 'Latitude is not valid';
+    }
+
+    if (isNaN(lng)) {
+      errors.lng = 'Longitude is not valid';
+    }
+
+    if (!name || name.length > 50) {
+      errors.name = 'Name must be less than 50 characters';
+    }
+
+    if (!description) {
+      errors.description = 'Description is required';
+    }
+
+    if (price === undefined) {
+      errors.price = 'Price per day is required';
+    }
+
+    if (Object.keys(errors).length > 0) {
+      return res.status(400).json({
+        message: 'Bad Request',
+        errors,
+      });
+    }
+
+    const ownerId = req.user.id;
+    const now = new Date();
+
+    const newSpot = await Spots.create({
+      ownerId,
+      address,
+      city,
+      state,
+      country,
+      lat,
+      lng,
+      name,
+      description,
+      price,
+      createdAt: now,
+      updatedAt: now,
+    });
+
+    const formattedSpot = {
+      id: newSpot.id,
+      ownerId: newSpot.ownerId,
+      address: newSpot.address,
+      city: newSpot.city,
+      state: newSpot.state,
+      country: newSpot.country,
+      lat: newSpot.lat,
+      lng: newSpot.lng,
+      name: newSpot.name,
+      description: newSpot.description,
+      price: newSpot.price,
+      createdAt: newSpot.createdAt,
+      updatedAt: new Date(),
+    };
+
+    return res.status(201).json(formattedSpot);
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: 'Internal Server Error', message: error.message });
