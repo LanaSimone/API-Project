@@ -320,12 +320,12 @@ const validateRequestBody = [
 ];
 //update spot
 router.put('/:spotId', requireAuth, async (req, res, next) => {
+  // Check if the user is authorized
   if (!req.user) {
     return res.status(401).json({ message: 'Unauthorized' });
   }
-  try {
-    // Check if the user is authorized
 
+  try {
     // Get the spotId from the route parameters
     const spotId = req.params.spotId;
 
@@ -395,6 +395,11 @@ router.put('/:spotId', requireAuth, async (req, res, next) => {
 
     // Get the owner ID from the authenticated user
     const ownerId = req.user.id;
+
+    // Check if the authenticated user is the owner of the spot
+    if (existingSpot.ownerId !== ownerId) {
+      return res.status(403).json({ message: "You don't have permission to modify this spot" });
+    }
 
     // Update the existing spot with the new data
     existingSpot.ownerId = ownerId;
