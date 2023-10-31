@@ -165,46 +165,55 @@ router.get('/:spotId', async (req, res) => {
 // Create a Spot
 router.post('/', requireAuth, async (req, res) => {
   try {
-    const {
-      address,
-      city,
-      state,
-      country,
-      lat,
-      lng,
-      name,
-      description,
-      price,
-    } = req.body;
+    const { address, city, state, country, lat, lng, name, description, price } = req.body;
 
-    // Validate the request body
-    if (
-      !address ||
-      !city ||
-      !state ||
-      !country ||
-      isNaN(lat) ||
-      isNaN(lng) ||
-      !name ||
-      name.length > 50 ||
-      !description ||
-      !price
-    ) {
+    // Validate all fields
+    const errors = {};
+
+    if (!address) {
+      errors.address = 'Street address is required';
+    }
+
+    if (!city) {
+      errors.city = 'City is required';
+    }
+
+    if (!state) {
+      errors.state = 'State is required';
+    }
+
+    if (!country) {
+      errors.country = 'Country is required';
+    }
+
+    if (isNaN(lat)) {
+      errors.lat = 'Latitude is not valid';
+    }
+
+    if (isNaN(lng)) {
+      errors.lng = 'Longitude is not valid';
+    }
+
+    if (!name || name.length > 50) {
+      errors.name = 'Name must be less than 50 characters';
+    }
+
+    if (!description) {
+      errors.description = 'Description is required';
+    }
+
+    if (!price) {
+      errors.price = 'Price per day is required';
+    }
+
+    // Check if any errors exist
+    if (Object.keys(errors).length > 0) {
       return res.status(400).json({
         message: 'Bad Request',
-        errors: {
-          address: 'Street address is required',
-          city: 'City is required',
-          state: 'State is required',
-          country: 'Country is required',
-          lat: 'Latitude is not valid',
-          lng: 'Longitude is not valid',
-          name: 'Name must be less than 50 characters',
-          description: 'Description is required',
-          price: 'Price per day is required',
-        },
+        errors,
       });
     }
+
 
     // Get the authenticated user's ID (assuming it's set by your authentication middleware)
     const ownerId = req.user.id;
