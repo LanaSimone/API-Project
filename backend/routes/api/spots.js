@@ -313,7 +313,6 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
 });
 
 
-
 const validateRequestBody = [
   check('address').notEmpty().withMessage('Street address is required'),
   // Add more validation checks for other fields if needed
@@ -683,14 +682,18 @@ router.post('/:spotId/reviews', requireAuth, async (req, res) => {
     }
 
     // Check if the user already has a review for this spot
-    const existingReview = await Review.findOne({
+    const [existingReview, created] = await Review.findCreateFind({
       where: {
         spotId,
         userId,
       },
+      defaults: {
+        review: req.body.review,
+        stars: req.body.stars,
+      },
     });
 
-    if (existingReview) {
+    if (!created) {
       return res.status(400).json({ message: "User already has a review for this spot" });
     }
 
@@ -706,19 +709,8 @@ router.post('/:spotId/reviews', requireAuth, async (req, res) => {
       });
     }
 
-    // Check if any reviews exist for this spot
-    const spotReviews = await Review.findAll({
-      where: {
-        spotId,
-      },
-    });
-
-    if (spotReviews.length === 0) {
-      return res.status(404).json({ message: "No reviews exist for this spot" });
-    }
-
     // Create a new review
-    const newReview = await Review.create({
+    const newReview = existingReview || await Review.create({
       spotId,
       userId,
       review,
