@@ -439,11 +439,16 @@ router.put('/:spotId', requireAuth, async (req, res) => {
     // Return a 200 OK response with the updated spot
     return res.status(200).json(formattedSpot);
   } catch (error) {
-    // Something went wrong, so return a 500 Internal Server Error response
-    console.error(error);
-    return res.status(500).json({ error: 'Internal Server Error', message: error.message });
+    // Return a 404 error response if the spot is not found
+    if (error instanceof SequelizeModelNotFoundError) {
+      return res.status(404).json({ message: 'Spot not found' });
+    } else {
+      // Log and return a 500 Internal Server Error response for other errors
+      console.error(error);
+      return res.status(500).json({ error: 'Internal Server Error', message: error.message });
+    }
   }
-});
+})
 
 async function deleteOrphanedBookings() {
   // Get all of the bookings that are not associated with any spots.
