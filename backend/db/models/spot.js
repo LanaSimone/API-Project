@@ -58,42 +58,101 @@ module.exports = (sequelize, DataTypes) => {
     },
     address: {
       type: DataTypes.STRING(100),
-      allowNull: false
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'Street address is required',
+        },
+      },
     },
     city: {
-      type: DataTypes.STRING(100)
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'City is required',
+        },
+      },
     },
     state: {
-      type: DataTypes.STRING(100),
+      type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'State is required',
+        },
+      },
     },
     country: {
-      type: DataTypes.STRING(100),
-      allowNull: false
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'Country is required',
+        },
+      },
     },
     lat: {
       type: DataTypes.DECIMAL,
       allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'Latitude is not valid',
+        },
+        isFloat: {
+          msg: 'Latitude must be a valid number',
+        },
+      },
     },
     lng: {
       type: DataTypes.DECIMAL,
       allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'Longitude is not valid',
+        },
+        isFloat: {
+          msg: 'Longitude must be a valid number',
+        },
+      },
     },
     name: {
-      type: DataTypes.STRING(100),
-      allowNull: false
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'Name is required',
+        },
+        len: {
+          args: [1, 50],
+          msg: 'Name must be less than 50 characters',
+        },
+      },
     },
     description: {
-      type: DataTypes.STRING(200),
-      allowNull: false
+      type: DataTypes.STRING(50),
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'Description is required',
+        },
+      },
     },
     price: {
       type: DataTypes.DECIMAL,
       allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'Price per day is required',
+        },
+        isFloat: {
+          msg: 'Price must be a valid number',
+        },
+      },
     },
     createdAt: {
       type: DataTypes.DATE,
-      defaultValue: sequelize.literal('CURRENT_TIMESTAMP'), 
+      defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
     },
     updatedAt: {
       type: DataTypes.DATE,

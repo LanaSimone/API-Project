@@ -162,7 +162,6 @@ router.get('/:spotId', async (req, res) => {
   }
 });
 
-// Create a Spot
 router.post('/', requireAuth, async (req, res) => {
   try {
     const {
@@ -177,7 +176,6 @@ router.post('/', requireAuth, async (req, res) => {
       price,
     } = req.body;
 
-    // Validate the request body
     const errors = {};
 
     if (!address) {
@@ -212,11 +210,10 @@ router.post('/', requireAuth, async (req, res) => {
       errors.description = 'Description is required';
     }
 
-    if (!price) {
+    if (price === undefined) {
       errors.price = 'Price per day is required';
     }
 
-    // Check if any errors exist
     if (Object.keys(errors).length > 0) {
       return res.status(400).json({
         message: 'Bad Request',
@@ -224,9 +221,7 @@ router.post('/', requireAuth, async (req, res) => {
       });
     }
 
-    // Get the authenticated user's ID (assuming it's set by your authentication middleware)
     const ownerId = req.user.id;
-
     const now = new Date();
 
     const newSpot = await Spots.create({
@@ -241,10 +236,9 @@ router.post('/', requireAuth, async (req, res) => {
       description,
       price,
       createdAt: now,
-      updatedAt: now, // Set updatedAt to the same value as createdAt
+      updatedAt: now,
     });
 
-    // Format the response body
     const formattedSpot = {
       id: newSpot.id,
       ownerId: newSpot.ownerId,
@@ -267,7 +261,6 @@ router.post('/', requireAuth, async (req, res) => {
     return res.status(500).json({ error: 'Internal Server Error', message: error.message });
   }
 });
-
 //create a spot image
 router.post('/:spotId/images', requireAuth, async (req, res) => {
   try {

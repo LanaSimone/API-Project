@@ -27,10 +27,10 @@ module.exports = {
         allowNull: false
       },
       city: {
-        type: Sequelize.STRING(100)
+        type: Sequelize.STRING
       },
       state: {
-        type: Sequelize.STRING(100),
+        type: Sequelize.STRING,
         allowNull: false,
       },
       country: {
@@ -46,10 +46,10 @@ module.exports = {
         allowNull: false,
       },
       name: {
-        type: Sequelize.STRING(100)
+        type: Sequelize.STRING
       },
       description: {
-        type: Sequelize.STRING(200)
+        type: Sequelize.STRING(50)
       },
       price: {
         type: Sequelize.DECIMAL,
