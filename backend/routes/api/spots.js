@@ -260,6 +260,9 @@ router.post('/', requireAuth, async (req, res) => {
 });
 //create a spot image
 router.post('/:spotId/images', requireAuth, async (req, res) => {
+  if (!req.user) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
   try {
     // Ensure that the URL and preview are provided in the request body
     const { url, preview } = req.body;
