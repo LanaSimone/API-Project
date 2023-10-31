@@ -52,40 +52,44 @@ router.post(
     }
 
     try {
-      const user = await User.create({ email, username, hashedPassword, firstName, lastName });
+      // Use a transaction to ensure data consistency
+      await sequelize.transaction(async (t) => {
+        const user = await User.create(
+          { email, username, hashedPassword, firstName, lastName },
+          { transaction: t }
+        );
 
-      const safeUser = {
-        id: user.id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        username: user.username,
-      };
+        const safeUser = {
+          id: user.id,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+          username: user.username,
+        };
 
-      await setTokenCookie(res, safeUser);
+        await setTokenCookie(res, safeUser);
 
-      return res.json({
-        user: safeUser,
+        return res.json({
+          user: safeUser,
+        });
       });
     } catch (err) {
       if (err.name === 'SequelizeUniqueConstraintError') {
+        // Handle unique constraint violation
         const errors = {};
-        if (err.fields.includes('email')) {
-          return res.status(500).json({
-            message: 'User already exists with the specified email',
-            errors: {
-              email: 'User with that email already exists',
-            },
-          });
+
+        if (err.errors.find((e) => e.message.includes('email'))) {
+          errors.email = 'User with that email already exists';
         }
-        if (err.fields.includes('username')) {
-          return res.status(500).json({
-            message: 'User already exists with the specified username',
-            errors: {
-              username: 'User with that username already exists',
-            },
-          });
+
+        if (err.errors.find((e) => e.message.includes('username'))) {
+          errors.username = 'User with that username already exists';
         }
+
+        return res.status(400).json({
+          message: 'Duplicate user',
+          errors,
+        });
       }
 
       throw err; // Re-throw other errors
