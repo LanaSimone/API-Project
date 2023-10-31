@@ -2,7 +2,7 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
-const { Spots, User, SpotImage, Review, ReviewImage, Bookings,sequelize } = require('../../db/models');
+const { Spots, User, SpotImage, Review, ReviewImage, Bookings,sequelize, Sequelize} = require('../../db/models');
 
 const router = express.Router();
 
@@ -315,19 +315,18 @@ const validateRequestBody = [
   // Add more validation checks for other fields if needed
 ];
 //update spot
-router.put('/:spotId', requireAuth, async (req, res) => {
+router.put('/:spotId', requireAuth, async (req, res, next) => {
   try {
     // Get the spotId from the route parameters
     const spotId = req.params.spotId;
 
     // Check if the spot with the provided spotId exists
-    const existingSpot = await Spot.findByPk(spotId);
+    const existingSpot = await Spots.findByPk(spotId);
 
     if (!existingSpot) {
-      // The spot does not exist, so return a 404 error response
-      return res.status(404).json({ message: 'Spot couldn\'t be found' });
+      // The spot does not exist, so send a 404 error response
+      return res.status(404).json({ message: "Spot couldn't be found" });
     }
-
     // Validate the request body fields
     const {
       address,
@@ -439,16 +438,14 @@ router.put('/:spotId', requireAuth, async (req, res) => {
     // Return a 200 OK response with the updated spot
     return res.status(200).json(formattedSpot);
   } catch (error) {
-    // Return a 404 error response if the spot is not found
-    if (error instanceof SequelizeModelNotFoundError) {
-      return res.status(404).json({ message: 'Spot not found' });
-    } else {
-      // Log and return a 500 Internal Server Error response for other errors
-      console.error(error);
-      return res.status(500).json({ error: 'Internal Server Error', message: error.message });
-    }
+    // Handle the error
+    // Send a 500 error response for all other errors
+    return res.status(500).json({
+      error: 'Internal Server Error',
+      message: error.message,
+    });
   }
-})
+});
 
 async function deleteOrphanedBookings() {
   // Get all of the bookings that are not associated with any spots.
