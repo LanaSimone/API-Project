@@ -318,7 +318,12 @@ const validateRequestBody = [
 ];
 //update spot
 router.put('/:spotId', requireAuth, async (req, res, next) => {
+  if (!req.user) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
   try {
+    // Check if the user is authorized
+
     // Get the spotId from the route parameters
     const spotId = req.params.spotId;
 
@@ -329,6 +334,7 @@ router.put('/:spotId', requireAuth, async (req, res, next) => {
       // The spot does not exist, so send a 404 error response
       return res.status(404).json({ message: "Spot couldn't be found" });
     }
+
     // Validate the request body fields
     const {
       address,
@@ -433,8 +439,8 @@ router.put('/:spotId', requireAuth, async (req, res, next) => {
       name: existingSpot.name,
       description: existingSpot.description,
       price: existingSpot.price,
-      createdAt: existingSpot.createdAt,
-      updatedAt: existingSpot.updatedAt,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     };
 
     // Return a 200 OK response with the updated spot
