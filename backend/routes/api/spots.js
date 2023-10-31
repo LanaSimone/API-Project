@@ -324,10 +324,7 @@ router.put('/:spotId', requireAuth, async (req, res) => {
 
     if (!existingSpot) {
       return res.status(404).json({
-        message: 'Not Found',
-        errors: {
-          spotId: 'Spot not found',
-        },
+        message: "Spot couldn't be found",
       });
     }
 
