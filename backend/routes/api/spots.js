@@ -164,77 +164,12 @@ router.get('/:spotId', async (req, res) => {
 
 router.post('/', requireAuth, async (req, res) => {
   try {
-    const {
-      address,
-      city,
-      state,
-      country,
-      lat,
-      lng,
-      name,
-      description,
-      price,
-    } = req.body;
-
-    const errors = {};
-
-    if (!address) {
-      errors.address = 'Street address is required';
-    }
-
-    if (!city) {
-      errors.city = 'City is required';
-    }
-
-    if (!state) {
-      errors.state = 'State is required';
-    }
-
-    if (!country) {
-      errors.country = 'Country is required';
-    }
-
-    if (isNaN(lat)) {
-      errors.lat = 'Latitude is not valid';
-    }
-
-    if (isNaN(lng)) {
-      errors.lng = 'Longitude is not valid';
-    }
-
-    if (!name || name.length > 50) {
-      errors.name = 'Name must be less than 50 characters';
-    }
-
-    if (!description) {
-      errors.description = 'Description is required';
-    }
-
-    if (price === undefined) {
-      errors.price = 'Price per day is required';
-    }
-
-    if (Object.keys(errors).length > 0) {
-      return res.status(400).json({
-        message: 'Bad Request',
-        errors,
-      });
-    }
-
     const ownerId = req.user.id;
     const now = new Date();
 
-    const newSpot = await Spots.create({
+    const newSpot = await Spot.create({
       ownerId,
-      address,
-      city,
-      state,
-      country,
-      lat,
-      lng,
-      name,
-      description,
-      price,
+      ...req.body,
       createdAt: now,
       updatedAt: now,
     });
@@ -242,23 +177,27 @@ router.post('/', requireAuth, async (req, res) => {
     const formattedSpot = {
       id: newSpot.id,
       ownerId: newSpot.ownerId,
-      address: newSpot.address,
-      city: newSpot.city,
-      state: newSpot.state,
-      country: newSpot.country,
-      lat: newSpot.lat,
-      lng: newSpot.lng,
-      name: newSpot.name,
-      description: newSpot.description,
-      price: newSpot.price,
+      ...newSpot.get(),
       createdAt: newSpot.createdAt,
       updatedAt: new Date(),
     };
 
     return res.status(201).json(formattedSpot);
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: 'Internal Server Error', message: error.message });
+    if (error.name === 'SequelizeValidationError') {
+      const errors = error.errors.reduce((acc, e) => {
+        acc[e.path] = e.message;
+        return acc;
+      }, {});
+
+      return res.status(400).json({
+        message: 'Bad Request',
+        errors,
+      });
+    } else {
+      console.error(error);
+      return res.status(500).json({ error: 'Internal Server Error', message: error.message });
+    }
   }
 });
 //create a spot image
