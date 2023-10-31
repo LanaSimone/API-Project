@@ -19,6 +19,11 @@ module.exports = {
       type: Sequelize.INTEGER,
 
     });
+    await queryInterface.addColumn('Reviews', 'avgStarRating', {
+        type: Sequelize.INTEGER,
+        allowNull: true
+
+      });
 
   },
 
@@ -30,6 +35,7 @@ module.exports = {
      * await queryInterface.dropTable('users');
      */
     await queryInterface.removeColumn('Reviews', 'Stars');
+    await queryInterface.removeColumn('Reviews', 'avgStarRating');
 
   },
 };
