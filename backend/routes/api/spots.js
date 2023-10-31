@@ -321,11 +321,11 @@ const validateRequestBody = [
 //update spot
 router.put('/:spotId', requireAuth, async (req, res, next) => {
   // Check if the user is authorized
-  if (!req.user) {
-    return res.status(401).json({ message: 'Unauthorized' });
-  }
 
   try {
+    if (!req.user) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
     // Get the spotId from the route parameters
     const spotId = req.params.spotId;
 
