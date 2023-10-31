@@ -167,7 +167,7 @@ router.post('/', requireAuth, async (req, res) => {
     // Check if any of the request body fields are empty
     const emptyFields = [];
     for (const key in req.body) {
-      if (req.body[key] === null || req.body[key] === '' || !req.body[key].trim()) {
+      if (req.body[key] === null || typeof req.body[key] !== 'string' || isEmpty(req.body[key])) {
         emptyFields.push(key);
       }
     }
