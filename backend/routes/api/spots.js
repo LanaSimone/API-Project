@@ -60,8 +60,8 @@ router.get('/', async (req, res) => {
     // Remove the validation check for parameters if none are provided
     if (
       ((req.query.hasOwnProperty('page') && parseInt(req.query.page) <= 0) ||
-      (req.query.hasOwnProperty('size') && parseInt(req.query.size) <= 0)) ||
-      ((req.query.hasOwnProperty('minLat') && minLat > maxLat) ||
+      (req.query.hasOwnProperty('size') && parseInt(req.query.size) <= 0) ||
+      (req.query.hasOwnProperty('minLat') && minLat > maxLat) ||
       (req.query.hasOwnProperty('minLng') && minLng > maxLng) ||
       (req.query.hasOwnProperty('minPrice') && minPrice < 0) ||
       (req.query.hasOwnProperty('maxPrice') && maxPrice < 0))
@@ -81,13 +81,15 @@ router.get('/', async (req, res) => {
       });
     }
 
+    // If no search parameters are provided, fetch all spots
     if (Object.keys(req.query).length === 0) {
-      // No search parameters, so exclude page, size, and totalCount
+      const spots = await Spots.findAll();
+      response.spots = spots;
     } else {
       // Search parameters are provided, so include page, size, and totalCount
       response.page = page;
       response.size = size;
-      response.totalCount = Spots.count;
+      response.totalCount = await Spots.count();
     }
 
     res.status(200).json(response);
