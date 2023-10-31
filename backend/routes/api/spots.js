@@ -164,27 +164,69 @@ router.get('/:spotId', async (req, res) => {
 
 router.post('/', requireAuth, async (req, res) => {
   try {
+    // Check if any of the request body fields are empty
+    const emptyFields = [];
+    for (const key in req.body) {
+      if (req.body[key] === null || req.body[key] === '' || !req.body[key].trim()) {
+        emptyFields.push(key);
+      }
+    }
+
+    // If any of the request body fields are empty, return an error response
+    if (emptyFields.length > 0) {
+      return res.status(400).json({
+        message: 'Bad Request',
+        errors: {
+          emptyFields: `The following fields cannot be empty: ${emptyFields.join(', ')}`,
+        },
+      });
+    }
+
+    // Check for all of the required fields in the request body
+    const requiredFields = ['address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'description', 'price'];
+    const missingFields = [];
+    for (const field of requiredFields) {
+      if (!req.body[field]) {
+        missingFields.push(field);
+      }
+    }
+
+    // If any of the required fields are missing, return an error response
+    if (missingFields.length > 0) {
+      return res.status(400).json({
+        message: 'Bad Request',
+        errors: {
+          missingFields: `The following fields are required: ${missingFields.join(', ')}`,
+        },
+      });
+    }
+
+    // Get the owner ID from the authenticated user
     const ownerId = req.user.id;
+
+    // Create a new spot in the database
     const now = new Date();
 
     const newSpot = await Spot.create({
-      ownerId,
+      owner_id: ownerId,
       ...req.body,
-      createdAt: now,
-      updatedAt: now,
+      created_at: now,
+      updated_at: now,
     });
 
+    // Format the response body
     const formattedSpot = {
       id: newSpot.id,
-      ownerId: newSpot.ownerId,
+      owner_id: newSpot.ownerId,
       ...newSpot.get(),
-      createdAt: newSpot.createdAt,
-      updatedAt: new Date(),
+      created_at: newSpot.createdAt,
+      updated_at: now,
     };
 
     return res.status(201).json(formattedSpot);
   } catch (error) {
     if (error.name === 'SequelizeValidationError') {
+      // Handle Sequelize validation errors
       const errors = error.errors.reduce((acc, e) => {
         acc[e.path] = e.message;
         return acc;
@@ -200,6 +242,8 @@ router.post('/', requireAuth, async (req, res) => {
     }
   }
 });
+
+
 //create a spot image
 router.post('/:spotId/images', requireAuth, async (req, res) => {
   try {
