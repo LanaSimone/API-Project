@@ -260,9 +260,6 @@ router.post('/', requireAuth, async (req, res) => {
 });
 //create a spot image
 router.post('/:spotId/images', requireAuth, async (req, res) => {
-  if (!req.user) {
-    return res.status(401).json({ message: 'Unauthorized' });
-  }
   try {
     // Ensure that the URL and preview are provided in the request body
     const { url, preview } = req.body;
@@ -277,6 +274,11 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
       });
     }
 
+    // Check if the user is authorized
+    if (!req.user) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+
     const spotId = req.params.spotId;
 
     // Fetch the spot from the database.
@@ -285,9 +287,6 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
     if (!existingSpot) {
       return res.status(404).json({ message: "Spot couldn't be found" });
     }
-
-    // If you want to check spot ownership, you can do it here.
-    // You can compare the owner's ID from the existingSpot with the authenticated user's ID.
 
     // Assuming you have req.user set by the requireAuth middleware
     if (existingSpot.ownerId !== req.user.id) {
