@@ -317,6 +317,21 @@ const validateRequestBody = [
 //update spot
 router.put('/:spotId', requireAuth, async (req, res) => {
   try {
+    const spotId = req.params.spotId; // Get the spotId from the route parameters
+
+    // Check if the spot with the provided spotId exists
+    const existingSpot = await Spot.findByPk(spotId);
+
+    if (!existingSpot) {
+      return res.status(404).json({
+        message: 'Not Found',
+        errors: {
+          spotId: 'Spot not found',
+        },
+      });
+    }
+
+    // Validation of request body fields
     const {
       address,
       city,
@@ -374,41 +389,43 @@ router.put('/:spotId', requireAuth, async (req, res) => {
       });
     }
 
+    // Get the owner ID from the authenticated user
     const ownerId = req.user.id;
     const now = new Date();
 
-    const newSpot = await Spots.create({
-      ownerId,
-      address,
-      city,
-      state,
-      country,
-      lat,
-      lng,
-      name,
-      description,
-      price,
-      createdAt: now,
-      updatedAt: now,
-    });
+    // Update the existing spot with the new data
+    existingSpot.ownerId = ownerId;
+    existingSpot.address = address;
+    existingSpot.city = city;
+    existingSpot.state = state;
+    existingSpot.country = country;
+    existingSpot.lat = lat;
+    existingSpot.lng = lng;
+    existingSpot.name = name;
+    existingSpot.description = description;
+    existingSpot.price = price;
+    existingSpot.updatedAt = now;
 
+    await existingSpot.save();
+
+    // Format the response body
     const formattedSpot = {
-      id: newSpot.id,
-      ownerId: newSpot.ownerId,
-      address: newSpot.address,
-      city: newSpot.city,
-      state: newSpot.state,
-      country: newSpot.country,
-      lat: newSpot.lat,
-      lng: newSpot.lng,
-      name: newSpot.name,
-      description: newSpot.description,
-      price: newSpot.price,
-      createdAt: newSpot.createdAt,
-      updatedAt: new Date(),
+      id: existingSpot.id,
+      ownerId: existingSpot.ownerId,
+      address: existingSpot.address,
+      city: existingSpot.city,
+      state: existingSpot.state,
+      country: existingSpot.country,
+      lat: existingSpot.lat,
+      lng: existingSpot.lng,
+      name: existingSpot.name,
+      description: existingSpot.description,
+      price: existingSpot.price,
+      createdAt: existingSpot.createdAt,
+      updatedAt: now,
     };
 
-    return res.status(201).json(formattedSpot);
+    return res.status(200).json(formattedSpot);
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: 'Internal Server Error', message: error.message });
