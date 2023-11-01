@@ -840,10 +840,10 @@ router.post('/:spotId/bookings', requireAuth, async (req, res) => {
       return res.status(404).json({ message: "Spot couldn't be found" });
     }
 
-    // Check if the user is the owner of the spot
-    if (spot.ownerId === userId) {
-      return res.status(403).json({ message: "You cannot book your own spot" });
-    }
+    // // Check if the user is the owner of the spot
+    // if (spot.ownerId === userId) {
+    //   return res.status(403).json({ message: "You cannot book your own spot" });
+    // }
 
     // Check if the spot is already booked for the specified dates
     const existingBooking = await Bookings.findOne({
