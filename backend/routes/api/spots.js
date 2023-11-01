@@ -18,6 +18,11 @@ const requireSpotOwnership = async (req, res, next) => {
     const { spotId } = req.params;
     const userId = req.user.id; // Assuming you have user data attached to the request
 
+    // Check if the user is authenticated
+    if (!userId) {
+      return res.status(401).json({ message: "Authentication required" });
+    }
+
     // Check if the user owns the spot with the given spotId
     const spot = await Spots.findByPk(spotId);
     if (!spot || spot.ownerId !== userId) {
@@ -32,21 +37,11 @@ const requireSpotOwnership = async (req, res, next) => {
   }
 };
 
-// router.get('/', async (req, res) => {
-//   try {
-//     const spots = await Spots.findAll();
 
-//     res.status(200).json({ Spots: spots });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: 'Internal Server Error', message: error.message });
-//   }
-// });
 
 // GET /api/spots/search params
-
-
-router.get('/', async (req, res) => {
+//get all spots
+router.get('/', requireAuth, async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const size = parseInt(req.query.size) || 20;
@@ -99,6 +94,28 @@ router.get('/', async (req, res) => {
   }
 });
 
+//get spots of current user
+router.get('/current', requireAuth, async (req, res) => {
+  try {
+    const userId = req.user.id; // Assuming you have user data attached to the request
+
+    // Fetch all spots owned by the current user
+    const ownedSpots = await Spots.findAll({ where: { ownerId: userId } });
+
+    // Return the owned spots as a JSON response
+    return res.status(200).json({ Spots: ownedSpots });
+  } catch (error) {
+    if (error.message === 'Authentication required') {
+      return res.status(401).json({ message: 'Authentication required' });
+    } else {
+      console.error(error);
+      return res.status(500).json({ error: 'Internal Server Error', message: error.message });
+    }
+  }
+});
+
+
+//create a spot
 router.post('/', requireAuth, async (req, res) => {
   try {
     const {
