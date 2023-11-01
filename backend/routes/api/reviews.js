@@ -2,27 +2,29 @@ const express = require('express');
 const router = express.Router();
 const { Review, User, Spots, ReviewImage } = require('../../db/models');
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
-
 router.get('/current', requireAuth, async (req, res) => {
   try {
-    const reviews = await Review.findAll({
-        include: [
-            {
-              model: User,
-              attributes: ['id', 'firstName', 'lastName'],
-            },
-            {
-              model: Spots,
-              attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price'],
-            },
-            {
-              model: ReviewImage, // Include the ReviewImage model for images
-              attributes: ['id', 'url'],
-            },
-          ],
-        });
+    const userId = req.user.id;
 
-      res.status(200).json({ Reviews: reviews });
+    const reviews = await Review.findAll({
+      where: { userId }, // Filter reviews by userId
+      include: [
+        {
+          model: User,
+          attributes: ['id', 'firstName', 'lastName'],
+        },
+        {
+          model: Spots,
+          attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price'],
+        },
+        {
+          model: ReviewImage, // Include the ReviewImage model for images
+          attributes: ['id', 'url'],
+        },
+      ],
+    });
+
+    res.status(200).json({ Reviews: reviews });
   } catch (error) {
     console.error('Error:', error);
     res.status(500).json({ message: 'Internal Server Error' });
