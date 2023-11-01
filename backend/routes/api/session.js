@@ -88,12 +88,9 @@ router.get(
         return res.json({
           user: safeUser
         });
-      } else return res.json({ user: null });
+      } else return res.status(200).json({ user: null });
     }
   );
 
 
   module.exports = router;
-
-
-
