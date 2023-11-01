@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
 const { Spots, User, SpotImage, Review, ReviewImage, Bookings,sequelize, Sequelize} = require('../../db/models');
+const { Op } = require('sequelize');
 
 const router = express.Router();
 
@@ -761,81 +762,39 @@ router.post('/:spotId/bookings', requireAuth, async (req, res) => {
 
     // Check if the authenticated user is the owner of the spot
     if (spot.ownerId === userId) {
-      return res.status(401).json({ message: "You are not authorized to book your own spot" });
-    }
-
-    // Check if the spot is already booked for the specified dates
-    const existingBooking = await Bookings.findOne({
-      where: {
+      // If the user is the owner, they can book their own spot
+      const booking = await Bookings.create({
         spotId,
-        [Op.or]: [
-          {
-            startDate: { [Op.lte]: new Date(endDate) },
-            endDate: { [Op.gte]: new Date(startDate) },
-          },
-        ],
-      },
-    });
-
-    if (existingBooking) {
-      return res.status(403).json({
-        message: "Sorry, this spot is already booked for the specified dates",
-        errors: {
-          startDate: "Start date conflicts with an existing booking",
-          endDate: "End date conflicts with an existing booking"
-        }
+        userId,
+        startDate: new Date(startDate),
+        endDate: new Date(endDate),
       });
-    }
 
-    // Check if endDate is on or before startDate
-    if (new Date(endDate) <= new Date(startDate)) {
-      return res.status(400).json({
-        message: "Bad Request",
-        errors: {
-          endDate: "endDate cannot be on or before startDate"
-        }
+      const currentDate = new Date();
+      return res.status(200).json({
+        id: booking.id,
+        spotId: booking.spotId,
+        userId: booking.userId,
+        startDate: new Date(startDate),
+        endDate: new Date(endDate),
+        createdAt: currentDate,
+        updatedAt: currentDate,
       });
+    } else {
+      // If the user is not the owner, they cannot book a spot that is not theirs
+      return res.status(401).json({ message: "You are not authorized to book this spot" });
     }
-
-    // Check if startDate is in the past
-    if (new Date(startDate) < new Date()) {
-      return res.status(400).json({
-        message: "Bad Request",
-        errors: {
-          startDate: "startDate cannot be in the past"
-        }
-      });
-    }
-
-    // Create the booking
-    const booking = await Bookings.create({
-      spotId,
-      userId,
-      startDate: new Date(startDate),
-      endDate: new Date(endDate),
-    });
-
-    const currentDate = new Date();
-    res.status(200).json({
-      id: booking.id,
-      spotId: booking.spotId,
-      userId: booking.userId,
-      startDate: new Date(startDate),
-      endDate: new Date(endDate),
-      createdAt: currentDate,
-      updatedAt: currentDate,
-    });
   } catch (error) {
-    if (error.name === 'SequelizeValidationError') {
+    if (error instanceof Sequelize.ValidationError) {
       // Handle validation errors
       const errors = {};
       error.errors.forEach((e) => {
         errors[e.path] = e.message;
       });
-      res.status(400).json({ message: 'Bad Request', errors });
+      return res.status(400).json({ message: 'Bad Request', errors });
     } else {
       console.error(error);
-      res.status(500).json({ message: 'Internal server error' });
+      return res.status(500).json({ message: 'Internal server error' });
     }
   }
 });
