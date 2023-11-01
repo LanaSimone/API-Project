@@ -44,124 +44,58 @@ const requireSpotOwnership = async (req, res, next) => {
 // });
 
 // GET /api/spots/search params
+
+
 router.get('/', async (req, res) => {
   try {
-    // Parse query parameters with defaults
     const page = parseInt(req.query.page) || 1;
     const size = parseInt(req.query.size) || 20;
-    const minLat = parseFloat(req.query.minLat);
-    const maxLat = parseFloat(req.query.maxLat);
-    const minLng = parseFloat(req.query.minLng);
-    const maxLng = parseFloat(req.query.maxLng);
-    const minPrice = parseFloat(req.query.minPrice);
-    const maxPrice = parseFloat(req.query.maxPrice);
+    const minLat = parseFloat(req.query.minLat) || -90;
+    const maxLat = parseFloat(req.query.maxLat) || 90;
+    const minLng = parseFloat(req.query.minLng) || -180;
+    const maxLng = parseFloat(req.query.maxLng) || 180;
+    const minPrice = parseFloat(req.query.minPrice) || 0;
+    const maxPrice = parseFloat(req.query.maxPrice) || 10000;
 
-    let response = {}; // Define the response object
-
-    // Remove the validation check for parameters if none are provided
-    if (
-      ((req.query.hasOwnProperty('page') && parseInt(req.query.page) <= 0) ||
-      (req.query.hasOwnProperty('size') && parseInt(req.query.size) <= 0) ||
-      (req.query.hasOwnProperty('minLat') && minLat > maxLat) ||
-      (req.query.hasOwnProperty('minLng') && minLng > maxLng) ||
-      (req.query.hasOwnProperty('minPrice') && minPrice < 0) ||
-      (req.query.hasOwnProperty('maxPrice') && maxPrice < 0))
-    ) {
-      return res.status(400).json({
-        message: 'Bad Request',
-        errors: {
-          page: 'Page must be greater or equal to 1',
-          size: 'Size must be greater or equal to 1',
-          minLat: 'Minimum latitude is invalid',
-          maxLat: 'Maximum latitude is invalid',
-          minLng: 'Minimum longitude is invalid',
-          maxLng: 'Maximum longitude is invalid',
-          minPrice: 'Minimum price must be greater than or equal to 0',
-          maxPrice: 'Maximum price must be greater than or equal to 0',
+    const filter = {
+      where: {
+        lat: {
+          [Op.gte]: minLat,
+          [Op.lte]: maxLat,
         },
-      });
-    }
+        lng: {
+          [Op.gte]: minLng,
+          [Op.lte]: maxLng,
+        },
+        price: {
+          [Op.gte]: minPrice,
+          [Op.lte]: maxPrice,
+        },
+      },
+    };
 
-    // If no search parameters are provided, fetch all spots
-    if (Object.keys(req.query).length === 0) {
-      const spots = await Spots.findAll();
-      response.spots = spots;
+    // Use Sequelize to filter spots based on the filter object
+    const spots = await Spots.findAll(filter);
+
+    if (req.query.page || req.query.size) {
+      // If there are search parameters, paginate the results and include page and size
+      const startIndex = (page - 1) * size;
+      const paginatedSpots = spots.slice(startIndex, startIndex + size);
+
+      const response = {
+        Spots: paginatedSpots,
+        page,
+        size: paginatedSpots.length,
+      };
+
+      res.status(200).json(response);
     } else {
-      // Search parameters are provided, so include page, size, and totalCount
-      response.page = page;
-      response.size = size;
-      response.totalCount = await Spots.count();
+      // If no search parameters, send all spots without page and size
+      res.status(200).json({ Spots: spots });
     }
-
-    res.status(200).json(response);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal server error' });
-  }
-});
-
-router.get('/current', requireAuth, async (req, res) => {
-  try {
-    const userId = req.user.id; // Assuming your authentication middleware sets req.user
-
-    const spots = await Spots.findAll({
-      where: {
-        ownerId: userId,
-      },
-    });
-
-    res.status(200).json({ Spots: spots });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal Server Error', message: error.message });
-  }
-});
-
-
-router.get('/:spotId', async (req, res) => {
-  const { spotId } = req.params;
-
-  try {
-    const spot = await Spots.findByPk(spotId, {
-      include: [
-        {
-          model: SpotImage,
-          as: 'SpotImages',
-        },
-        {
-          model: User,
-          attributes: ['id', 'firstName', 'lastName'],
-        },
-      ],
-    });
-
-    if (!spot) {
-      res.status(404).json({ message: "Spot couldn't be found" });
-    } else {
-      const response = {
-        id: spot.id,
-        ownerId: spot.ownerId,
-        address: spot.address,
-        city: spot.city,
-        state: spot.state,
-        country: spot.country,
-        lat: spot.lat,
-        lng: spot.lng,
-        name: spot.name,
-        description: spot.description,
-        price: spot.price,
-        createdAt: spot.createdAt,
-        updatedAt: spot.updatedAt,
-        numReviews: spot.numReviews, // Assuming you have this property in your model
-        avgStarRating: spot.avgStarRating, // Assuming you have this property in your model
-        SpotImages: spot.SpotImages,
-        Owner: spot.Owner,
-      };
-      res.status(200).json(response);
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal Server Error', message: error.message });
   }
 });
 
