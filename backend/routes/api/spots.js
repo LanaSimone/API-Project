@@ -842,7 +842,7 @@ router.post('/:spotId/bookings', requireAuth, async (req, res) => {
 
     // Check if the authenticated user is the owner of the spot
     if (spot.ownerId === userId) {
-      return res.status(403).json({ message: "You cannot book your own spot" });
+      return res.status(401).json({ message: "You are not authorized to book your own spot" });
     }
 
     // Check if the spot is already booked for the specified dates
