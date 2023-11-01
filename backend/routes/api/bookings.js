@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {  Bookings, Spots, User, SpotImage } = require('../../db/models');
+const moment = require('moment');
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
@@ -63,7 +64,7 @@ router.get('/current', requireAuth, async (req, res) => {
 
 const { Op } = require('sequelize');
 
-  // PUT /api/bookings/:bookingId
+  // PUT /api/bookings/:bookingId update bookings
   router.put('/:bookingId', requireAuth, async (req, res) => {
     try {
       const { startDate, endDate } = req.body;
@@ -82,15 +83,23 @@ const { Op } = require('sequelize');
         return res.status(403).json({ message: "You are not authorized to edit this booking" });
       }
 
-      // Check if the booking is in the past (endDate is before the current date)
-      if (new Date(booking.endDate) < new Date()) {
-        return res.status(403).json({ message: "Past bookings can't be modified" });
+      // Validate and parse the startDate and endDate using moment.js
+      const parsedStartDate = moment(startDate, 'YYYY-MM-DD', true);
+      const parsedEndDate = moment(endDate, 'YYYY-MM-DD', true);
+
+      if (!parsedStartDate.isValid() || !parsedEndDate.isValid()) {
+        return res.status(400).json({
+          message: 'Bad Request',
+          errors: {
+            startDate: 'Invalid startDate format',
+            endDate: 'Invalid endDate format',
+          },
+        });
       }
 
-      // Check if either startDate or endDate is in the past
-      const currentDate = new Date();
-      if (new Date(startDate) < currentDate || new Date(endDate) < currentDate) {
-        return res.status(403).json({ message: "Booking dates cannot be in the past" });
+      // Check if the booking is in the past (endDate is before the current date)
+      if (parsedEndDate.isBefore(moment())) {
+        return res.status(403).json({ message: "Past bookings can't be modified" });
       }
 
       // Check for booking conflicts (including the current booking)
@@ -99,19 +108,19 @@ const { Op } = require('sequelize');
           spotId: booking.spotId,
           [Op.or]: [
             {
-              startDate: { [Op.lte]: new Date(endDate) },
-              endDate: { [Op.gte]: new Date(startDate) },
+              startDate: { [Op.lte]: parsedEndDate.toDate() },
+              endDate: { [Op.gte]: parsedStartDate.toDate() },
             },
             {
-              startDate: { [Op.lte]: new Date(endDate) },
-              endDate: { [Op.gte]: new Date(startDate) },
+              startDate: { [Op.lte]: parsedEndDate.toDate() },
+              endDate: { [Op.gte]: parsedStartDate.toDate() },
             },
           ],
         },
       });
 
       // Check if endDate comes before startDate
-      if (new Date(endDate) <= new Date(startDate)) {
+      if (parsedEndDate.isBefore(parsedStartDate)) {
         return res.status(400).json({
           message: "Bad Request",
           errors: {
@@ -122,9 +131,9 @@ const { Op } = require('sequelize');
 
       // Check if the start and end dates surround an existing booking
       if (existingBookings.some(existingBooking => {
-        const existingStartDate = new Date(existingBooking.startDate);
-        const existingEndDate = new Date(existingBooking.endDate);
-        return new Date(startDate) <= existingStartDate && new Date(endDate) >= existingEndDate;
+        const existingStartDate = moment(existingBooking.startDate);
+        const existingEndDate = moment(existingBooking.endDate);
+        return parsedStartDate.isBefore(existingStartDate) && parsedEndDate.isAfter(existingEndDate);
       })) {
         return res.status(403).json({
           message: "Booking conflicts with an existing booking",
@@ -137,9 +146,9 @@ const { Op } = require('sequelize');
 
       // Check if both the start and end dates are within an existing booking
       if (existingBookings.some(existingBooking => {
-        const existingStartDate = new Date(existingBooking.startDate);
-        const existingEndDate = new Date(existingBooking.endDate);
-        return new Date(startDate) >= existingStartDate && new Date(endDate) <= existingEndDate;
+        const existingStartDate = moment(existingBooking.startDate);
+        const existingEndDate = moment(existingBooking.endDate);
+        return parsedStartDate.isSameOrAfter(existingStartDate) && parsedEndDate.isSameOrBefore(existingEndDate);
       })) {
         return res.status(403).json({
           message: "Booking conflicts with an existing booking",
@@ -152,8 +161,8 @@ const { Op } = require('sequelize');
 
       // Update the booking
       await booking.update({
-        startDate,
-        endDate,
+        startDate: parsedStartDate.toDate(),
+        endDate: parsedEndDate.toDate(),
       });
 
       // Return the updated booking
@@ -161,13 +170,13 @@ const { Op } = require('sequelize');
         id: booking.id,
         spotId: booking.spotId,
         userId: booking.userId,
-        startDate: booking.startDate,
-        endDate: booking.endDate,
+        startDate: parsedStartDate.toDate(),
+        endDate: parsedEndDate.toDate(),
         createdAt: booking.createdAt,
         updatedAt: new Date(),
       });
     } catch (error) {
-      if (error.name === 'SequelizeValidationError') {
+      if (error instanceof handleValidationErrors) {
         // Handle validation errors
         const errors = {};
         error.errors.forEach((e) => {
@@ -180,7 +189,6 @@ const { Op } = require('sequelize');
       }
     }
   });
-
 
 
 // Delete a Booking
