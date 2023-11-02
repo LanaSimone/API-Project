@@ -93,16 +93,17 @@ const requireSpotOwnership = async (req, res, next) => {
 //     res.status(500).json({ message: 'Internal server error' });
 //   }
 // });
-router.get('/', requireAuth, async (req, res) => {
+router.get('/', async (req, res) => {
   try {
 
-    const page = parseInt(req.query.page) || 1;
-    const size = parseInt(req.query.size) || 20;
+    const page = parseInt(req.query.page);
+    const size = parseInt(req.query.size);
 
     // Check if page or size is less than 1
-    if (page <= 0 || size <= 0) {
+    if (page < 1 || size < 1) {
       return res.status(400).json({ message: 'Page and size must be greater than or equal to 1' });
     }
+    
 
     // const page = parseInt(req.query.page) || 1;
     // const size = parseInt(req.query.size) || 20;
