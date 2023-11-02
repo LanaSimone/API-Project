@@ -32,7 +32,8 @@ const handleValidationErrors = (req, res, next) => {
     const errors = {};
 
     validationErrors.array().forEach((error) => {
-      if (error.param !== 'undefined') {  // Exclude "undefined" parameter
+      // Exclude "undefined" and "null" parameters
+      if (error.param !== 'undefined' && error.param !== 'null') {
         errors[error.param] = error.msg;
       }
     });
