@@ -174,7 +174,7 @@ router.post('/', requireAuth, async (req, res) => {
     const now = new Date();
 
     const newSpot = await Spots.create({
-      ownerId,
+      // ownerId,
       address,
       city,
       state,
@@ -190,7 +190,7 @@ router.post('/', requireAuth, async (req, res) => {
 
     const formattedSpot = {
       id: newSpot.id,
-      ownerId: newSpot.ownerId,
+      // ownerId: newSpot.ownerId,
       address: newSpot.address,
       city: newSpot.city,
       state: newSpot.state,
@@ -200,8 +200,8 @@ router.post('/', requireAuth, async (req, res) => {
       name: newSpot.name,
       description: newSpot.description,
       price: newSpot.price,
-      createdAt: newSpot.createdAt,
-      updatedAt: new Date(),
+      // createdAt: newSpot.createdAt,
+      // updatedAt: new Date(),
     };
 
     return res.status(201).json(formattedSpot);
