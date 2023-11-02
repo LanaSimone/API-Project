@@ -125,7 +125,7 @@ router.get('/current', requireAuth, async (req, res) => {
       console.error(error);
       return res.status(500).json({ error: 'Internal Server Error', message: error.message });
     }
-  }
+  };
 });
 
 router.get('/current', requireAuth, async (req, res) => {
