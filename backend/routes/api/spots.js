@@ -103,7 +103,7 @@ router.get('/', async (req, res) => {
     if (page < 1 || size < 1) {
       return res.status(400).json({ message: 'Page and size must be greater than or equal to 1' });
     }
-    
+
 
     // const page = parseInt(req.query.page) || 1;
     // const size = parseInt(req.query.size) || 20;
@@ -917,7 +917,7 @@ router.get('/:spotId/bookings', requireAuth, async (req, res) => {
   }
 });
 
-router.post('/:spotId/bookings', requireAuth, requireSpotOwnership, async (req, res) => {
+router.post('/:spotId/bookings', requireAuth, async (req, res) => {
   try {
     const { startDate, endDate } = req.body;
     const spotId = req.params.spotId;
