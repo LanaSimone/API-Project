@@ -2,12 +2,15 @@ const express = require('express');
 const router = express.Router();
 const { Review, User, Spots, ReviewImage } = require('../../db/models');
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
+
+
+
 router.get('/current', requireAuth, async (req, res) => {
   try {
     const userId = req.user.id;
 
     const reviews = await Review.findAll({
-      where: { userId }, // Filter reviews by userId
+      where: { userId },
       include: [
         {
           model: User,
@@ -15,16 +18,60 @@ router.get('/current', requireAuth, async (req, res) => {
         },
         {
           model: Spots,
-          attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price'],
+          attributes: ['ownerId', 'id', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price'],
+          include: [
+            {
+              model: SpotImages,
+              attributes: ['url'],
+              where: { preview: true }, // Only include preview images
+              required: false,
+            },
+          ],
         },
         {
-          model: ReviewImage, // Include the ReviewImage model for images
+          model: ReviewImage,
           attributes: ['id', 'url'],
         },
       ],
     });
 
-    res.status(200).json({ Reviews: reviews });
+    const formattedReviews = reviews.map((review) => {
+      const spot = review.Spot;
+      const user = review.User;
+      const reviewImages = review.ReviewImages;
+      const previewImage = spot.SpotImages[0]; // Take the first preview image
+
+      return {
+        id: review.id,
+        userId: user.id,
+        spotId: spot.id,
+        review: review.review,
+        stars: review.stars,
+        createdAt: review.createdAt,
+        updatedAt: review.updatedAt,
+        User: {
+          id: user.id,
+          firstName: user.firstName,
+          lastName: user.lastName,
+        },
+        Spot: {
+          id: spot.id,
+          ownerId: spot.ownerId,
+          address: spot.address,
+          city: spot.city,
+          state: spot.state,
+          country: spot.country,
+          lat: spot.lat,
+          lng: spot.lng,
+          name: spot.name,
+          price: spot.price,
+          previewImage: previewImage ? previewImage.url : null,
+        },
+        ReviewImages: reviewImages,
+      };
+    });
+
+    res.status(200).json({ Reviews: formattedReviews });
   } catch (error) {
     console.error('Error:', error);
     res.status(500).json({ message: 'Internal Server Error' });
@@ -32,7 +79,7 @@ router.get('/current', requireAuth, async (req, res) => {
 });
 
 // POST /api/reviews/:reviewId/images
-router.post('/:reviewId/images', requireAuth, async (req, res) => {
+router.post('/:reviewId/images', requireAuth,  async (req, res) => {
   try {
     const reviewId = req.params.reviewId;
     const userId = req.user.id; // Assuming you have user information available via requireAuth middleware
