@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Review, User, Spots, ReviewImage } = require('../../db/models');
+const { Review, User, Spots, ReviewImage, SpotImage } = require('../../db/models');
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
 
 
