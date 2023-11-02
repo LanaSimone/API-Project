@@ -312,11 +312,12 @@ router.get('/:spotId', requireAuth, requireSpotOwnership, async (req, res) => {
       include: [
         {
           model: SpotImage,
+          as: 'SpotImages',
           attributes: ['id', 'url', 'preview'],
         },
         {
           model: User,
-          as: 'Owner',
+          // as: 'Owner',
           attributes: ['id', 'firstName', 'lastName'],
         },
       ],
