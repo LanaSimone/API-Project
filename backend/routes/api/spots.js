@@ -264,7 +264,7 @@ router.post('/', requireAuth, async (req, res) => {
     const now = new Date();
 
     const newSpot = await Spots.create({
-      // ownerId,
+      ownerId,
       address,
       city,
       state,

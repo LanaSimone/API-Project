@@ -66,7 +66,7 @@ router.get('/current', requireAuth, async (req, res) => {
           lng: spot.lng,
           name: spot.name,
           price: spot.price,
-          previewImage: previewImage ? previewImage.url : null,
+          previewImage: "url-prev",
         },
         ReviewImages: reviewImages,
       };
