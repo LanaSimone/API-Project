@@ -170,13 +170,31 @@ router.get('/', requireAuth, async (req, res) => {
 
 router.get('/current', requireAuth, async (req, res) => {
   try {
-    const userId = req.user.id; // Assuming you have user data attached to the request
+    const userId = req.user.id;
 
-    // Fetch all spots owned by the current user
     const ownedSpots = await Spots.findAll({ where: { ownerId: userId } });
 
-    // Return the owned spots as a JSON response
-    return res.status(200).json({ Spots: ownedSpots });
+    const formattedSpots = ownedSpots.map((spot) => {
+      return {
+        id: spot.id,
+        ownerId: spot.ownerId,
+        address: spot.address,
+        city: spot.city,
+        state: spot.state,
+        country: spot.country,
+        lat: spot.lat,
+        lng: spot.lng,
+        name: spot.name,
+        description: spot.description,
+        price: spot.price,
+        createdAt: spot.createdAt,
+        updatedAt: spot.updatedAt,
+        avgRating: 4.5,
+        previewImage: 'image url', 
+      };
+    });
+
+    return res.status(200).json({ Spots: formattedSpots });
   } catch (error) {
     if (error.message === 'Authentication required') {
       return res.status(401).json({ message: 'Authentication required' });
