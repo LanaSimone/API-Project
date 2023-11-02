@@ -185,7 +185,7 @@ router.get('/current', requireAuth, async (req, res) => {
       return res.status(500).json({ error: 'Internal Server Error', message: error.message });
     }
   }
-}); 
+});
 
 //create a spot
 router.post('/', requireAuth, async (req, res) => {
@@ -207,7 +207,7 @@ router.post('/', requireAuth, async (req, res) => {
     function validateField(value, fieldName, errorMessage) {
       if (!value || value.trim() === '') {
         errors[fieldName] = errorMessage;
-      }
+      };
     }
 
     function validateNumericField(value, fieldName, errorMessage) {
