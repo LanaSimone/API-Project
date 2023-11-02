@@ -18,12 +18,13 @@ router.get('/current', requireAuth, async (req, res) => {
         },
         {
           model: Spots,
-          attributes: ['ownerId', 'id', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price'],
+          attributes: [ 'id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price'],
           include: [
             {
-              model: SpotImages,
+              model: SpotImage,
+              as: 'SpotImages',
               attributes: ['url'],
-              where: { preview: true }, // Only include preview images
+              where: { preview: true },
               required: false,
             },
           ],
@@ -39,7 +40,7 @@ router.get('/current', requireAuth, async (req, res) => {
       const spot = review.Spot;
       const user = review.User;
       const reviewImages = review.ReviewImages;
-      const previewImage = spot.SpotImages[0]; // Take the first preview image
+      const previewImage = spot.SpotImages[0];
 
       return {
         id: review.id,
