@@ -274,6 +274,7 @@ router.post('/', requireAuth, async (req, res) => {
     const now = new Date();
 
     const newSpot = await Spots.create({
+      
       ownerId,
       address,
       city,
@@ -289,7 +290,7 @@ router.post('/', requireAuth, async (req, res) => {
     });
 
     const formattedSpot = {
-      // id: newSpot.id,
+      id: newSpot.id,
       // ownerId: newSpot.ownerId,
       address: newSpot.address,
       city: newSpot.city,
@@ -406,7 +407,7 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
 
     // Create a new image in the database associated with the spot
     const newImage = await SpotImage.create({
-      spotId,
+      spotId, // Save the spotId with the image
       url,
       preview,
     });
@@ -416,6 +417,7 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
       id: newImage.id,
       url: newImage.url,
       preview: newImage.preview,
+      spotId: newImage.spotId, // Include the spotId in the response
     });
   } catch (error) {
     console.error(error);

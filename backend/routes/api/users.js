@@ -94,7 +94,7 @@ router.post(
         }
 
         return res.status(500).json({
-          message: 'Duplicate user',
+          message: 'User already exists',
           errors,
         });
       }
