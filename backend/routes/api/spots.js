@@ -736,7 +736,7 @@ router.delete('/:spotId', requireAuth, requireSpotOwnership, async (req, res) =>
 
 
 
-router.get('/:spotId/reviews', async (req, res) => {
+router.get('/:spotId/reviews', requireAuth, async (req, res) => {
   const spotId = req.params.spotId;
 
   try {
@@ -766,11 +766,11 @@ router.get('/:spotId/reviews', async (req, res) => {
       res.status(200).json({ Reviews: reviews });
   } catch (error) {
       console.error(error);
-      res.status(500).json({ message: 'Internal server error' })
+      res.status(500).json({ message: 'Internal server error' });
   }
 });
 
-router.post('/:spotId/reviews', requireAuth, requireSpotOwnership, async (req, res) => {
+router.post('/:spotId/reviews', requireAuth, async (req, res) => {
   try {
     const spotId = req.params.spotId;
     const userId = req.user.id;
