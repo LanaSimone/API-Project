@@ -189,7 +189,7 @@ router.post('/', requireAuth, async (req, res) => {
     });
 
     const formattedSpot = {
-      id: newSpot.id,
+      // id: newSpot.id,
       // ownerId: newSpot.ownerId,
       address: newSpot.address,
       city: newSpot.city,
