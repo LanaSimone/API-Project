@@ -170,26 +170,12 @@ router.get('/', requireAuth, async (req, res) => {
 
 router.get('/current', requireAuth, async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user.id; // Assuming you have user data attached to the request
 
-    const ownedSpots = await Spots.findAll({
-      where: { ownerId: userId },
-      attributes: {
-        exclude: ['avgStarRating'], // Exclude avgStarRating
-        include: [
-          [sequelize.fn('AVG', sequelize.literal('0')), 'avgRating'], // Set avgRating to 0
-        ],
-      },
-      include: [
-        {
-          model: SpotImage,
-          attributes: ['url as previewImage'], // Rename 'url' to 'previewImage'
-          required: false,
-        },
-      ],
-      group: ['Spots.id'],
-    });
+    // Fetch all spots owned by the current user
+    const ownedSpots = await Spots.findAll({ where: { ownerId: userId } });
 
+    // Return the owned spots as a JSON response
     return res.status(200).json({ Spots: ownedSpots });
   } catch (error) {
     if (error.message === 'Authentication required') {
@@ -199,8 +185,7 @@ router.get('/current', requireAuth, async (req, res) => {
       return res.status(500).json({ error: 'Internal Server Error', message: error.message });
     }
   }
-});
-
+}); 
 
 //create a spot
 router.post('/', requireAuth, async (req, res) => {
