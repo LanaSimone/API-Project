@@ -105,6 +105,10 @@ const { Op } = require('sequelize');
         return res.status(404).json({ message: "Booking couldn't be found" });
       }
 
+      const startDateObj = new Date(startDate);
+    const endDateObj = new Date(endDate);
+
+
       // Check if the booking belongs to the current user
       if (booking.userId !== userId) {
         return res.status(403).json({ message: "You are not authorized to edit this booking" });
