@@ -848,74 +848,62 @@ router.post('/:spotId/reviews', requireAuth, async (req, res) => {
 });
 
 
-
 router.get('/:spotId/bookings', requireAuth, async (req, res) => {
-  try {
-    const spotId = req.params.spotId;
-    const userId = req.user.id;
+  const spotId = req.params.spotId;
+  const userId = req.user.id;
 
+  try {
     // Check if the spot exists
     const spot = await Spots.findByPk(spotId);
 
     if (!spot) {
-      return res.status(404).json({ message: "Spot couldn't be found" });
+      return res.status(404).json({ message: "Couldn't find a Spot with the specified id" });
     }
 
-    // Check if the user is the owner of the spot
     const isOwner = spot.ownerId === userId;
 
-    // Query the database to retrieve the bookings for the spot
+    // Fetch the bookings for the spot
     const bookings = await Bookings.findAll({
-      where: {
-        spotId,
-      },
+      where: { spotId },
       include: [
         {
           model: User,
-          as: 'User',
+          attributes: ['id', 'firstName', 'lastName'],
         },
       ],
     });
 
-    // Format the response based on whether the user is the owner of the spot
     if (isOwner) {
-      const formattedBookings = await Promise.all(bookings.map(async (booking) => {
-        const { id, userId, startDate, endDate, createdAt, updatedAt } = booking;
-        const user = await User.findByPk(userId);
-
-        return {
-          User: {
-            id: user.id,
-            firstName: user.firstName,
-            lastName: user.lastName,
-          },
-          id,
-          spotId,
-          userId,
-          startDate: new Date(), // Format as "YYYY-MM-DD"
-          endDate: new Date(), // Format as "YYYY-MM-DD"
-          createdAt: new Date(), // Full ISO timestamp
-          updatedAt: new Date(), // Full ISO timestamp
-        };
+      // If the user is the owner, format response accordingly
+      const formattedBookings = bookings.map((booking) => ({
+        User: {
+          id: booking.User.id,
+          firstName: booking.User.firstName,
+          lastName: booking.User.lastName,
+        },
+        id: booking.id,
+        spotId: booking.spotId,
+        userId: booking.userId,
+        startDate: booking.startDate.toISOString().split('T')[0],
+        endDate: booking.endDate.toISOString().split('T')[0],
+        createdAt: booking.createdAt,
+        updatedAt: booking.updatedAt,
       }));
 
-      res.status(200).json({ Bookings: formattedBookings });
+      return res.status(200).json({ Bookings: formattedBookings });
     } else {
-      const formattedBookings = bookings.map((booking) => {
-        const { startDate, endDate } = booking;
+      // If the user is not the owner, format response accordingly
+      const formattedBookings = bookings.map((booking) => ({
+        spotId: booking.spotId,
+        startDate: booking.startDate.toISOString().split('T')[0],
+        endDate: booking.endDate.toISOString().split('T')[0],
+      }));
 
-        return {
-          spotId,
-          startDate: startDate.toISOString().split('T')[0], // Format as "YYYY-MM-DD"
-          endDate: endDate.toISOString().split('T')[0], // Format as "YYYY-MM-DD"
-        };
-      });
-
-      res.status(200).json({ Bookings: formattedBookings });
+      return res.status(200).json({ Bookings: formattedBookings });
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Internal server error' });
+    return res.status(500).json({ message: "Internal server error" });
   }
 });
 
