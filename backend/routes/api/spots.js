@@ -938,18 +938,18 @@ router.post('/:spotId/bookings', requireAuth, requireSpotOwnership, async (req, 
 
     // Check if start date and end date are the same
     if (startDateObj.getTime() === endDateObj.getTime()) {
-      return res.status(400).json({ message: "Start and end dates cannot be the same" });
+      return res.status(400).json({ message: "Bad Request", errors: { "startDate": "Start date and end date cannot be the same" } });
     }
 
     // Check if end date is before start date
     if (startDateObj >= endDateObj) {
-      return res.status(400).json({ message: "End date cannot be before start date" });
+      return res.status(400).json({ message: "Bad Request", errors: { "endDate": "End date cannot be before start date" } });
     }
 
     // Check if start date and end date are in the past
     const currentDate = new Date();
     if (startDateObj < currentDate || endDateObj < currentDate) {
-      return res.status(400).json({ message: "Dates cannot be in the past" });
+      return res.status(400).json({ message: "Bad Request", errors: { "startDate": "Dates cannot be in the past", "endDate": "Dates cannot be in the past" } });
     }
 
     // Check if there is any existing booking with conflicts
@@ -974,7 +974,11 @@ router.post('/:spotId/bookings', requireAuth, requireSpotOwnership, async (req, 
 
     if (conflictBooking) {
       return res.status(403).json({
-        message: "Booking conflicts with an existing booking",
+        message: "Booking conflict",
+        errors: {
+          "startDate": "Start date conflicts with an existing booking",
+          "endDate": "End date conflicts with an existing booking",
+        }
       });
     }
 
@@ -1008,10 +1012,10 @@ router.post('/:spotId/bookings', requireAuth, requireSpotOwnership, async (req, 
       error.errors.forEach((e) => {
         errors[e.path] = e.message;
       });
-      return res.status(400).json({ message: 'Bad Request', errors });
+      return res.status(400).json({ message: "Bad Request", errors });
     } else {
       console.error(error);
-      return res.status(500).json({ message: 'Internal server error' });
+      return res.status(500).json({ message: "Internal server error" });
     }
   }
 });
