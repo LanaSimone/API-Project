@@ -39,17 +39,17 @@ router.post(
     const hashedPassword = bcrypt.hashSync(password);
 
     // Validation for required fields
-    if (!email || !username || !firstName || !lastName) {
-      return res.status(400).json({
-        // message: 'Bad Request',
-        errors: {
-          email: email ? undefined : 'Invalid email',
-          username: username ? undefined : 'Username is required',
-          firstName: firstName ? undefined : 'First Name is required',
-          lastName: lastName ? undefined : 'Last Name is required',
-        },
-      });
-    }
+    // if (!email || !username || !firstName || !lastName) {
+    //   return res.status(400).json({
+    //     message: 'Bad Request',
+    //     errors: {
+    //       email: email ? undefined : 'Invalid email',
+    //       username: username ? undefined : 'Username is required',
+    //       firstName: firstName ? undefined : 'First Name is required',
+    //       lastName: lastName ? undefined : 'Last Name is required',
+    //     },
+    //   });
+    // }
 
     try {
       // Use a transaction to ensure data consistency
