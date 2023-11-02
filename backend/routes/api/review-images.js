@@ -1,12 +1,34 @@
 const express = require('express');
 const router = express.Router();
-const { Review, ReviewImage } = require('../../db/models');
+const { Review, ReviewImage, Spots } = require('../../db/models');
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
 
 const bcrypt = require('bcryptjs');
 
 
+const requireSpotOwnership = async (req, res, next) => {
+  try {
+    const { spotId } = req.params;
+    const userId = req.user.id; // Assuming you have user data attached to the request
 
+    // Check if the user is authenticated
+    if (!userId) {
+      return res.status(401).json({ message: "Authentication required" });
+    }
+
+    // Check if the user owns the spot with the given spotId
+    const spot = await Spots.findByPk(spotId);
+    if (!spot || spot.ownerId !== userId) {
+      return res.status(403).json({ message: "You don't have permission to modify this spot" });
+    }
+
+    // User owns the spot, continue to the next middleware or route handler
+    next();
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Internal Server Error', message: error.message });
+  }
+};
 
 // DELETE /api/review-images/:imageId
 router.delete('/:imageId', requireAuth, async (req, res) => {

@@ -8,6 +8,33 @@ const { handleValidationErrors } = require('../../utils/validation');
 const { validationResult, body } = require('express-validator'); // Add this line
 
 
+
+const requireSpotOwnership = async (req, res, next) => {
+  try {
+    const { spotId } = req.params;
+    const userId = req.user.id; // Assuming you have user data attached to the request
+
+    // Check if the user is authenticated
+    if (!userId) {
+      return res.status(401).json({ message: "Authentication required" });
+    }
+
+    // Check if the user owns the spot with the given spotId
+    const spot = await Spots.findByPk(spotId);
+    if (!spot || spot.ownerId !== userId) {
+      return res.status(403).json({ message: "You don't have permission to modify this spot" });
+    }
+
+    // User owns the spot, continue to the next middleware or route handler
+    next();
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Internal Server Error', message: error.message });
+  }
+};
+
+
+
 router.get('/current', requireAuth, async (req, res) => {
     try {
       const userId = req.user.id;
@@ -65,7 +92,7 @@ router.get('/current', requireAuth, async (req, res) => {
 const { Op } = require('sequelize');
 
   // PUT /api/bookings/:bookingId update bookings
-  router.put('/:bookingId', requireAuth, async (req, res) => {
+  router.put('/:bookingId', requireAuth, requireSpotOwnership, async (req, res) => {
     try {
       const { startDate, endDate } = req.body;
       const bookingId = req.params.bookingId;
@@ -83,24 +110,15 @@ const { Op } = require('sequelize');
         return res.status(403).json({ message: "You are not authorized to edit this booking" });
       }
 
-      // Convert the input dates to Date objects
-      const startDateObj = new Date(startDate);
-      const endDateObj = new Date(endDate);
-
-      // Check if start date and end date are the same
-      if (startDateObj.getTime() === endDateObj.getTime()) {
-        return res.status(400).json({ message: "Bad Request", errors: { "startDate": "Start date and end date cannot be the same" } });
+      // Check if the booking is in the past (endDate is before the current date)
+      if (new Date(booking.endDate) < new Date()) {
+        return res.status(403).json({ message: "Past bookings can't be modified" });
       }
 
-      // Check if end date is before start date
-      if (startDateObj >= endDateObj) {
-        return res.status(400).json({ message: "Bad Request", errors: { "endDate": "End date cannot be before start date" } });
-      }
-
-      // Check if start date and end date are in the past
+      // Check if either startDate or endDate is in the past
       const currentDate = new Date();
-      if (startDateObj < currentDate || endDateObj < currentDate) {
-        return res.status(400).json({ message: "Bad Request", errors: { "startDate": "Dates cannot be in the past", "endDate": "Dates cannot be in the past" } });
+      if (new Date(startDate) < currentDate || new Date(endDate) < currentDate) {
+        return res.status(403).json({ message: "Booking dates cannot be in the past" });
       }
 
       // Check for booking conflicts (including the current booking)
@@ -109,34 +127,46 @@ const { Op } = require('sequelize');
           spotId: booking.spotId,
           [Op.or]: [
             {
-              startDate: { [Op.lte]: endDateObj },
-              endDate: { [Op.gte]: startDateObj },
+              startDate: { [Op.lte]: new Date(endDate) },
+              endDate: { [Op.gte]: new Date(startDate) },
             },
             {
-              startDate: { [Op.lte]: endDateObj },
-              endDate: { [Op.gte]: startDateObj },
+              startDate: { [Op.lte]: new Date(endDate) },
+              endDate: { [Op.gte]: new Date(startDate) },
             },
           ],
-          id: { [Op.not]: bookingId },
         },
       });
 
-      // Check if either startDate or endDate is the same as an existing booking's start or end date
-      if (existingBookings.some(existingBooking => {
-        const existingStartDate = new Date(existingBooking.startDate);
-        const existingEndDate = new Date(existingBooking.endDate);
-        return startDateObj.getTime() === existingStartDate.getTime() || startDateObj.getTime() === existingEndDate.getTime() || endDateObj.getTime() === existingStartDate.getTime() || endDateObj.getTime() === existingEndDate.getTime();
-      })) {
-        return res.status(403).json({
-          message: "Booking conflicts with an existing booking",
+      // Check if end date comes before start date
+      if (new Date(endDate) <= new Date(startDate)) {
+        return res.status(400).json({
+          message: "Bad Request",
           errors: {
-            "startDate": "Start date conflicts with an existing booking",
-            "endDate": "End date conflicts with an existing booking",
+            endDate: "End date cannot come before or be equal to startDate",
           },
         });
       }
 
-      // Check if the start and end dates surround an existing booking
+      // Check if either startDate or endDate is during an existing booking
+      if (existingBookings.some(existingBooking => {
+        const existingStartDate = new Date(existingBooking.startDate);
+        const existingEndDate = new Date(existingBooking.endDate);
+        return (
+          (startDateObj >= existingStartDate && startDateObj <= existingEndDate) ||
+          (endDateObj >= existingStartDate && endDateObj <= existingEndDate)
+        );
+      })) {
+        return res.status(403).json({
+          message: "Booking conflicts with an existing booking",
+          errors: {
+            "startDate": "Start date is during an existing booking",
+            "endDate": "End date is during an existing booking",
+          },
+        });
+      }
+
+      // Check if start date and end date surround an existing booking
       if (existingBookings.some(existingBooking => {
         const existingStartDate = new Date(existingBooking.startDate);
         const existingEndDate = new Date(existingBooking.endDate);
@@ -151,25 +181,10 @@ const { Op } = require('sequelize');
         });
       }
 
-      // Check if both the start and end dates are within an existing booking
-      if (existingBookings.some(existingBooking => {
-        const existingStartDate = new Date(existingBooking.startDate);
-        const existingEndDate = new Date(existingBooking.endDate);
-        return startDateObj >= existingStartDate && endDateObj <= existingEndDate;
-      })) {
-        return res.status(403).json({
-          message: "Booking conflicts with an existing booking",
-          errors: {
-            "startDate": "Start date is within an existing booking",
-            "endDate": "End date is within an existing booking",
-          },
-        });
-      }
-
       // Update the booking
       await booking.update({
-        startDate: startDateObj,
-        endDate: endDateObj,
+        startDate,
+        endDate,
       });
 
       // Return the updated booking
@@ -177,8 +192,8 @@ const { Op } = require('sequelize');
         id: booking.id,
         spotId: booking.spotId,
         userId: booking.userId,
-        startDate: startDateObj,
-        endDate: endDateObj,
+        startDate: booking.startDate,
+        endDate: booking.endDate,
         createdAt: booking.createdAt,
         updatedAt: new Date(),
       });
