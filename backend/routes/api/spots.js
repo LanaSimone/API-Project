@@ -849,7 +849,7 @@ router.post('/:spotId/reviews', requireAuth, async (req, res) => {
 
 
 
-router.get('/:spotId/bookings', requireAuth, requireSpotOwnership, async (req, res) => {
+router.get('/:spotId/bookings', requireAuth, async (req, res) => {
   try {
     const spotId = req.params.spotId;
     const userId = req.user.id;
@@ -919,7 +919,7 @@ router.get('/:spotId/bookings', requireAuth, requireSpotOwnership, async (req, r
   }
 });
 
-router.post('/:spotId/bookings', requireAuth, async (req, res) => {
+router.post('/:spotId/bookings', requireAuth, requireSpotOwnership, async (req, res) => {
   try {
     const { startDate, endDate } = req.body;
     const spotId = req.params.spotId;
