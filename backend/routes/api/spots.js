@@ -302,7 +302,7 @@ router.post('/', requireAuth, async (req, res) => {
 });
 
 //spot details from id
-router.get('/:spotId', requireAuth, requireSpotOwnership, async (req, res) => {
+router.get('/:spotId', requireAuth, async (req, res) => {
   try {
     const spotId = req.params.spotId;
 
