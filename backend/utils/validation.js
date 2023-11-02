@@ -32,7 +32,9 @@ const handleValidationErrors = (req, res, next) => {
     const errors = {};
 
     validationErrors.array().forEach((error) => {
-      errors[error.param] = error.msg;
+      if (error.param !== 'undefined') {  // Exclude "undefined" parameter
+        errors[error.param] = error.msg;
+      }
     });
 
     return res.status(400).json({
