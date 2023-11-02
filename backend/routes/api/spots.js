@@ -100,7 +100,7 @@ router.get('/', requireAuth, async (req, res) => {
     const size = parseInt(req.query.size) || 20;
 
     // Check if page or size is less than 1
-    if (page < 1 || size < 1) {
+    if (page <= 0 || size <= 0) {
       return res.status(400).json({ message: 'Page and size must be greater than or equal to 1' });
     }
 
