@@ -307,7 +307,7 @@ router.get('/:spotId', requireAuth, requireSpotOwnership, async (req, res) => {
     const spotId = req.params.spotId;
 
     // Find the Spot by its ID
-    const spot = await Spot.findOne({
+    const spot = await Spots.findOne({
       where: { id: spotId },
       include: [
         {
