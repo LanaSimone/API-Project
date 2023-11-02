@@ -932,26 +932,49 @@ router.post('/:spotId/bookings', requireAuth, requireSpotOwnership, async (req, 
       return res.status(404).json({ message: "Spot couldn't be found" });
     }
 
-    // Check if there is a booking conflict for the specified dates
+    // Convert the input dates to Date objects
+    const startDateObj = new Date(startDate);
+    const endDateObj = new Date(endDate);
+
+    // Check if start date and end date are the same
+    if (startDateObj.getTime() === endDateObj.getTime()) {
+      return res.status(400).json({ message: "Start and end dates cannot be the same" });
+    }
+
+    // Check if end date is before start date
+    if (startDateObj >= endDateObj) {
+      return res.status(400).json({ message: "End date cannot be before start date" });
+    }
+
+    // Check if start date and end date are in the past
+    const currentDate = new Date();
+    if (startDateObj < currentDate || endDateObj < currentDate) {
+      return res.status(400).json({ message: "Dates cannot be in the past" });
+    }
+
+    // Check if there is any existing booking with conflicts
     const conflictBooking = await Bookings.findOne({
       where: {
         spotId,
-        startDate: {
-          [Sequelize.Op.lte]: new Date(endDate),
-        },
-        endDate: {
-          [Sequelize.Op.gte]: new Date(startDate),
-        },
+        [Sequelize.Op.or]: [
+          {
+            startDate: { [Sequelize.Op.lte]: startDateObj },
+            endDate: { [Sequelize.Op.gte]: startDateObj },
+          },
+          {
+            startDate: { [Sequelize.Op.lte]: endDateObj },
+            endDate: { [Sequelize.Op.gte]: endDateObj },
+          },
+          {
+            startDate: { [Sequelize.Op.gte]: startDateObj, [Sequelize.Op.lte]: endDateObj },
+          },
+        ],
       },
     });
 
     if (conflictBooking) {
       return res.status(403).json({
-        message: "Sorry, this spot is already booked for the specified dates",
-        errors: {
-          startDate: "Start date conflicts with an existing booking",
-          endDate: "End date conflicts with an existing booking",
-        },
+        message: "Booking conflicts with an existing booking",
       });
     }
 
@@ -961,17 +984,16 @@ router.post('/:spotId/bookings', requireAuth, requireSpotOwnership, async (req, 
       const booking = await Bookings.create({
         spotId,
         userId,
-        startDate: new Date(startDate),
-        endDate: new Date(endDate),
+        startDate: startDateObj,
+        endDate: endDateObj,
       });
 
-      const currentDate = new Date();
       return res.status(200).json({
         id: booking.id,
         spotId: booking.spotId,
         userId: booking.userId,
-        startDate: new Date(startDate),
-        endDate: new Date(endDate),
+        startDate: startDateObj,
+        endDate: endDateObj,
         createdAt: currentDate,
         updatedAt: currentDate,
       });
