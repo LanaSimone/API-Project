@@ -970,29 +970,23 @@ router.post('/:spotId/bookings', requireAuth, async (req, res) => {
       });
     }
 
-    // Check if the authenticated user is the owner of the spot
-    if (spot.ownerId === userId) {
-      // If the user is the owner, they can book their own spot
-      const booking = await Bookings.create({
-        spotId,
-        userId,
-        startDate: startDateObj,
-        endDate: endDateObj,
-      });
+    // User can book the spot
+    const booking = await Bookings.create({
+      spotId,
+      userId,
+      startDate: startDateObj,
+      endDate: endDateObj,
+    });
 
-      return res.status(200).json({
-        id: booking.id,
-        spotId: booking.spotId,
-        userId: booking.userId,
-        startDate: startDateObj,
-        endDate: endDateObj,
-        createdAt: currentDate,
-        updatedAt: currentDate,
-      });
-    } else {
-      // If the user is not the owner, they cannot book a spot that is not theirs
-      return res.status(401).json({ message: "You are not authorized to book this spot" });
-    }
+    return res.status(200).json({
+      id: booking.id,
+      spotId: booking.spotId,
+      userId: booking.userId,
+      startDate: startDateObj,
+      endDate: endDateObj,
+      createdAt: currentDate,
+      updatedAt: currentDate,
+    });
   } catch (error) {
     if (error instanceof Sequelize.ValidationError) {
       // Handle validation errors
