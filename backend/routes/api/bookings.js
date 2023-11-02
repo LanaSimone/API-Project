@@ -92,7 +92,7 @@ router.get('/current', requireAuth, async (req, res) => {
 const { Op } = require('sequelize');
 
   // PUT /api/bookings/:bookingId update bookings
-  router.put('/:bookingId', requireAuth, requireSpotOwnership, async (req, res) => {
+  router.put('/:bookingId', requireAuth, async (req, res) => {
     try {
       const { startDate, endDate } = req.body;
       const bookingId = req.params.bookingId;
