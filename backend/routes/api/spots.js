@@ -184,8 +184,8 @@ router.post('/', requireAuth, async (req, res) => {
       name,
       description,
       price,
-      createdAt: now,
-      updatedAt: now,
+      // createdAt: now,
+      // updatedAt: now,
     });
 
     const formattedSpot = {
