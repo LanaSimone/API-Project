@@ -190,7 +190,7 @@ router.get('/current', requireAuth, async (req, res) => {
         createdAt: spot.createdAt,
         updatedAt: spot.updatedAt,
         avgRating: 4.5,
-        previewImage: 'image url', 
+        previewImage: 'image url',
       };
     });
 
@@ -300,6 +300,64 @@ router.post('/', requireAuth, async (req, res) => {
     return res.status(500).json({ error: 'Internal Server Error', message: error.message });
   }
 });
+
+//spot details from id
+router.get('/:spotId', requireAuth, requireSpotOwnership, async (req, res) => {
+  try {
+    const spotId = req.params.spotId;
+
+    // Find the Spot by its ID
+    const spot = await Spot.findOne({
+      where: { id: spotId },
+      include: [
+        {
+          model: SpotImage,
+          attributes: ['id', 'url', 'preview'],
+        },
+        {
+          model: User,
+          as: 'Owner',
+          attributes: ['id', 'firstName', 'lastName'],
+        },
+      ],
+    });
+
+    if (!spot) {
+      // If the Spot with the specified ID is not found
+      return res.status(404).json({ message: "Spot couldn't be found" });
+    }
+
+    // Format the response
+    const formattedSpot = {
+      id: spot.id,
+      ownerId: spot.ownerId,
+      address: spot.address,
+      city: spot.city,
+      state: spot.state,
+      country: spot.country,
+      lat: spot.lat,
+      lng: spot.lng,
+      name: spot.name,
+      description: spot.description,
+      price: spot.price,
+      createdAt: spot.createdAt,
+      updatedAt: spot.updatedAt,
+      numReviews: spot.numReviews,
+      avgStarRating: spot.avgStarRating,
+      SpotImages: spot.SpotImages,
+      Owner: spot.Owner,
+    };
+
+    // Send the formatted response
+    res.status(200).json(formattedSpot);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
+
 //create a spot image
 router.post('/:spotId/images', requireAuth, async (req, res) => {
   try {
