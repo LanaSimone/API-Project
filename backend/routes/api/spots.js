@@ -41,6 +41,58 @@ const requireSpotOwnership = async (req, res, next) => {
 
 // GET /api/spots/search params
 //get all spots
+// router.get('/', requireAuth, async (req, res) => {
+//   try {
+//     const page = parseInt(req.query.page) || 1;
+//     const size = parseInt(req.query.size) || 20;
+//     const minLat = parseFloat(req.query.minLat) || -90;
+//     const maxLat = parseFloat(req.query.maxLat) || 90;
+//     const minLng = parseFloat(req.query.minLng) || -180;
+//     const maxLng = parseFloat(req.query.maxLng) || 180;
+//     const minPrice = parseFloat(req.query.minPrice) || 0;
+//     const maxPrice = parseFloat(req.query.maxPrice) || 10000;
+
+//     const filter = {
+//       where: {
+//         lat: {
+//           [Op.gte]: minLat,
+//           [Op.lte]: maxLat,
+//         },
+//         lng: {
+//           [Op.gte]: minLng,
+//           [Op.lte]: maxLng,
+//         },
+//         price: {
+//           [Op.gte]: minPrice,
+//           [Op.lte]: maxPrice,
+//         },
+//       },
+//     };
+
+//     // Use Sequelize to filter spots based on the filter object
+//     const spots = await Spots.findAll(filter);
+
+//     if (req.query.page || req.query.size) {
+//       // If there are search parameters, paginate the results and include page and size
+//       const startIndex = (page - 1) * size;
+//       const paginatedSpots = spots.slice(startIndex, startIndex + size);
+
+//       const response = {
+//         Spots: paginatedSpots,
+//         page,
+//         size: paginatedSpots.length,
+//       };
+
+//       res.status(200).json(response);
+//     } else {
+//       // If no search parameters, send all spots without page and size
+//       res.status(200).json({ Spots: spots });
+//     }
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: 'Internal server error' });
+//   }
+// });
 router.get('/', requireAuth, async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
@@ -72,10 +124,30 @@ router.get('/', requireAuth, async (req, res) => {
     // Use Sequelize to filter spots based on the filter object
     const spots = await Spots.findAll(filter);
 
+    const formattedSpots = spots.map((spot) => {
+      return {
+        id: spot.id,
+        ownerId: spot.ownerId,
+        address: spot.address,
+        city: spot.city,
+        state: spot.state,
+        country: spot.country,
+        lat: spot.lat,
+        lng: spot.lng,
+        name: spot.name,
+        description: spot.description,
+        price: spot.price,
+        createdAt: spot.createdAt,
+        updatedAt: spot.updatedAt,
+        avgRating: 4.5, // You can set the actual value here
+        previewImage: 'image url', // Set the actual URL here
+      };
+    });
+
     if (req.query.page || req.query.size) {
       // If there are search parameters, paginate the results and include page and size
       const startIndex = (page - 1) * size;
-      const paginatedSpots = spots.slice(startIndex, startIndex + size);
+      const paginatedSpots = formattedSpots.slice(startIndex, startIndex + size);
 
       const response = {
         Spots: paginatedSpots,
@@ -86,7 +158,7 @@ router.get('/', requireAuth, async (req, res) => {
       res.status(200).json(response);
     } else {
       // If no search parameters, send all spots without page and size
-      res.status(200).json({ Spots: spots });
+      res.status(200).json({ Spots: formattedSpots });
     }
   } catch (error) {
     console.error(error);
@@ -95,38 +167,6 @@ router.get('/', requireAuth, async (req, res) => {
 });
 
 //get spots of current user
-router.get('/current', requireAuth, async (req, res) => {
-  try {
-    const userId = req.user.id;
-
-    const ownedSpots = await Spots.findAll({
-      where: { ownerId: userId },
-      attributes: {
-        exclude: ['avgStarRating'], // Exclude avgStarRating
-        include: [
-          [sequelize.fn('AVG', sequelize.col('SpotImages.rating')), 'avgRating'],
-        ],
-      },
-      include: [
-        {
-          model: SpotImages,
-          attributes: ['url as previewImage'], // Rename 'url' to 'previewImage'
-          required: false,
-        },
-      ],
-      group: ['Spots.id'],
-    });
-
-    return res.status(200).json({ Spots: ownedSpots });
-  } catch (error) {
-    if (error.message === 'Authentication required') {
-      return res.status(401).json({ message: 'Authentication required' });
-    } else {
-      console.error(error);
-      return res.status(500).json({ error: 'Internal Server Error', message: error.message });
-    }
-  };
-});
 
 router.get('/current', requireAuth, async (req, res) => {
   try {
