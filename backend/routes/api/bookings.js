@@ -102,7 +102,7 @@ const { Op } = require('sequelize');
       const booking = await Bookings.findByPk(bookingId);
 
       if (!booking) {
-        return res.status(404).json({ message: "Booking couldn't be found" });
+        return res.status(404).json({ message: "Booking couldn't be found" })
       }
 
       const startDateObj = new Date(startDate);
