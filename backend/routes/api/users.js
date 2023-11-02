@@ -41,7 +41,7 @@ router.post(
     // Validation for required fields
     if (!email || !username || !firstName || !lastName) {
       return res.status(400).json({
-        message: 'Bad Request',
+        // message: 'Bad Request',
         errors: {
           email: email ? undefined : 'Invalid email',
           username: username ? undefined : 'Username is required',
