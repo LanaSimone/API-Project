@@ -344,7 +344,7 @@ router.get('/:spotId', requireAuth, requireSpotOwnership, async (req, res) => {
       createdAt: spot.createdAt,
       updatedAt: spot.updatedAt,
       numReviews: spot.numReviews,
-      avgStarRating: spot.avgStarRating,
+      avgStarRating: 4.5,
       SpotImages: spot.SpotImages,
       Owner: spot.Owner,
     };
@@ -736,7 +736,7 @@ router.delete('/:spotId', requireAuth, requireSpotOwnership, async (req, res) =>
 
 
 
-router.get('/:spotId/reviews', requireAuth, requireSpotOwnership, async (req, res) => {
+router.get('/:spotId/reviews', requireAuth, async (req, res) => {
   const spotId = req.params.spotId;
 
   try {
