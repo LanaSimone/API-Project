@@ -919,7 +919,6 @@ router.get('/:spotId/bookings', requireAuth, requireSpotOwnership, async (req, r
   }
 });
 
-
 router.post('/:spotId/bookings', requireAuth, requireSpotOwnership, async (req, res) => {
   try {
     const { startDate, endDate } = req.body;
@@ -931,6 +930,29 @@ router.post('/:spotId/bookings', requireAuth, requireSpotOwnership, async (req, 
 
     if (!spot) {
       return res.status(404).json({ message: "Spot couldn't be found" });
+    }
+
+    // Check if there is a booking conflict for the specified dates
+    const conflictBooking = await Bookings.findOne({
+      where: {
+        spotId,
+        startDate: {
+          [Sequelize.Op.lte]: new Date(endDate),
+        },
+        endDate: {
+          [Sequelize.Op.gte]: new Date(startDate),
+        },
+      },
+    });
+
+    if (conflictBooking) {
+      return res.status(403).json({
+        message: "Sorry, this spot is already booked for the specified dates",
+        errors: {
+          startDate: "Start date conflicts with an existing booking",
+          endDate: "End date conflicts with an existing booking",
+        },
+      });
     }
 
     // Check if the authenticated user is the owner of the spot
