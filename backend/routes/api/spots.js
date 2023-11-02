@@ -142,7 +142,7 @@ router.get('/current', requireAuth, async (req, res) => {
       },
       include: [
         {
-          model: SpotImages,
+          model: SpotImage,
           attributes: ['url as previewImage'], // Rename 'url' to 'previewImage'
           required: false,
         },
