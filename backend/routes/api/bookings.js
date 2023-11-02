@@ -122,7 +122,7 @@ const { Op } = require('sequelize');
       // Check if either startDate or endDate is in the past
       const currentDate = new Date();
       if (new Date(startDate) < currentDate || new Date(endDate) < currentDate) {
-        return res.status(403).json({ message: "Booking dates cannot be in the past" });
+        return res.status(403).json({ message: "Past bookings can't be modified" });
       }
 
       // Check for booking conflicts (including the current booking)
