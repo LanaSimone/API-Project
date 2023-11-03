@@ -2,10 +2,10 @@ const express = require('express');
 const router = express.Router();
 const { Review, User, Spots, ReviewImage, SpotImage } = require('../../db/models');
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
+const requireSpotOwnership = require('../api/spots')
 
 
-
-router.get('/current', requireAuth, async (req, res) => {
+router.get('/current', requireSpotOwnership, async (req, res) => {
   try {
     const userId = req.user.id;
 
@@ -80,7 +80,7 @@ router.get('/current', requireAuth, async (req, res) => {
 });
 
 // POST /api/reviews/:reviewId/images
-router.post('/:reviewId/images', requireAuth,  async (req, res) => {
+router.post('/:reviewId/images', requireAuth, requireSpotOwnership,  async (req, res) => {
   try {
     const reviewId = req.params.reviewId;
     const userId = req.user.id; // Assuming you have user information available via requireAuth middleware
@@ -127,7 +127,7 @@ router.post('/:reviewId/images', requireAuth,  async (req, res) => {
 });
 
 // PUT /api/reviews/:reviewId
-router.put('/:reviewId', requireAuth, async (req, res) => {
+router.put('/:reviewId', requireAuth, requireSpotOwnership, async (req, res) => {
   try {
     const reviewId = req.params.reviewId;
     const userId = req.user.id; // Assuming you have user information available via requireAuth middleware
@@ -193,7 +193,7 @@ router.put('/:reviewId', requireAuth, async (req, res) => {
 });
 
 // DELETE /api/reviews/:reviewId
-router.delete('/:reviewId', requireAuth, async (req, res) => {
+router.delete('/:reviewId', requireAuth, requireSpotOwnership, async (req, res) => {
   try {
     const reviewId = req.params.reviewId;
     const userId = req.user.id; // Assuming you have user information available via requireAuth middleware

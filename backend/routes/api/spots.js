@@ -26,7 +26,7 @@ const requireSpotOwnership = async (req, res, next) => {
     // Check if the user owns the spot with the given spotId
     const spot = await Spots.findByPk(spotId);
     if (!spot || spot.ownerId !== userId) {
-      return res.status(403).json({ message: "You don't have permission to modify this spot" });
+      return res.status(403).json({ message: "Forbidden" });
     }
 
     // User owns the spot, continue to the next middleware or route handler
@@ -216,7 +216,7 @@ router.get('/current', requireAuth, async (req, res) => {
 });
 
 //create a spot
-router.post('/', requireAuth, async (req, res) => {
+router.post('/', requireAuth,  async (req, res) => {
   try {
     const {
       address,
@@ -371,7 +371,7 @@ router.get('/:spotId', requireAuth, async (req, res) => {
 
 
 //create a spot image
-router.post('/:spotId/images', requireAuth, async (req, res) => {
+router.post('/:spotId/images', requireAuth, requireSpotOwnership, async (req, res) => {
   try {
     // Ensure that the URL and preview are provided in the request body
     const { url, preview } = req.body;
@@ -431,7 +431,7 @@ const validateRequestBody = [
   // Add more validation checks for other fields if needed
 ];
 //update spot
-router.put('/:spotId', requireAuth, async (req, res, next) => {
+router.put('/:spotId', requireAuth, requireSpotOwnership, async (req, res, next) => {
   // Check if the user is authorized
 
   try {
@@ -677,7 +677,7 @@ async function deleteOrphanedBookings() {
 // });
 
 // Define the DELETE route without the "requireSpotOwnership" middleware at first
-router.delete('/:spotId', requireAuth,  async (req, res) => {
+router.delete('/:spotId', requireAuth, requireSpotOwnership, async (req, res) => {
   const t = await sequelize.transaction();
 
   try {
@@ -748,7 +748,7 @@ router.delete('/:spotId', requireAuth,  async (req, res) => {
 
 
 
-router.get('/:spotId/reviews', requireAuth, async (req, res) => {
+router.get('/:spotId/reviews', requireAuth, requireSpotOwnership, async (req, res) => {
   const spotId = req.params.spotId;
 
   try {
@@ -782,7 +782,7 @@ router.get('/:spotId/reviews', requireAuth, async (req, res) => {
   }
 });
 
-router.post('/:spotId/reviews', requireAuth, async (req, res) => {
+router.post('/:spotId/reviews', requireAuth, requireSpotOwnership,  async (req, res) => {
   try {
     const spotId = req.params.spotId;
     const userId = req.user.id;
@@ -860,7 +860,7 @@ router.post('/:spotId/reviews', requireAuth, async (req, res) => {
 });
 
 
-router.get('/:spotId/bookings', requireAuth, async (req, res) => {
+router.get('/:spotId/bookings', requireAuth, requireSpotOwnership, async (req, res) => {
   const spotId = req.params.spotId;
   const userId = req.user.id;
 
@@ -919,7 +919,7 @@ router.get('/:spotId/bookings', requireAuth, async (req, res) => {
   }
 });
 
-router.post('/:spotId/bookings', requireAuth, requireSpotOwnership, async (req, res) => {
+router.post('/:spotId/bookings', requireAuth, async (req, res) => {
   try {
     const { startDate, endDate } = req.body;
     const spotId = req.params.spotId;
@@ -938,18 +938,18 @@ router.post('/:spotId/bookings', requireAuth, requireSpotOwnership, async (req, 
 
     // Check if start date and end date are the same
     if (startDateObj.getTime() === endDateObj.getTime()) {
-      return res.status(400).json({ message: "Bad Request", errors: { "startDate": "Start date and end date cannot be the same" } });
+      return res.status(400).json({ message: "Bad Request", errors: { "startDate": "endDate cannot be on or before startDate" } });
     }
 
     // Check if end date is before start date
     if (startDateObj >= endDateObj) {
-      return res.status(400).json({ message: "Bad Request", errors: { "endDate": "End date cannot be before start date" } });
+      return res.status(400).json({ message: "Bad Request", errors: { "endDate": "endDate cannot be on or before startDate" } });
     }
 
     // Check if start date and end date are in the past
     const currentDate = new Date();
     if (startDateObj < currentDate || endDateObj < currentDate) {
-      return res.status(400).json({ message: "Bad Request", errors: { "startDate": "Dates cannot be in the past", "endDate": "Dates cannot be in the past" } });
+      return res.status(400).json({ message: "Bad Request", errors: { "startDate": "Start date cannot be in the past", "endDate": "End date cannot be in the past" } });
     }
 
     // Check if there is any existing booking with conflicts
@@ -974,7 +974,7 @@ router.post('/:spotId/bookings', requireAuth, requireSpotOwnership, async (req, 
 
     if (conflictBooking) {
       return res.status(403).json({
-        message: "Booking conflict",
+        message: "Sorry, this spot is already booked for the specified dates",
         errors: {
           "startDate": "Start date conflicts with an existing booking",
           "endDate": "End date conflicts with an existing booking",
