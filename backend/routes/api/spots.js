@@ -939,7 +939,7 @@ router.post('/:spotId/bookings', requireAuth, async (req, res) => {
     // Check if start date and end date are the same
     if (startDateObj.getTime() === endDateObj.getTime()) {
       return res.status(400).json({ message: "Bad Request", errors: { "startDate": "endDate cannot be on or before startDate" } });
-    }
+    };
 
     // Check if end date is before start date
     if (startDateObj >= endDateObj) {
