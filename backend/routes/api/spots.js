@@ -871,16 +871,28 @@ router.post('/:spotId/reviews', requireAuth, async (req, res) => {
       return res.status(500).json({ message: "User already has a review for this spot" });
     }
 
-    // Respond with the newly created review
-    return res.status(201).json({
-      id: existingReview.id,
-      userId: existingReview.userId,
-      spotId: existingReview.spotId,
-      review: existingReview.review,
-      stars: existingReview.stars,
+
+    // Format the response
+    const formattedReviews = review.map((review) => ({
+      id: review.id,
+      userId: review.User.id,
+      spotId: review.spotId,
+      review: review.review,
+      stars: review.stars,
       createdAt: new Date(),
       updatedAt: new Date(),
-    });
+      User: {
+        id: review.User.id,
+        firstName: review.User.firstName,
+        lastName: review.User.lastName,
+      },
+      ReviewImages: review.ReviewImages.map((image) => ({
+        id: image.id,
+        url: image.url,
+      })),
+    }));
+
+    res.status(200).json({ Reviews: formattedReviews });
   } catch (error) {
     console.error(error);
 
