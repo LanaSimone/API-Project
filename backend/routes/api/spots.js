@@ -483,6 +483,10 @@ router.put('/:spotId',  requireAuth,  async (req, res, next) => {
       return res.status(404).json({ message: "Spot couldn't be found" });
     }
 
+    if (existingSpot.ownerId !== req.user.id) {
+      return res.status(403).json({ message: "Forbidden" });
+    }
+
     const {
       address,
       city,
