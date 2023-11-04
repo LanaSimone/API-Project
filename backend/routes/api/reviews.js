@@ -214,7 +214,7 @@ router.delete('/:reviewId', requireAuth,  async (req, res) => {
 
     // Check if the review belongs to the current user
     if (existingReview.userId !== userId) {
-      return res.status(403).json({ message: "You are not authorized to delete this review" });
+      return res.status(403).json({ message: "Forbidden" });
     }
 
     // Delete related ReviewImages
