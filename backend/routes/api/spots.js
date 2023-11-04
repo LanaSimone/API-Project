@@ -474,7 +474,7 @@ const validateRequestBody = [
   // Add more validation checks for other fields if needed
 ];
 //update spot
-router.put('/:spotId',  requireAuth, requireSpotOwnership, async (req, res, next) => {
+router.put('/:spotId',  requireAuth,  async (req, res, next) => {
   try {
     const spotId = req.params.spotId;
     const existingSpot = await Spots.findByPk(spotId);
