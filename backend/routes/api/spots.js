@@ -413,7 +413,7 @@ router.get('/:spotId', requireAuth, async (req, res) => {
 
 
 //create a spot image
-router.post('/:spotId/images', requireAuth,  async (req, res) => {
+router.post('/:spotId/images', requireAuth,   async (req, res) => {
   try {
     // Ensure that the URL and preview are provided in the request body
     const { url, preview } = req.body;
@@ -442,10 +442,10 @@ router.post('/:spotId/images', requireAuth,  async (req, res) => {
       return res.status(404).json({ message: "Spot couldn't be found" });
     }
 
-    // // Assuming you have req.user set by the requireAuth middleware
-    // if (existingSpot.ownerId !== req.user.id) {
-    //   return res.status(403).json({ message: "You don't have permission to modify this spot" });
-    // }
+    // Assuming you have req.user set by the requireAuth middleware
+    if (existingSpot.ownerId !== req.user.id) {
+      return res.status(403).json({ message: "Forbidden" });
+    }
 
     // Create a new image in the database associated with the spot
     const newImage = await SpotImage.create({
