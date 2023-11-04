@@ -99,13 +99,7 @@ router.get('/', async (req, res) => {
     const page = parseInt(req.query.page);
     const size = parseInt(req.query.size);
 
-    // Check if page or size is less than 1
-    if (page < 1 || size < 1) {
-      return res.status(400).json({ message: 'Page and size must be greater than or equal to 1' });
-    }
-
-
-    // const page = parseInt(req.query.page) || 1;
+      // const page = parseInt(req.query.page) || 1;
     // const size = parseInt(req.query.size) || 20;
     const minLat = parseFloat(req.query.minLat) || -90;
     const maxLat = parseFloat(req.query.maxLat) || 90;
@@ -113,6 +107,44 @@ router.get('/', async (req, res) => {
     const maxLng = parseFloat(req.query.maxLng) || 180;
     const minPrice = parseFloat(req.query.minPrice) || 0;
     const maxPrice = parseFloat(req.query.maxPrice) || 10000;
+
+
+    // Check if page or size is less than 1
+    if (page < 1 || size < 1) {
+      return res.status(400).json({
+        message: "Bad Request",
+        errors: {
+          "page": "Page must be greater than or equal to 1",
+          "size": "Size must be greater than or equal to 1",
+          "maxLat": "Maximum latitude is invalid",
+          "minLat": "Minimum latitude is invalid",
+          "minLng": "Maximum longitude is invalid",
+          "maxLng": "Minimum longitude is invalid",
+          "minPrice": "Minimum price must be greater than or equal to 0",
+          "maxPrice": "Maximum price must be greater than or equal to 0",
+        },
+      });
+    }
+
+    if (minLat < -90) {
+      return res.status(400).json({
+        message: "Bad Request",
+        errors: {
+          "minLat": "Minimum latitude is invalid",
+        },
+      });
+    }
+
+    // For maxLat, minLng, maxLng, minPrice, maxPrice:
+    if (maxLat > 90) {
+      return res.status(400).json({
+        message: "Bad Request",
+        errors: {
+          "maxLat": "Maximum latitude is invalid",
+        },
+      });
+    }
+
 
     const filter = {
       where: {
@@ -162,7 +194,7 @@ router.get('/', async (req, res) => {
       const response = {
         Spots: paginatedSpots,
         page,
-        size: paginatedSpots.length,
+        size: 20,
       };
 
       res.status(200).json(response);
@@ -216,10 +248,9 @@ router.get('/current', requireAuth, async (req, res) => {
 });
 
 //create a spot
-router.post('/', requireAuth,  async (req, res) => {
+router.post('/', requireAuth, async (req, res) => {
   try {
     const {
-      id,
       address,
       city,
       state,
@@ -231,21 +262,10 @@ router.post('/', requireAuth,  async (req, res) => {
       price,
     } = req.body;
 
-
-    const errors = {
-      address: 'Street address is required',
-      city: 'City is required',
-      state: 'State is required',
-      country: 'Country is required',
-      lat: 'Latitude is not valid',
-      lng: 'Longitude is not valid',
-      name: 'Name must be less than 50 characters',
-      description: 'Description is required',
-      price: 'Price per day is required',
-    };
+    const errors = {};
 
     function validateField(value, fieldName, errorMessage) {
-      if (!value || value.trim() === '') {
+      if (value === undefined || value === null) {
         errors[fieldName] = errorMessage;
       }
     }
@@ -260,32 +280,45 @@ router.post('/', requireAuth,  async (req, res) => {
     validateField(city, 'city', 'City is required');
     validateField(state, 'state', 'State is required');
     validateField(country, 'country', 'Country is required');
-    validateNumericField(lat, 'lat', 'Latitude is not valid');
-    validateNumericField(lng, 'lng', 'Longitude is not valid');
+    validateField(description, 'description', 'Description is required');
+    validateField(price, 'price', 'Price per day is required');
 
-    if (!name || name.trim() === '') {
-      errors.name = 'Name is required';
-    } else if (name.length > 50) {
-      errors.name = 'Name must be less than 50 characters';
+    if (lat !== undefined) {
+      validateNumericField(lat, 'lat', 'Latitude is not valid');
     }
-    validateField(description, 'description', errors.description);
 
-    if (price === undefined) {
-      errors.price = 'Price per day is required';
+    if (lng !== undefined) {
+      validateNumericField(lng, 'lng', 'Longitude is not valid');
+    }
+
+    if (name !== undefined) {
+      if (typeof name !== 'string' || name.length > 50) {
+        errors.name = 'Name must be a string with less than 50 characters';
+      }
     }
 
     if (Object.keys(errors).length > 0) {
-      return res.status(400).json({
+      const errorResponse = {
         message: 'Bad Request',
-        errors,
-      });
+        errors: {
+          address: errors.address || 'Street address is required',
+          city: errors.city || 'City is required',
+          state: errors.state || 'State is required',
+          country: errors.country || 'Country is required',
+          lat: errors.lat || 'Latitude is not valid',
+          lng: errors.lng || 'Longitude is not valid',
+          name: errors.name || 'Name must be a string with less than 50 characters',
+          description: errors.description || 'Description is required',
+          price: errors.price || 'Price per day is required',
+        },
+      };
+      return res.status(400).json(errorResponse);
     }
 
     const ownerId = req.user.id;
     const now = new Date();
 
     const newSpot = await Spots.create({
-      id,
       ownerId,
       address,
       city,
@@ -296,8 +329,8 @@ router.post('/', requireAuth,  async (req, res) => {
       name,
       description,
       price,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      createdAt: now,
+      updatedAt: now,
     });
 
     const formattedSpot = {
@@ -312,8 +345,6 @@ router.post('/', requireAuth,  async (req, res) => {
       name: newSpot.name,
       description: newSpot.description,
       price: newSpot.price,
-      // createdAt: newSpot.createdAt,
-      // updatedAt: new Date(),
     };
 
     return res.status(201).json(formattedSpot);
@@ -687,7 +718,7 @@ async function deleteOrphanedBookings() {
 // });
 
 // Define the DELETE route without the "requireSpotOwnership" middleware at first
-router.delete('/:spotId', requireAuth, requireSpotOwnership, async (req, res) => {
+router.delete('/:spotId', requireAuth,  async (req, res) => {
   const t = await sequelize.transaction();
 
   try {
@@ -863,7 +894,7 @@ router.post('/:spotId/reviews', requireAuth, async (req, res) => {
 });
 
 
-router.get('/:spotId/bookings', requireAuth, requireSpotOwnership, async (req, res) => {
+router.get('/:spotId/bookings', requireAuth,  async (req, res) => {
   const spotId = req.params.spotId;
   const userId = req.user.id;
 

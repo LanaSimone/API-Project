@@ -31,7 +31,7 @@ const bcrypt = require('bcryptjs');
 // };
 
 // DELETE /api/review-images/:imageId
-router.delete('/:imageId', requireAuth, requireSpotOwnership, async (req, res) => {
+router.delete('/:imageId', requireAuth,  async (req, res) => {
     try {
       const imageId = req.params.imageId;
       const userId = req.user.id;
@@ -47,7 +47,7 @@ router.delete('/:imageId', requireAuth, requireSpotOwnership, async (req, res) =
 
       // Check if the user is the owner of the review associated with the image
       if (reviewImage.Review.userId !== userId) {
-        return res.status(403).json({ message: 'You are not authorized to delete this review image' });
+        return res.status(403).json({ message: 'Forbidden' });
       }
 
       // Delete the review image

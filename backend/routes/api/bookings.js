@@ -92,7 +92,7 @@ router.get('/current', requireAuth, async (req, res) => {
 const { Op } = require('sequelize')
 
   // PUT /api/bookings/:bookingId update bookings
-  router.put('/:bookingId', requireAuth, async (req, res) => {
+  router.put('/:bookingId', requireAuth,  async (req, res) => {
     try {
       const { startDate, endDate } = req.body;
       const bookingId = req.params.bookingId;
@@ -110,13 +110,13 @@ const { Op } = require('sequelize')
 
       // Check if the booking belongs to the current user
       if (booking.userId !== userId) {
-        return res.status(403).json({ message: "You are not authorized to edit this booking" });
+        return res.status(403).json({ message: "Forbidden" });
       }
 
       const currentDate = new Date();
-    if (endDateObj < new Date()) {
-      return res.status(403).json({ message: "Past bookings can't be modified" });
-    }
+      if (endDateObj < currentDate) {
+        return res.status(403).json({ message: "Past bookings can't be modified" });
+      }
 
       // // Check if end date comes before start date
       if (startDateObj.getTime() === endDateObj.getTime()) {
@@ -222,7 +222,7 @@ const { Op } = require('sequelize')
 
 
 // Delete a Booking
-router.delete('/:bookingId', requireAuth, requireSpotOwnership, async (req, res) => {
+router.delete('/:bookingId', requireAuth,  async (req, res) => {
   try {
     const bookingId = req.params.bookingId;
     const userId = req.user.id;
@@ -238,7 +238,7 @@ router.delete('/:bookingId', requireAuth, requireSpotOwnership, async (req, res)
 
     // Check if the booking belongs to the current user or if the spot belongs to the current user
     if (booking.userId !== userId && booking.Spot.ownerId !== userId) {
-      return res.status(403).json({ message: "You are not authorized to delete this booking" });
+      return res.status(403).json({ message: "Forbidden" });
     }
 
     // Check if the booking has already started (endDate is before the current date)

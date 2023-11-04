@@ -6,7 +6,7 @@ const requireSpotOwnership = require('../api/spots')
 const bcrypt = require('bcryptjs');
 
 // DELETE /api/spot-images/:imageId
-router.delete('/:imageId', requireAuth, requireSpotOwnership, async (req, res) => {
+router.delete('/:imageId', requireAuth,  async (req, res) => {
     try {
       const imageId = req.params.imageId;
       const userId = req.user.id;

@@ -97,7 +97,7 @@ router.post('/:reviewId/images', requireAuth,   async (req, res) => {
 
     // Check if the review belongs to the current user
     if (review.userId !== userId) {
-      return res.status(403).json({ message: "You are not authorized to add images to this review" });
+      return res.status(403).json({ message: "Forbidden" });
     }
 
     // Check the maximum number of images per resource
@@ -125,8 +125,9 @@ router.post('/:reviewId/images', requireAuth,   async (req, res) => {
   }
 });
 
+
 // PUT /api/reviews/:reviewId
-router.put('/:reviewId', requireAuth,  async (req, res) => {
+router.put('/:reviewId', requireAuth, requireSpotOwnership,  async (req, res) => {
   try {
     const reviewId = req.params.reviewId;
     const userId = req.user.id; // Assuming you have user information available via requireAuth middleware
@@ -193,7 +194,7 @@ router.put('/:reviewId', requireAuth,  async (req, res) => {
 });
 
 // DELETE /api/reviews/:reviewId
-router.delete('/:reviewId', requireAuth, requireSpotOwnership, async (req, res) => {
+router.delete('/:reviewId', requireAuth,  async (req, res) => {
   try {
     const reviewId = req.params.reviewId;
     const userId = req.user.id; // Assuming you have user information available via requireAuth middleware
