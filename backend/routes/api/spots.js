@@ -492,16 +492,16 @@ router.put('/:spotId',  requireAuth,  async (req, res, next) => {
       city,
       state,
       country,
-      // lat,
-      // lng,
+      lat,
+      lng,
       name,
       description,
       price,
     } = req.body;
 
     const errors = {};
-    let lat;
-    let lng;
+    // let lat;
+    // let lng;
 
     if (!address) {
       errors.address = 'Street address is required';
@@ -561,7 +561,7 @@ router.put('/:spotId',  requireAuth,  async (req, res, next) => {
 
       return res.status(400).json(errorResponse);
     }
-    const ownerId = req.user.id;
+    const ownerId = req.user.id
 
     existingSpot.ownerId = ownerId;
     existingSpot.address = address;
