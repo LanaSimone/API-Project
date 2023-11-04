@@ -127,17 +127,16 @@ router.post('/:reviewId/images', requireAuth,   async (req, res) => {
 
 
 // PUT /api/reviews/:reviewId
-router.put('/:reviewId', requireAuth, requireSpotOwnership,  async (req, res) => {
+router.put('/:reviewId', requireAuth, requireSpotOwnership, async (req, res) => {
   try {
     const reviewId = req.params.reviewId;
-    const userId = req.user.id; // Assuming you have user information available via requireAuth middleware
+    const userId = req.user.id;
 
-    const { review, stars } = req.body;
-
-    // Check if the review exists
-    const existingReview = await Review.findOne({
-      where: {
-        id: reviewId,
+    // Find the review by its ID and include the associated spot
+    const existingReview = await Review.findByPk(reviewId, {
+      include: {
+        model: Spot,
+        as: 'Spot',
       },
     });
 
@@ -150,17 +149,18 @@ router.put('/:reviewId', requireAuth, requireSpotOwnership,  async (req, res) =>
       return res.status(403).json({ message: "You don't have permission to edit this review" });
     }
 
-    // Validate the request body
+    const { review, stars } = req.body;
+
     if (!review) {
       return res.status(400).json({
         message: 'Bad Request',
         errors: {
           review: 'Review text is required',
-          stars: 'Stars must be an integer from 1 to 5',
         },
       });
     }
-    if (!Number.isInteger(stars) || stars < 1 || stars > 5) {
+
+    if (stars !== undefined && (!Number.isInteger(stars) || stars < 1 || stars > 5)) {
       return res.status(400).json({
         message: 'Bad Request',
         errors: {
@@ -171,20 +171,22 @@ router.put('/:reviewId', requireAuth, requireSpotOwnership,  async (req, res) =>
 
     // Update the review
     existingReview.review = review;
-    existingReview.stars = stars;
+    if (stars !== undefined) {
+      existingReview.stars = stars;
+    }
     await existingReview.save();
 
-    // Convert updatedAt to a Date object before calling toISOString
+    // Format the response
     const updatedAtDate = new Date(existingReview.updatedAt);
 
     res.status(200).json({
       id: existingReview.id,
       userId: existingReview.userId,
-      spotId: existingReview.spotId,
+      spotId: existingReview.Spot.id, // Use the Spot association to get spotId
       review: existingReview.review,
       stars: existingReview.stars,
-      createdAt: new Date(),
-      updatedAt: new Date(), // Format updatedAt as an ISO string
+      createdAt: existingReview.createdAt.toISOString(),
+      updatedAt: updatedAtDate.toISOString(),
     });
   } catch (error) {
     console.error(error);
