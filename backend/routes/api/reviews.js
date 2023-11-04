@@ -140,12 +140,12 @@ router.put('/:reviewId', requireAuth,  async (req, res) => {
     });
 
     if (!existingReview) {
-      return res.status(404).json({ message: 'Forbidden' });
+      return res.status(404).json({ message: 'Review couldn\'t be found' });
     }
 
     // Check if the review belongs to the current user
     if (existingReview.userId !== userId) {
-      return res.status(403).json({ message: 'You don\'t have permission to edit this review' });
+      return res.status(403).json({ message: 'Forbidden' });
     }
 
     const { review, stars } = req.body;
