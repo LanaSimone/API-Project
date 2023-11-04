@@ -4,8 +4,7 @@ const { Review, User, Spots, ReviewImage, SpotImage } = require('../../db/models
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
 const requireSpotOwnership = require('../api/spots')
 
-
-router.get('/current', requireSpotOwnership, async (req, res) => {
+router.get('/current', requireAuth, async (req, res) => {
   try {
     const userId = req.user.id;
 
@@ -18,7 +17,7 @@ router.get('/current', requireSpotOwnership, async (req, res) => {
         },
         {
           model: Spots,
-          attributes: [ 'id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price'],
+          attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price'],
           include: [
             {
               model: SpotImage,
@@ -66,7 +65,7 @@ router.get('/current', requireSpotOwnership, async (req, res) => {
           lng: spot.lng,
           name: spot.name,
           price: spot.price,
-          previewImage: "url-prev",
+          previewImage: previewImage ? previewImage.url : null,
         },
         ReviewImages: reviewImages,
       };
@@ -80,7 +79,7 @@ router.get('/current', requireSpotOwnership, async (req, res) => {
 });
 
 // POST /api/reviews/:reviewId/images
-router.post('/:reviewId/images', requireAuth, requireSpotOwnership,  async (req, res) => {
+router.post('/:reviewId/images', requireAuth,   async (req, res) => {
   try {
     const reviewId = req.params.reviewId;
     const userId = req.user.id; // Assuming you have user information available via requireAuth middleware
