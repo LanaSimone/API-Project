@@ -754,7 +754,7 @@ router.delete('/:spotId', requireAuth,  async (req, res) => {
     // Check if the user owns the spot.
     if (existingSpot.ownerId !== req.user.id) {
       await t.rollback();
-      return res.status(403).json({ message: "You don't have permission to modify this spot" });
+      return res.status(403).json({ message: "Forbidden" });
     }
 
     // Delete associated reviews and their images.
