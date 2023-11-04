@@ -858,8 +858,8 @@ router.post('/:spotId/reviews', requireAuth, async (req, res) => {
     // Check if the user already has a review for this spot
     const [existingReview, created] = await Review.findCreateFind({
       where: {
-        spotId,
         userId,
+        spotId,
       },
       defaults: {
         review,
