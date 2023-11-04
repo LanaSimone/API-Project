@@ -135,7 +135,7 @@ router.put('/:reviewId', requireAuth, requireSpotOwnership, async (req, res) => 
     // Find the review by its ID and include the associated spot
     const existingReview = await Review.findByPk(reviewId, {
       include: {
-        model: Spot,
+        model: Spots,
         as: 'Spot',
       },
     });
