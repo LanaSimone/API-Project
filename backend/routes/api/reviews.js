@@ -225,7 +225,7 @@ router.delete('/:reviewId', requireAuth,  async (req, res) => {
     // Delete the review
     await existingReview.destroy();
 
-    res.status(200).json({ message: "Successfully deleted" })
+    res.status(200).json({ message: "Successfully deleted" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal server error' });
