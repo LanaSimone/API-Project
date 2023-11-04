@@ -136,7 +136,7 @@ router.put('/:reviewId', requireAuth, requireSpotOwnership, async (req, res) => 
     const existingReview = await Review.findByPk(reviewId, {
       include: {
         model: Spots,
-        as: 'Spot',
+        as: 'SpotId',
       },
     });
 
@@ -182,7 +182,7 @@ router.put('/:reviewId', requireAuth, requireSpotOwnership, async (req, res) => 
     res.status(200).json({
       id: existingReview.id,
       userId: existingReview.userId,
-      spotId: existingReview.Spot.id, // Use the Spot association to get spotId
+      spotId: existingReview.SpotId, // Use the Spot association to get spotId
       review: existingReview.review,
       stars: existingReview.stars,
       createdAt: existingReview.createdAt.toISOString(),
