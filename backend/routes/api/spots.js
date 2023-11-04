@@ -909,7 +909,7 @@ router.get('/:spotId/bookings', requireAuth,  async (req, res) => {
     const spot = await Spots.findByPk(spotId);
 
     if (!spot) {
-      return res.status(404).json({ message: "Couldn't find a Spot with the specified id" });
+      return res.status(404).json({ message: "Spot couldn't be found" });
     }
 
     const isOwner = spot.ownerId === userId;
