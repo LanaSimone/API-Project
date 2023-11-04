@@ -399,7 +399,7 @@ router.get('/:spotId', requireAuth, async (req, res) => {
       numReviews: 5,
       avgStarRating: 4.5,
       SpotImages: spot.SpotImages,
-      Owner: spot.Owner,
+      Owner: spot.User,
     };
 
     // Send the formatted response
