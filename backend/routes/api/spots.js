@@ -413,7 +413,7 @@ router.get('/:spotId', requireAuth, async (req, res) => {
 
 
 //create a spot image
-router.post('/:spotId/images', requireAuth, requireSpotOwnership,   async (req, res) => {
+router.post('/:spotId/images', requireAuth,   async (req, res) => {
   try {
     // Ensure that the URL and preview are provided in the request body
     const { url, preview } = req.body;
