@@ -449,6 +449,7 @@ router.post('/:spotId/images', requireAuth,requireSpotOwnership, async (req, res
 
     // Create a new image in the database associated with the spot
     const newImage = await SpotImage.create({
+      id,
       spotId, // Save the spotId with the image
       url,
       preview,
@@ -459,7 +460,7 @@ router.post('/:spotId/images', requireAuth,requireSpotOwnership, async (req, res
       id: newImage.id,
       url: newImage.url,
       preview: newImage.preview,
-      spotId: newImage.spotId, // Include the spotId in the response
+      // spotId: newImage.spotId, // Include the spotId in the response
     });
   } catch (error) {
     console.error(error);
