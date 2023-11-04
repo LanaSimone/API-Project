@@ -854,31 +854,38 @@ router.post('/:spotId/reviews', requireAuth, async (req, res) => {
     }
 
     // Check if the user already has a review for this spot
-    const [existingReview, created] = await Review.findCreateFind({
+    const existingReview = await Review.findOne({
       where: {
         spotId,
         userId,
       },
-      defaults: {
-        review,
-        stars,
-      },
     });
 
-    if (!created) {
+    if (existingReview) {
       return res.status(500).json({ message: "User already has a review for this spot" });
     }
 
-    // Respond with the newly created review
-    return res.status(201).json({
-      id: existingReview.id,
-      userId: existingReview.userId,
-      spotId: existingReview.spotId,
-      review: existingReview.review,
-      stars: existingReview.stars,
-      createdAt: existingReview.createdAt.toISOString(),
-      updatedAt: existingReview.updatedAt.toISOString(),
+    // Create a new review without specifying the ID
+    const newReview = await Review.create({
+      userId,
+      spotId,
+      review,
+      stars,
     });
+
+    // Format the response
+    const formattedReview = {
+      id: newReview.id, // Include the auto-generated ID
+      userId: newReview.userId,
+      spotId: newReview.spotId,
+      review: newReview.review,
+      stars: newReview.stars,
+      createdAt: newReview.createdAt.toISOString(),
+      updatedAt: newReview.updatedAt.toISOString(),
+    };
+
+    // Respond with the newly created review
+    return res.status(201).json(formattedReview);
   } catch (error) {
     console.error(error);
 
@@ -889,7 +896,7 @@ router.post('/:spotId/reviews', requireAuth, async (req, res) => {
       });
 
       return res.status(400).json({
-        message: 'Validation error',
+        message: 'Bad Request',
         errors,
       });
     } else {
@@ -897,7 +904,6 @@ router.post('/:spotId/reviews', requireAuth, async (req, res) => {
     }
   }
 });
-
 
 router.get('/:spotId/bookings', requireAuth,  async (req, res) => {
   const spotId = req.params.spotId;
