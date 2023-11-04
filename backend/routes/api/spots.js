@@ -973,9 +973,9 @@ router.post('/:spotId/bookings', requireAuth, async (req, res) => {
     }
 
     // Add a check to ensure the spot belongs to the user
-    if (spot.ownerId !== userId) {
-      return res.status(403).json({ message: "Forbidden" });
-    }
+    // if (spot.ownerId !== userId) {
+    //   return res.status(403).json({ message: "Forbidden" });
+    // }
     // Convert the input dates to Date objects
     const startDateObj = new Date(startDate);
     const endDateObj = new Date(endDate);
