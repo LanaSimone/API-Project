@@ -127,7 +127,7 @@ router.post('/:reviewId/images', requireAuth,   async (req, res) => {
 
 
 // PUT /api/reviews/:reviewId
-router.put('/:reviewId', requireAuth, requireSpotOwnership, async (req, res) => {
+router.put('/:reviewId', requireAuth,  async (req, res) => {
   try {
     const reviewId = req.params.reviewId;
     const userId = req.user.id;
@@ -136,17 +136,16 @@ router.put('/:reviewId', requireAuth, requireSpotOwnership, async (req, res) => 
     const existingReview = await Review.findByPk(reviewId, {
       include: {
         model: Spots,
-      
       },
     });
 
     if (!existingReview) {
-      return res.status(404).json({ message: "Review couldn't be found" });
+      return res.status(404).json({ message: 'Review couldn\'t be found' });
     }
 
     // Check if the review belongs to the current user
     if (existingReview.userId !== userId) {
-      return res.status(403).json({ message: "You don't have permission to edit this review" });
+      return res.status(403).json({ message: 'You don\'t have permission to edit this review' });
     }
 
     const { review, stars } = req.body;
@@ -174,6 +173,7 @@ router.put('/:reviewId', requireAuth, requireSpotOwnership, async (req, res) => 
     if (stars !== undefined) {
       existingReview.stars = stars;
     }
+    existingReview.userId = userId;
     await existingReview.save();
 
     // Format the response
@@ -185,9 +185,9 @@ router.put('/:reviewId', requireAuth, requireSpotOwnership, async (req, res) => 
       spotId: existingReview.SpotId, // Use the Spot association to get spotId
       review: existingReview.review,
       stars: existingReview.stars,
-      createdAt: existingReview.createdAt.toISOString(),
-      updatedAt: updatedAtDate.toISOString(),
-    });
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    })
   } catch (error) {
     console.error(error);
 

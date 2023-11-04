@@ -492,14 +492,16 @@ router.put('/:spotId',  requireAuth,  async (req, res, next) => {
       city,
       state,
       country,
-      lat,
-      lng,
+      // lat,
+      // lng,
       name,
       description,
       price,
     } = req.body;
 
     const errors = {};
+    let lat;
+    let lng;
 
     if (!address) {
       errors.address = 'Street address is required';
@@ -854,38 +856,31 @@ router.post('/:spotId/reviews', requireAuth, async (req, res) => {
     }
 
     // Check if the user already has a review for this spot
-    const existingReview = await Review.findOne({
+    const [existingReview, created] = await Review.findCreateFind({
       where: {
         spotId,
         userId,
       },
+      defaults: {
+        review,
+        stars,
+      },
     });
 
-    if (existingReview) {
+    if (!created) {
       return res.status(500).json({ message: "User already has a review for this spot" });
     }
 
-    // Create a new review without specifying the ID
-    const newReview = await Review.create({
-      userId,
-      spotId,
-      review,
-      stars,
-    });
-
-    // Format the response
-    const formattedReview = {
-      id: newReview.id, // Include the auto-generated ID
-      userId: newReview.userId,
-      spotId: newReview.spotId,
-      review: newReview.review,
-      stars: newReview.stars,
-      createdAt: newReview.createdAt.toISOString(),
-      updatedAt: newReview.updatedAt.toISOString(),
-    };
-
     // Respond with the newly created review
-    return res.status(201).json(formattedReview);
+    return res.status(201).json({
+      id: existingReview.id,
+      userId: existingReview.userId,
+      spotId: existingReview.spotId,
+      review: existingReview.review,
+      stars: existingReview.stars,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
   } catch (error) {
     console.error(error);
 
@@ -896,7 +891,7 @@ router.post('/:spotId/reviews', requireAuth, async (req, res) => {
       });
 
       return res.status(400).json({
-        message: 'Bad Request',
+        message: 'Validation error',
         errors,
       });
     } else {
