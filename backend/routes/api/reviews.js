@@ -155,6 +155,7 @@ router.put('/:reviewId', requireAuth,  async (req, res) => {
         message: 'Bad Request',
         errors: {
           review: 'Review text is required',
+          "stars": "Stars must be an integer from 1 to 5",
         },
       });
     }
