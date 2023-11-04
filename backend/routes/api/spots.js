@@ -444,7 +444,7 @@ router.post('/:spotId/images', requireAuth,   async (req, res) => {
 
     // Assuming you have req.user set by the requireAuth middleware
     if (existingSpot.ownerId !== req.user.id) {
-      return res.status(403).json({ message: "Forbidden" });
+      return res.status(403).json({ message: "Forbidden" })
     }
 
     // Create a new image in the database associated with the spot
