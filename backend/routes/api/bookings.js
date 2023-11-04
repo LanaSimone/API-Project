@@ -89,7 +89,7 @@ router.get('/current', requireAuth, async (req, res) => {
     }
   });
 
-const { Op } = require('sequelize');
+const { Op } = require('sequelize')
 
   // PUT /api/bookings/:bookingId update bookings
   router.put('/:bookingId', requireAuth, async (req, res) => {
@@ -123,7 +123,7 @@ const { Op } = require('sequelize');
         return res.status(400).json({
           message: "Bad Request",
           errors: {
-          
+
             endDate: "endDate cannot come before startDate"
           },
         });
