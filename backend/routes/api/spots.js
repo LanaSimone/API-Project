@@ -1000,23 +1000,24 @@ router.post('/:spotId/bookings', requireAuth, async (req, res) => {
     const spot = await Spots.findByPk(spotId);
 
     const formatDate = (date) => {
-      return date.toLocaleDateString('en-US', {
+      const formattedDate = date.toLocaleDateString('en-US', {
         year: 'numeric',
         month: '2-digit',
         day: '2-digit',
       });
+      return formattedDate.replace(/\//g, '-');
     };
 
     const formatDateTime = (date) => {
-      return date.toLocaleString('en-US', {
+      const formattedDateTime = date.toLocaleString('en-US', {
         year: 'numeric',
         month: '2-digit',
         day: '2-digit',
         hour: '2-digit',
         minute: '2-digit',
         second: '2-digit',
-        millisecond: '3-digit',
       });
+      return formattedDateTime.replace(/\//g, '-');
     };
 
     if (!spot) {
@@ -1108,8 +1109,8 @@ router.post('/:spotId/bookings', requireAuth, async (req, res) => {
       userId: booking.userId,
       startDate: formatDate(startDateObj),
       endDate: formatDate(endDateObj),
-      createdAt,
-      updatedAt,
+      createdAt: formatDateTime(currentDate),
+      updatedAt: formatDateTime(currentDate),
     });
   } catch (error) {
     if (error instanceof Sequelize.ValidationError) {
