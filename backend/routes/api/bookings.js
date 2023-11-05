@@ -58,6 +58,10 @@ router.get('/current', requireAuth, async (req, res) => {
         const { ownerId, address, city, state, country, lat, lng, name, price, SpotImages } = Spot;
         const previewImage = 'img-url' // Assuming you want the first URL
 
+        const formattedCreatedAt = new Date(createdAt).toLocaleDateString();
+        const formattedUpdatedAt = new Date(updatedAt).toLocaleDateString();
+
+
         return {
           id,
           spotId,
@@ -68,17 +72,17 @@ router.get('/current', requireAuth, async (req, res) => {
             city,
             state,
             country,
-            lat,
-            lng,
+            lat: parseFloat(lat),
+            lng: parseFloat(lng),
             name,
-            price,
+            price: parseFloat(price),
             previewImage,
           },
           userId,
-          startDate,
-          endDate,
-          createdAt: new Date(),
-          updatedAt: new Date(),
+          startDate: new Date(startDate).toLocaleDateString(),
+          endDate: new Date(endDate).toLocaleDateString(),
+          createdAt: formattedCreatedAt,
+          updatedAt: formattedUpdatedAt,
         };
       });
 
