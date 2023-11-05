@@ -946,20 +946,28 @@ router.get('/:spotId/bookings', requireAuth,  async (req, res) => {
 
     if (isOwner) {
       // If the user is the owner, format response accordingly
-      const formattedBookings = bookings.map((booking) => ({
-        User: {
-          id: booking.User.id,
-          firstName: booking.User.firstName,
-          lastName: booking.User.lastName,
-        },
-        id: booking.id,
-        spotId: booking.spotId,
-        userId: booking.userId,
-        startDate: booking.startDate.toISOString().split('T')[0],
-        endDate: booking.endDate.toISOString().split('T')[0],
-        createdAt: booking.createdAt,
-        updatedAt: booking.updatedAt,
-      }));
+      const formattedBookings = bookings.map((booking) => {
+        const bookingData = {
+          User: {
+            id: booking.User.id,
+            firstName: booking.User.firstName,
+            lastName: booking.User.lastName,
+          },
+          id: booking.id,
+          spotId: booking.spotId,
+          userId: booking.userId,
+          startDate: booking.startDate.toISOString().split('T')[0],
+          endDate: booking.endDate.toISOString().split('T')[0],
+        };
+
+        // Include createdAt and updatedAt for the owner
+        if (isOwner) {
+          bookingData.createdAt = booking.createdAt;
+          bookingData.updatedAt = booking.updatedAt;
+        }
+
+        return bookingData;
+      });
 
       return res.status(200).json({ Bookings: formattedBookings });
     } else {
