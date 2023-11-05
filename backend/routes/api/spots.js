@@ -344,7 +344,7 @@ router.post('/', requireAuth, async (req, res) => {
       lng: newSpot.lng,
       name: newSpot.name,
       description: newSpot.description,
-      price: newSpot.price,
+      price: parseInt(newSpot.price),
       createdAt: now,
       updatedAt: now,
 
