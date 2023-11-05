@@ -202,7 +202,7 @@ const { Op } = require('sequelize')
         userId: booking.userId,
         startDate: booking.startDate,
         endDate: booking.endDate,
-        createdAt: booking.createdAt,
+        createdAt: new Date(),
         updatedAt: new Date(),
       });
     } catch (error) {

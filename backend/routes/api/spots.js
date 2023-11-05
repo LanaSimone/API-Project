@@ -307,7 +307,7 @@ router.post('/', requireAuth, async (req, res) => {
           country: errors.country || 'Country is required',
           lat: errors.lat || 'Latitude is not valid',
           lng: errors.lng || 'Longitude is not valid',
-          name: errors.name || 'Name must be a string with less than 50 characters',
+          name: errors.name || 'Name must be less than 50 characters',
           description: errors.description || 'Description is required',
           price: errors.price || 'Price per day is required',
         },
@@ -345,6 +345,9 @@ router.post('/', requireAuth, async (req, res) => {
       name: newSpot.name,
       description: newSpot.description,
       price: newSpot.price,
+      createdAt: now,
+      updatedAt: now,
+
     };
 
     return res.status(201).json(formattedSpot);
