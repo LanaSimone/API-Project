@@ -1006,7 +1006,7 @@ router.post('/:spotId/bookings', requireAuth, async (req, res) => {
       // Check if the user owns the spot
       if (spot.ownerId === userId) {
         return res.status(403).json({ message: "Forbidden"});
-      }
+      };
 
     // // Add a check to ensure the spot belongs to the user
     // if (spot.ownerId !== userId) {
