@@ -823,7 +823,26 @@ router.get('/:spotId/reviews', requireAuth,  async (req, res) => {
           ],
       });
 
-      res.status(200).json({ Reviews: reviews });
+      const formattedReviews = reviews.map((review) => ({
+        id: review.id,
+        userId: review.User.id,
+        spotId: review.spotId,
+        review: review.review,
+        stars: review.stars,
+        createdAt: review.createdAt.toISOString(),
+        updatedAt: review.updatedAt.toISOString(),
+        User: {
+          id: review.User.id,
+          firstName: review.User.firstName,
+          lastName: review.User.lastName,
+        },
+        ReviewImages: review.ReviewImages.map((image) => ({
+          id: image.id,
+          url: image.url,
+        })),
+      }));
+
+      res.status(200).json({ Reviews: formattedReviews });
   } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Internal server error' });
