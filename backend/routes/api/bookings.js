@@ -110,9 +110,9 @@ router.get('/current', requireAuth, async (req, res) => {
         },
         userId,
         startDate: formatDate(startDate), // Format the startDate
-        endDate: formatDate(endDate), // Format the endDate
-        createdAt: formatDateTime(createdAt), // Format the createdAt
-        updatedAt: formatDateTime(updatedAt), // Format the updatedAt
+        endDate: new Date(),
+        createdAt:new Date(), // Format the createdAt
+        updatedAt: new Date(), // Format the updatedAt
       };
     });
 
