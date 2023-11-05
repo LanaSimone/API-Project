@@ -72,7 +72,18 @@ router.get('/current', requireAuth, async (req, res) => {
     const formattedBookings = bookings.map((booking) => {
       const { id, spotId, startDate, endDate, createdAt, updatedAt, Spot } = booking;
       const { ownerId, address, city, state, country, lat, lng, name, price, SpotImages } = Spot;
-      const previewImage = 'img-url' // Assuming you want the first URL
+      const previewImage = SpotImages[0] ? SpotImages[0].url : ''; // Assuming you want the first URL
+
+      const formatDate = (date) => {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const seconds = String(date.getSeconds()).padStart(2, '0');
+        return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+      };
+
 
       return {
         id,
@@ -84,17 +95,17 @@ router.get('/current', requireAuth, async (req, res) => {
           city,
           state,
           country,
-          lat,
-          lng,
+          lat: parseFloat(lat),
+          lng: parseFloat(lng),
           name,
-          price,
+          price: parseFloat(price),
           previewImage,
         },
         userId,
-        startDate,
-        endDate,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        startDate: formatDate(new Date(startDate)),
+        endDate: formatDate(new Date(endDate)),
+        createdAt: formatDate(new Date(createdAt)),
+        updatedAt: formatDate(new Date(updatedAt)),
       };
     });
 
@@ -103,7 +114,7 @@ router.get('/current', requireAuth, async (req, res) => {
     console.error(error);
     res.status(500).json({ message: 'Internal server error' });
   }
-}); 
+});
 
 const { Op } = require('sequelize')
 
