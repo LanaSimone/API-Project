@@ -1003,6 +1003,11 @@ router.post('/:spotId/bookings', requireAuth, async (req, res) => {
       return res.status(404).json({ message: "Spot couldn't be found" })
     }
 
+      // Check if the user owns the spot
+      if (spot.ownerId === userId) {
+        return res.status(403).json({ message: "Forbidden", errors: { "spotId": "You cannot book your own spot" } });
+      }
+
     // // Add a check to ensure the spot belongs to the user
     // if (spot.ownerId !== userId) {
     //   return res.status(403).json({ message: "Forbidden" });
