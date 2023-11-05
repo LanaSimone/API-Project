@@ -52,58 +52,58 @@ const formatDateTime = (date) => {
 };
 
 router.get('/current', requireAuth, async (req, res) => {
-    try {
-      const userId = req.user.id;
+  try {
+    const userId = req.user.id;
 
-      const bookings = await Bookings.findAll({
-        where: { userId },
-        include: [
-          {
-            model: Spots,
-            as: 'Spot', // Specify the alias
-            include: {
-              model: SpotImage,
-              as: 'SpotImages', // Specify the alias for SpotImage
-            },
+    const bookings = await Bookings.findAll({
+      where: { userId },
+      include: [
+        {
+          model: Spots,
+          as: 'Spot', // Specify the alias
+          include: {
+            model: SpotImage,
+            as: 'SpotImages', // Specify the alias for SpotImage
           },
-        ],
-      });
+        },
+      ],
+    });
 
-      const formattedBookings = bookings.map((booking) => {
-        const { id, spotId, startDate, endDate, createdAt, updatedAt, Spot } = booking;
-        const { ownerId, address, city, state, country, lat, lng, name, price, SpotImages } = Spot;
-        const previewImage = SpotImages[0] ? SpotImages[0].url : '';
+    const formattedBookings = bookings.map((booking) => {
+      const { id, spotId, startDate, endDate, createdAt, updatedAt, Spot } = booking;
+      const { ownerId, address, city, state, country, lat, lng, name, price, SpotImages } = Spot;
+      const previewImage = 'img-url' // Assuming you want the first URL
 
-        return {
-          id,
-          spotId,
-          Spot: {
-            id: spotId,
-            ownerId,
-            address,
-            city,
-            state,
-            country,
-            lat: parseFloat(lat),
-            lng: parseFloat(lng),
-            name,
-            price: parseFloat(price),
-            previewImage,
-          },
-          userId,
-          startDate: formatDate(new Date(startDate)),
-          endDate: formatDate(new Date(endDate)),
-          createdAt: formatDateTime(new Date(createdAt)),
-          updatedAt: formatDateTime(new Date(updatedAt)),
-        }
-      });
+      return {
+        id,
+        spotId,
+        Spot: {
+          id: spotId,
+          ownerId,
+          address,
+          city,
+          state,
+          country,
+          lat,
+          lng,
+          name,
+          price,
+          previewImage,
+        },
+        userId,
+        startDate,
+        endDate,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+    });
 
-      res.status(200).json({ Bookings: formattedBookings });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Internal server error' });
-    }
-  });
+    res.status(200).json({ Bookings: formattedBookings });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+}); 
 
 const { Op } = require('sequelize')
 
