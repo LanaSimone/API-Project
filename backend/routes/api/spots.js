@@ -1000,25 +1000,22 @@ router.post('/:spotId/bookings', requireAuth, async (req, res) => {
     const spot = await Spots.findByPk(spotId);
 
     const formatDate = (date) => {
-      const formattedDate = date.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-      });
-      return formattedDate.replace(/\//g, '-');
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
     };
 
     const formatDateTime = (date) => {
-      const formattedDateTime = date.toLocaleString('en-US', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-      });
-      return formattedDateTime.replace(/\//g, '-');
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+      const seconds = String(date.getSeconds()).padStart(2, '0');
+      return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
     };
+
 
     if (!spot) {
       return res.status(404).json({ message: 'Spot couldn\'t be found' });
