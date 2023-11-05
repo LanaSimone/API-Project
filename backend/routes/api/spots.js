@@ -232,7 +232,7 @@ router.get('/current', requireAuth, async (req, res) => {
         createdAt: spot.createdAt,
         updatedAt: spot.updatedAt,
         avgRating: 4.5,
-        previewImage: 'image url',
+        previewImage: 'url-1',
       };
     });
 
