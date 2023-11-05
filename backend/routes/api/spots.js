@@ -999,6 +999,26 @@ router.post('/:spotId/bookings', requireAuth, async (req, res) => {
     // Check if the spot exists
     const spot = await Spots.findByPk(spotId);
 
+    const formatDate = (date) => {
+      return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+      });
+    };
+
+    const formatDateTime = (date) => {
+      return date.toLocaleString('en-US', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        millisecond: '3-digit',
+      });
+    };
+
     if (!spot) {
       return res.status(404).json({ message: 'Spot couldn\'t be found' });
     }
