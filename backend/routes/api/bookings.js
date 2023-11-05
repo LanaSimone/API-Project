@@ -72,8 +72,7 @@ router.get('/current', requireAuth, async (req, res) => {
       const formattedBookings = bookings.map((booking) => {
         const { id, spotId, startDate, endDate, createdAt, updatedAt, Spot } = booking;
         const { ownerId, address, city, state, country, lat, lng, name, price, SpotImages } = Spot;
-        const previewImage = 'img-url' // Assuming you want the first URL
-
+        const previewImage = SpotImages[0] ? SpotImages[0].url : '';
 
         return {
           id,
@@ -96,7 +95,7 @@ router.get('/current', requireAuth, async (req, res) => {
           endDate: formatDate(new Date(endDate)),
           createdAt: formatDateTime(new Date(createdAt)),
           updatedAt: formatDateTime(new Date(updatedAt)),
-        };
+        }
       });
 
       res.status(200).json({ Bookings: formattedBookings });
