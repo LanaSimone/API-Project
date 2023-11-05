@@ -180,15 +180,17 @@ router.put('/:reviewId', requireAuth,  async (req, res) => {
     // Format the response
     const updatedAtDate = new Date(existingReview.updatedAt);
 
-    res.status(200).json({
+    const formattedResponse = {
       id: existingReview.id,
       userId: existingReview.userId,
-      spotId: existingReview.SpotId, // Use the Spot association to get spotId
+      spotId: existingReview.Spot.id, // Use the Spot association to get spotId
       review: existingReview.review,
       stars: existingReview.stars,
       createdAt: new Date(),
       updatedAt: new Date(),
-    })
+    };
+
+    res.status(200).json(formattedResponse);
   } catch (error) {
     console.error(error);
 
