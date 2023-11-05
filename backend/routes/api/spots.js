@@ -1074,10 +1074,10 @@ router.post('/:spotId/bookings', requireAuth, async (req, res) => {
       id: booking.id,
       spotId: booking.spotId,
       userId: booking.userId,
-      startDate: startDateObj,
-      endDate: endDateObj,
-      createdAt: currentDate,
-      updatedAt: currentDate,
+      startDate: startDateObj.toLocaleDateString(),
+      endDate: endDateObj.toLocaleDateString(),
+      createdAt: currentDate.toLocaleString(),
+      updatedAt: currentDate.toLocaleString(),
     });
   } catch (error) {
     if (error instanceof Sequelize.ValidationError) {
