@@ -34,6 +34,22 @@ const requireSpotOwnership = require('../api/spots')
 // };
 
 
+const formatDate = (date) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
+const formatDateTime = (date) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const seconds = String(date.getSeconds()).padStart(2, '0');
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+};
 
 router.get('/current', requireAuth, async (req, res) => {
     try {
@@ -58,9 +74,6 @@ router.get('/current', requireAuth, async (req, res) => {
         const { ownerId, address, city, state, country, lat, lng, name, price, SpotImages } = Spot;
         const previewImage = 'img-url' // Assuming you want the first URL
 
-        const formattedCreatedAt = new Date(createdAt).toLocaleDateString();
-        const formattedUpdatedAt = new Date(updatedAt).toLocaleDateString();
-
 
         return {
           id,
@@ -79,11 +92,10 @@ router.get('/current', requireAuth, async (req, res) => {
             previewImage,
           },
           userId,
-          startDate: new Date(startDate).toISOString().split('T')[0], // Format date as "yyyy-mm-dd"
-          endDate: new Date(endDate).toISOString().split('T')[0], // Format date as "yyyy-mm-dd"
-          createdAt: new Date(createdAt).toISOString().replace('T', ' ').split('.')[0], // Format as "yyyy-mm-dd HH:mm:ss"
-          updatedAt: new Date(updatedAt).toISOString().replace('T', ' ').split('.')[0], // Format as "yyyy-mm-dd HH:mm:ss"
-
+          startDate: formatDate(new Date(startDate)),
+          endDate: formatDate(new Date(endDate)),
+          createdAt: formatDateTime(new Date(createdAt)),
+          updatedAt: formatDateTime(new Date(updatedAt)),
         };
       });
 
