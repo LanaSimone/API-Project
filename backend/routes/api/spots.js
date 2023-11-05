@@ -942,6 +942,7 @@ router.get('/:spotId/bookings', requireAuth,  async (req, res) => {
           attributes: ['id', 'firstName', 'lastName'],
         },
       ],
+      attributes: ['id', 'spotId', 'userId', 'startDate', 'endDate', 'createdAt', 'updatedAt']
     });
 
     if (isOwner) {
