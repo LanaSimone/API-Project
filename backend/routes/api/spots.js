@@ -1000,7 +1000,7 @@ router.post('/:spotId/bookings', requireAuth, async (req, res) => {
     const spot = await Spots.findByPk(spotId);
 
     if (!spot) {
-      return res.status(404).json({ message: "Spot couldn't be found" });
+      return res.status(404).json({ message: "Spot couldn't be found" })
     }
 
     // Add a check to ensure the spot belongs to the user
