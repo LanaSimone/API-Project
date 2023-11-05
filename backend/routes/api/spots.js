@@ -1000,36 +1000,44 @@ router.post('/:spotId/bookings', requireAuth, async (req, res) => {
     const spot = await Spots.findByPk(spotId);
 
     if (!spot) {
-      return res.status(404).json({ message: "Spot couldn't be found" })
+      return res.status(404).json({ message: 'Spot couldn\'t be found' });
     }
 
-      // Check if the user owns the spot
-      if (spot.ownerId === userId) {
-        return res.status(403).json({ message: "Forbidden"});
-      };
+    // Check if the user owns the spot
+    if (spot.ownerId === userId) {
+      return res.status(403).json({ message: 'Forbidden' });
+    }
 
-    // // Add a check to ensure the spot belongs to the user
-    // if (spot.ownerId !== userId) {
-    //   return res.status(403).json({ message: "Forbidden" });
-    // }
     // Convert the input dates to Date objects
     const startDateObj = new Date(startDate);
     const endDateObj = new Date(endDate);
 
     // Check if start date and end date are the same
     if (startDateObj.getTime() === endDateObj.getTime()) {
-      return res.status(400).json({ message: "Bad Request", errors: { "startDate": "endDate cannot be on or before startDate" } });
-    };
+      return res.status(400).json({
+        message: 'Bad Request',
+        errors: { startDate: 'endDate cannot be on or before startDate' },
+      });
+    }
 
     // Check if end date is before start date
     if (startDateObj >= endDateObj) {
-      return res.status(400).json({ message: "Bad Request", errors: { "endDate": "endDate cannot be on or before startDate" } });
+      return res.status(400).json({
+        message: 'Bad Request',
+        errors: { endDate: 'endDate cannot be on or before startDate' },
+      });
     }
 
     // Check if start date and end date are in the past
     const currentDate = new Date();
     if (startDateObj < currentDate || endDateObj < currentDate) {
-      return res.status(400).json({ message: "Bad Request", errors: { "startDate": "Start date cannot be in the past", "endDate": "End date cannot be in the past" } });
+      return res.status(400).json({
+        message: 'Bad Request',
+        errors: {
+          startDate: 'Start date cannot be in the past',
+          endDate: 'End date cannot be in the past',
+        },
+      });
     }
 
     // Check if there is any existing booking with conflicts
@@ -1054,11 +1062,11 @@ router.post('/:spotId/bookings', requireAuth, async (req, res) => {
 
     if (conflictBooking) {
       return res.status(403).json({
-        message: "Sorry, this spot is already booked for the specified dates",
+        message: 'Sorry, this spot is already booked for the specified dates',
         errors: {
-          "startDate": "Start date conflicts with an existing booking",
-          "endDate": "End date conflicts with an existing booking",
-        }
+          startDate: 'Start date conflicts with an existing booking',
+          endDate: 'End date conflicts with an existing booking',
+        },
       });
     }
 
@@ -1070,24 +1078,9 @@ router.post('/:spotId/bookings', requireAuth, async (req, res) => {
       endDate: endDateObj,
     });
 
-    const formatDate = (date) => {
-      return date.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-      });
-    };
-
-    const formatDateTime = (date) => {
-      return date.toLocaleString('en-US', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-      });
-    };
+    // Format the created and updated dates in ISO 8601 format
+    const createdAt = formatDateTime(currentDate);
+    const updatedAt = formatDateTime(currentDate);
 
     return res.status(200).json({
       id: booking.id,
@@ -1095,8 +1088,8 @@ router.post('/:spotId/bookings', requireAuth, async (req, res) => {
       userId: booking.userId,
       startDate: formatDate(startDateObj),
       endDate: formatDate(endDateObj),
-      createdAt: formatDateTime(currentDate),
-      updatedAt: formatDateTime(currentDate),
+      createdAt,
+      updatedAt,
     });
   } catch (error) {
     if (error instanceof Sequelize.ValidationError) {
@@ -1105,10 +1098,10 @@ router.post('/:spotId/bookings', requireAuth, async (req, res) => {
       error.errors.forEach((e) => {
         errors[e.path] = e.message;
       });
-      return res.status(400).json({ message: "Bad Request", errors });
+      return res.status(400).json({ message: 'Bad Request', errors });
     } else {
       console.error(error);
-      return res.status(500).json({ message: "Internal server error" });
+      return res.status(500).json({ message: 'Internal server error' });
     }
   }
 });
