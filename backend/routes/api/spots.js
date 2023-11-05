@@ -1070,14 +1070,33 @@ router.post('/:spotId/bookings', requireAuth, async (req, res) => {
       endDate: endDateObj,
     });
 
+    const formatDate = (date) => {
+      return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+      });
+    };
+
+    const formatDateTime = (date) => {
+      return date.toLocaleString('en-US', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+      });
+    };
+
     return res.status(200).json({
       id: booking.id,
       spotId: booking.spotId,
       userId: booking.userId,
-      startDate: startDateObj.toLocaleDateString(),
-      endDate: endDateObj.toLocaleDateString(),
-      createdAt: currentDate.toLocaleString(),
-      updatedAt: currentDate.toLocaleString(),
+      startDate: formatDate(startDateObj),
+      endDate: formatDate(endDateObj),
+      createdAt: formatDateTime(currentDate),
+      updatedAt: formatDateTime(currentDate),
     });
   } catch (error) {
     if (error instanceof Sequelize.ValidationError) {
