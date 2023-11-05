@@ -725,7 +725,7 @@ async function deleteOrphanedBookings() {
 // });
 
 // Define the DELETE route without the "requireSpotOwnership" middleware at first
-router.delete('/:spotId', requireAuth, requireSpotOwnership, async (req, res) => {
+router.delete('/:spotId', requireAuth, async (req, res) => {
   const t = await sequelize.transaction();
 
   try {
