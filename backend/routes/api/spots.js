@@ -293,7 +293,7 @@ router.post('/', requireAuth, async (req, res) => {
 
     if (name !== undefined) {
       if (typeof name !== 'string' || name.length > 50) {
-        errors.name = 'Name must be a string with less than 50 characters';
+        errors.name = "Name must be less than 50 characters";
       }
     }
 
