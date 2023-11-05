@@ -181,8 +181,8 @@ router.get('/', async (req, res) => {
         price: spot.price,
         createdAt: spot.createdAt,
         updatedAt: spot.updatedAt,
-        avgRating: 4.5, // You can set the actual value here
-        previewImage: 'image url', // Set the actual URL here
+        avgRating: 4.5,
+        previewImage: 'url-1',
       };
     });
 
@@ -418,7 +418,7 @@ router.get('/:spotId', requireAuth, async (req, res) => {
 //create a spot image
 router.post('/:spotId/images', requireAuth,   async (req, res) => {
   try {
-    // Ensure that the URL and preview are provided in the request body
+
     const { url, preview } = req.body;
 
     if (!url || preview === undefined) {
@@ -445,7 +445,7 @@ router.post('/:spotId/images', requireAuth,   async (req, res) => {
       return res.status(404).json({ message: "Spot couldn't be found" });
     }
 
-    // Assuming you have req.user set by the requireAuth middleware
+
     if (existingSpot.ownerId !== req.user.id) {
       return res.status(403).json({ message: "Forbidden" })
     }
@@ -453,7 +453,7 @@ router.post('/:spotId/images', requireAuth,   async (req, res) => {
     // Create a new image in the database associated with the spot
     const newImage = await SpotImage.create({
 
-      spotId, // Save the spotId with the image
+      spotId,
       url,
       preview,
     });
@@ -463,7 +463,7 @@ router.post('/:spotId/images', requireAuth,   async (req, res) => {
       id: newImage.id,
       url: newImage.url,
       preview: newImage.preview,
-      // spotId: newImage.spotId, // Include the spotId in the response
+      // spotId: newImage.spotId,
     });
   } catch (error) {
     console.error(error);
@@ -474,7 +474,7 @@ router.post('/:spotId/images', requireAuth,   async (req, res) => {
 
 const validateRequestBody = [
   check('address').notEmpty().withMessage('Street address is required'),
-  // Add more validation checks for other fields if needed
+
 ];
 //update spot
 router.put('/:spotId',  requireAuth,  async (req, res, next) => {
@@ -524,12 +524,12 @@ router.put('/:spotId',  requireAuth,  async (req, res, next) => {
 
     if (isNaN(lat)) {
       errors.lat = 'Latitude is not valid';
-      lat = 0; // Set lat to a default value
+      lat = 0;
     }
 
     if (isNaN(lng)) {
       errors.lng = 'Longitude is not valid';
-      lng = 0; // Set lng to a default value
+      lng = 0; 
     }
 
     if (!name) {
