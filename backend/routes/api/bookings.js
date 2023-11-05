@@ -234,8 +234,8 @@ const { Op } = require('sequelize')
         id: booking.id,
         spotId: booking.spotId,
         userId: booking.userId,
-        startDate: booking.startDate,
-        endDate: booking.endDate,
+        startDate: formatDate(startDate),
+        endDate: formatDate(endDate),
         createdAt: new Date(),
         updatedAt: new Date(),
       });
