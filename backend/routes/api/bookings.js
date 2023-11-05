@@ -79,10 +79,11 @@ router.get('/current', requireAuth, async (req, res) => {
             previewImage,
           },
           userId,
-          startDate: new Date(startDate).toLocaleDateString(),
-          endDate: new Date(endDate).toLocaleDateString(),
-          createdAt: formattedCreatedAt,
-          updatedAt: formattedUpdatedAt,
+          startDate: new Date(startDate).toISOString().split('T')[0], // Format date as "yyyy-mm-dd"
+          endDate: new Date(endDate).toISOString().split('T')[0], // Format date as "yyyy-mm-dd"
+          createdAt: new Date(createdAt).toISOString().replace('T', ' ').split('.')[0], // Format as "yyyy-mm-dd HH:mm:ss"
+          updatedAt: new Date(updatedAt).toISOString().replace('T', ' ').split('.')[0], // Format as "yyyy-mm-dd HH:mm:ss"
+
         };
       });
 
