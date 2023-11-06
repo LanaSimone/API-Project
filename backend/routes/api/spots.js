@@ -1080,8 +1080,8 @@ router.post('/:spotId/bookings', requireAuth, async (req, res) => {
     // Check if start date and end date are in the past
     const currentDate = new Date();
     if (startDateObj < currentDate || endDateObj < currentDate) {
-      return res.status(403).json({
-        message: "Past bookings can't be modified",
+      return res.status(400).json({
+        "message": "Can't book past dates."
       });
     }
 
