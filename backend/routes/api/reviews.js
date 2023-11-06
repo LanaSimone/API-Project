@@ -47,8 +47,8 @@ router.get('/current', requireAuth, async (req, res) => {
         spotId: spot.id,
         review: review.review,
         stars: review.stars,
-        createdAt: review.createdAt,
-        updatedAt: review.updatedAt,
+        createdAt: review.createdAt.toISOString().slice(0, 19).replace('T', ' '),
+        updatedAt: review.updatedAt.toISOString().slice(0, 19).replace('T', ' '),
         User: {
           id: user.id,
           firstName: user.firstName,

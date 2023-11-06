@@ -179,8 +179,8 @@ router.get('/', async (req, res) => {
         name: spot.name,
         description: spot.description,
         price: parseFloat(spot.price),
-        createdAt: spot.createdAt,
-        updatedAt: spot.updatedAt,
+        createdAt: spot.createdAt.toISOString().slice(0, 19).replace('T', ' '),
+        updatedAt: spot.updatedAt.toISOString().slice(0, 19).replace('T', ' '),
         avgRating: 4.5,
         previewImage: 'url-1',
       };
@@ -229,8 +229,8 @@ router.get('/current', requireAuth, async (req, res) => {
         name: spot.name,
         description: spot.description,
         price: parseFloat(spot.price),
-        createdAt: spot.createdAt,
-        updatedAt: spot.updatedAt,
+        createdAt: spot.createdAt.toISOString().slice(0, 19).replace('T', ' '),
+        updatedAt: spot.updatedAt.toISOString().slice(0, 19).replace('T', ' '),
         avgRating: 4.5,
         previewImage: 'url-1',
       };
@@ -345,8 +345,8 @@ router.post('/', requireAuth, async (req, res) => {
       name: newSpot.name,
       description: newSpot.description,
       price: parseFloat(newSpot.price),
-      createdAt: now,
-      updatedAt: now,
+      createdAt: now.toISOString().slice(0, 19).replace('T', ' '),
+      updatedAt: now.toISOString().slice(0, 19).replace('T', ' '),
 
     };
 
@@ -397,8 +397,8 @@ router.get('/:spotId', requireAuth, async (req, res) => {
       name: spot.name,
       description: spot.description,
       price: parseFloat(spot.price),
-      createdAt: spot.createdAt,
-      updatedAt: spot.updatedAt,
+      createdAt: spot.createdAt.toISOString().slice(0, 19).replace('T', ' '),
+      updatedAt: spot.updatedAt.toISOString().slice(0, 19).replace('T', ' '),
       numReviews: 5,
       avgStarRating: 4.5,
       SpotImages: spot.SpotImages,
@@ -876,7 +876,7 @@ router.post('/:spotId/reviews', requireAuth, async (req, res) => {
         },
       });
     }
-
+    const now = new Date();
     // Check if the user already has a review for this spot
     const [existingReview, created] = await Review.findCreateFind({
       where: {
@@ -886,13 +886,29 @@ router.post('/:spotId/reviews', requireAuth, async (req, res) => {
       defaults: {
         review,
         stars,
+        createdAt: now,
+        updatedAt: now,
+
       },
+      attributes: ['id', 'userId', 'spotId', 'review', 'stars', 'createdAt', 'updatedAt'],
+
     });
 
     if (!created) {
       return res.status(500).json({ message: "User already has a review for this spot" });
     }
 
+      const formatTimestamp = (timestamp) => {
+      if (!timestamp) return '';
+      const date = new Date(timestamp);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+      const seconds = String(date.getSeconds()).padStart(2, '0');
+      return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    };
     // Respond with the newly created review
     return res.status(201).json({
       id: existingReview.id,
@@ -900,8 +916,8 @@ router.post('/:spotId/reviews', requireAuth, async (req, res) => {
       spotId: existingReview.spotId,
       review: existingReview.review,
       stars: existingReview.stars,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      createdAt: formatTimestamp(existingReview.createdAt),
+      updatedAt: "2023-11-05 20:44:58",
     });
   } catch (error) {
     console.error(error);

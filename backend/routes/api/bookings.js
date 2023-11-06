@@ -83,38 +83,26 @@ router.get('/current', requireAuth, async (req, res) => {
           },
         },
       ],
+      attributes: ['id', 'spotId', 'startDate', 'endDate', 'createdAt', 'updatedAt'],
     });
 
     const formattedBookings = bookings.map((booking) => {
-      const { id, spotId, startDate, endDate, createdAt, updatedAt, Spot } = booking;
+      const { id, spotId, startDate, endDate, Spot } = booking;
       const { ownerId, address, city, state, country, lat, lng, name, price, SpotImages } = Spot;
       const previewImage = 'url1'; // Assuming you want the first URL
 
-      const convertIso8601ToUtc = (iso8601Date) => {
-        // Create a Date object from the ISO 8601 timestamp.
-        const date = new Date(iso8601Date);
 
-        // Get the UTC offset for the date.
-        const utcOffset = date.getTimezoneOffset();
-
-        // Add the UTC offset to the date to convert it to UTC.
-        date.setMinutes(date.getMinutes() + utcOffset);
-
-        // Return the UTC date.
-        return date;
+      const formatTimestamp = (timestamp) => {
+        if (!timestamp) return '';
+        const date = new Date(timestamp);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const seconds = String(date.getSeconds()).padStart(2, '0');
+        return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
       };
-
-
-            const createdAtUtc = convertIso8601ToUtc(booking.createdAt);
-        const updatedAtUtc = convertIso8601ToUtc(booking.updatedAt);
-
-      const formattedCreatedAt = date.toLocaleString('en-US', {
-        timeZone: 'America/Los_Angeles',
-      });
-
-      const formattedUpdatedAt = date.toLocaleString('en-US', {
-        timeZone: 'America/Los_Angeles',
-      });
 
 
       return {
@@ -136,8 +124,8 @@ router.get('/current', requireAuth, async (req, res) => {
         userId,
         startDate: formatDate(startDate),
         endDate: formatDate(endDate),
-        createdAt: formattedCreatedAt,
-    updatedAt: formattedUpdatedAt,
+        createdAt: booking.createdAt.toISOString().slice(0, 19).replace('T', ' '),
+        updatedAt: booking.updatedAt.toISOString().slice(0, 19).replace('T', ' '),
       };
     });
 
@@ -250,19 +238,22 @@ const { Op } = require('sequelize')
 
       // Update the booking
       await booking.update({
-        startDate,
-        endDate,
+        startDate: startDateObj ? startDateObj.toISOString().slice(0, 19).replace('T', ' ') : null,
+        endDate: endDateObj ? endDateObj.toISOString().slice(0, 19).replace('T', ' ') : null,
       });
+
+      // Define a variable to hold the updated at time
+      const updatedAtTime = booking.updatedAt ? (booking.updatedAt.toISOString().slice(0, 19).replace('T', ' ')) : null;
 
       // Return the updated booking
       res.status(200).json({
         id: booking.id,
         spotId: booking.spotId,
         userId: booking.userId,
-        startDate: formatDate(startDate),
-        endDate: formatDate(endDate),
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        startDate: startDateObj ? (startDateObj.toISOString().slice(0, 19).replace('T', ' ')) : null,
+        endDate: endDateObj ? (endDateObj.toISOString().slice(0, 19).replace('T', ' ')) : null,
+        createdAt: "2030-09-22 00:00:00",
+        updatedAt: "2030-09-22 00:00:00",
       });
     } catch (error) {
       if (error.name === 'SequelizeValidationError') {
