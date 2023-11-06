@@ -239,8 +239,8 @@ const { Op } = require('sequelize')
 
       // Update the booking
       await booking.update({
-        startDate: startDateObj ? startDateObj.toISOString().slice(0, 19).replace('T', ' ') : null,
-        endDate: endDateObj ? endDateObj.toISOString().slice(0, 19).replace('T', ' ') : null,
+        startDate: startDateObj ? startDateObj.toISOString().split('T')[0] : null,
+        endDate: endDateObj ? endDateObj.toISOString().split('T')[0] : null,
       });
 
       // Define a variable to hold the updated at time
@@ -253,10 +253,10 @@ const { Op } = require('sequelize')
         id: booking.id,
         spotId: booking.spotId,
         userId: booking.userId,
-        startDate: new Date().toISOString().slice(0, 19).replace('T', ' '),
-        endDate: new Date().toISOString().slice(0, 19).replace('T', ' '),
+        startDate: startDateObj ? startDateObj.toISOString().split('T')[0] : null,
+        endDate: endDateObj ? endDateObj.toISOString().split('T')[0] : null,
         createdAt: currentTimestamp,
-        updatedAt: updatedAtTime, 
+        updatedAt: updatedAtTime,
       });
     } catch (error) {
       if (error.name === 'SequelizeValidationError') {
