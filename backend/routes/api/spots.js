@@ -1105,7 +1105,7 @@ router.post('/:spotId/bookings', requireAuth, async (req, res) => {
           },
         ],
       },
-    });
+    })
 
     if (conflictBooking) {
       return res.status(403).json({
