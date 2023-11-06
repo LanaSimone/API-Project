@@ -179,7 +179,7 @@ router.get('/', async (req, res) => {
         name: spot.name,
         description: spot.description,
         price: parseFloat(spot.price),
-        createdAt: spot.createdAt.toISOString().slice(0, 19).replace('T', ' '),
+         createdAt: spot.createdAt.toISOString().slice(0, 19).replace('T', ' '),
         updatedAt: spot.updatedAt.toISOString().slice(0, 19).replace('T', ' '),
         avgRating: 4.5,
         previewImage: 'url-1',
@@ -476,6 +476,17 @@ const validateRequestBody = [
   check('address').notEmpty().withMessage('Street address is required'),
 
 ];
+
+function formatDate(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const seconds = String(date.getSeconds()).padStart(2, '0');
+
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+}
 //update spot
 router.put('/:spotId',  requireAuth,  async (req, res, next) => {
   try {
@@ -591,12 +602,12 @@ router.put('/:spotId',  requireAuth,  async (req, res, next) => {
         name: existingSpot.name,
         description: existingSpot.description,
         price: existingSpot.price,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        createdAt: formatDate(new Date()), // Format the date
+        updatedAt: formatDate(new Date()), // Format the date
       };
       return res.status(200).json(formattedSpot);
     } catch (error) {
-      if (error instanceof SequelizeValidationError) {
+      if (error instanceof Sequelize.ValidationError) {
         const validationErrors = error.errors.reduce((acc, e) => {
           acc[e.path] = e.message;
           return acc;
