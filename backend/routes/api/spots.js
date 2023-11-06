@@ -825,6 +825,7 @@ router.get('/:spotId/reviews', requireAuth,  async (req, res) => {
       // Find all reviews for the spot, including associated user and review images
       const reviews = await Review.findAll({
           where: { spotId },
+          attributes: ['id', 'userId', 'spotId', 'review', 'stars', 'createdAt', 'updatedAt'], // Include the createdAt and updatedAt attributes
           include: [
               {
                   model: User,
@@ -837,14 +838,16 @@ router.get('/:spotId/reviews', requireAuth,  async (req, res) => {
           ],
       });
 
-      const formattedReviews = reviews.map((review) => ({
+      const formattedReviews = reviews.map((review) => {
+        const updatedAt = review.updatedAt ? review.updatedAt.toISOString().slice(0, 19).replace('T', 'Z') : null; // Format updatedAt
+        return {
         id: review.id,
         userId: review.User.id,
         spotId: review.spotId,
         review: review.review,
         stars: review.stars,
-        createdAt: review.createdAt.toISOString(),
-        updatedAt: review.updatedAt.toISOString(),
+        createdAt: review.createdAt.toISOString().replace('T', ' ').split('.')[0], // Format createdAt
+      updatedAt: review.updatedAt.toISOString().replace('T', ' ').split('.')[0], // Format updatedAt
         User: {
           id: review.User.id,
           firstName: review.User.firstName,
@@ -854,7 +857,8 @@ router.get('/:spotId/reviews', requireAuth,  async (req, res) => {
           id: image.id,
           url: image.url,
         })),
-      }));
+      }
+      });
 
       res.status(200).json({ Reviews: formattedReviews });
   } catch (error) {
