@@ -46,7 +46,7 @@ router.post(
     if (!user || !bcrypt.compareSync(password, user.hashedPassword.toString())) {
       // Return a custom "Invalid credentials" response
       return res.status(401).json({ message: 'Invalid credentials' });
-    }
+    };
 
     const safeUser = {
       id: user.id,
