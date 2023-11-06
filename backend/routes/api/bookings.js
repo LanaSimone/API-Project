@@ -253,10 +253,10 @@ const { Op } = require('sequelize')
         id: booking.id,
         spotId: booking.spotId,
         userId: booking.userId,
-        startDate:new Date().toISOString().slice(0, 19).replace('T', ' '),
+        startDate: new Date().toISOString().slice(0, 19).replace('T', ' '),
         endDate: new Date().toISOString().slice(0, 19).replace('T', ' '),
-        createdAt: currentTimestamp, // Use the current timestamp
-        updatedAt: updatedAtTime, // Use the updated updatedAtTime variable
+        createdAt: currentTimestamp,
+        updatedAt: updatedAtTime, 
       });
     } catch (error) {
       if (error.name === 'SequelizeValidationError') {

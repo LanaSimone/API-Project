@@ -993,13 +993,15 @@ router.get('/:spotId/bookings', requireAuth,  async (req, res) => {
           userId: booking.userId,
           startDate: booking.startDate.toISOString().split('T')[0],
           endDate: booking.endDate.toISOString().split('T')[0],
+          createdAt: booking.createdAt.toISOString().slice(0, 19).replace('T', ' '), // Format createdAt
+          updatedAt: booking.updatedAt.toISOString().slice(0, 19).replace('T', ' '), // Format updatedAt
         };
 
         // Include createdAt and updatedAt for the owner
-        if (isOwner) {
-          bookingData.createdAt = booking.createdAt;
-          bookingData.updatedAt = booking.updatedAt;
-        }
+        // if (isOwner) {
+        //   bookingData.createdAt = booking.createdAt;
+        //   bookingData.updatedAt = booking.updatedAt;
+        // }
 
         return bookingData;
       });
