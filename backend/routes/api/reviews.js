@@ -186,8 +186,8 @@ router.put('/:reviewId', requireAuth,  async (req, res) => {
       spotId: existingReview.Spot.id, // Use the Spot association to get spotId
       review: existingReview.review,
       stars: existingReview.stars,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      createdAt: new Date().toISOString().replace('T', ' ').split('.')[0], // Format createdAt
+      updatedAt: new Date().toISOString().replace('T', ' ').split('.')[0], // Format updatedAt
     };
 
     res.status(200).json(formattedResponse);
