@@ -91,8 +91,23 @@ router.get('/current', requireAuth, async (req, res) => {
       const previewImage = SpotImages[0] ? SpotImages[0].url : ''; // Assuming you want the first URL
 
 
-      const formattedCreatedAt = createdAt ? new Date(createdAt).toISOString().slice(0, 19).replace('T', ' ') : '';
-      const formattedUpdatedAt = updatedAt ? new Date(updatedAt).toISOString().slice(0, 19).replace('T', ' ') : '';
+      const formattedCreatedAt = new Date(createdAt).toLocaleString('en-US', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+      });
+
+      const formattedUpdatedAt = new Date(updatedAt).toLocaleString('en-US', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+      });
 
       return {
         id,
