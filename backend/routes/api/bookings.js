@@ -191,6 +191,7 @@ const { Op } = require('sequelize')
       const existingBookings = await Bookings.findAll({
         where: {
           spotId: booking.spotId,
+
           [Op.or]: [
             {
               startDate: { [Op.lte]: endDateObj },
@@ -243,17 +244,19 @@ const { Op } = require('sequelize')
       });
 
       // Define a variable to hold the updated at time
-      const updatedAtTime = booking.updatedAt ? (booking.updatedAt.toISOString().slice(0, 19).replace('T', ' ')) : null;
+      const updatedAtTime =new Date().toISOString().slice(0, 19).replace('T', ' ');
+      // Define a variable to hold the current timestamp
+      const currentTimestamp = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
       // Return the updated booking
       res.status(200).json({
         id: booking.id,
         spotId: booking.spotId,
         userId: booking.userId,
-        startDate: startDateObj ? (startDateObj.toISOString().slice(0, 19).replace('T', ' ')) : null,
-        endDate: endDateObj ? (endDateObj.toISOString().slice(0, 19).replace('T', ' ')) : null,
-        createdAt: "2030-09-22 00:00:00",
-        updatedAt: "2030-09-22 00:00:00",
+        startDate:new Date().toISOString().slice(0, 19).replace('T', ' '),
+        endDate: new Date().toISOString().slice(0, 19).replace('T', ' '),
+        createdAt: currentTimestamp, // Use the current timestamp
+        updatedAt: updatedAtTime, // Use the updated updatedAtTime variable
       });
     } catch (error) {
       if (error.name === 'SequelizeValidationError') {
