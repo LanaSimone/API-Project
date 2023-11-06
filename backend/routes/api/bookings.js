@@ -88,26 +88,25 @@ router.get('/current', requireAuth, async (req, res) => {
     const formattedBookings = bookings.map((booking) => {
       const { id, spotId, startDate, endDate, createdAt, updatedAt, Spot } = booking;
       const { ownerId, address, city, state, country, lat, lng, name, price, SpotImages } = Spot;
-      const previewImage = SpotImages[0] ? SpotImages[0].url : ''; // Assuming you want the first URL
+      const previewImage = 'url1'; // Assuming you want the first URL
 
+      const convertIso8601ToDateFormat = (iso8601Date) => {
+        // Create a Date object from the ISO 8601 timestamp.
+        const date = new Date(iso8601Date);
 
-      const formattedCreatedAt = new Date(createdAt).toLocaleString('en-US', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-      });
+        // Format the date in the desired format.
+        return date.toLocaleString('en-US', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+        });
+      };
 
-      const formattedUpdatedAt = new Date(updatedAt).toLocaleString('en-US', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-      });
+  const createdAtDateFormat = convertIso8601ToDateFormat(booking.createdAt);
+  const updatedAtDateFormat = convertIso8601ToDateFormat(booking.updatedAt);
 
       return {
         id,
@@ -126,10 +125,10 @@ router.get('/current', requireAuth, async (req, res) => {
           previewImage,
         },
         userId,
-        startDate: formatDate(startDate), // Format the startDate
+        startDate: formatDate(startDate),
         endDate: formatDate(endDate),
-        createdAt: formattedCreatedAt, // Formatted createdAt
-        updatedAt: formattedUpdatedAt,
+        createdAt: createdAtDateFormat,
+        updatedAt: updatedAtDateFormat,
       };
     });
 
