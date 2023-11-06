@@ -90,23 +90,32 @@ router.get('/current', requireAuth, async (req, res) => {
       const { ownerId, address, city, state, country, lat, lng, name, price, SpotImages } = Spot;
       const previewImage = 'url1'; // Assuming you want the first URL
 
-      const convertIso8601ToDateFormat = (iso8601Date) => {
+      const convertIso8601ToUtc = (iso8601Date) => {
         // Create a Date object from the ISO 8601 timestamp.
         const date = new Date(iso8601Date);
 
-        // Format the date in the desired format.
-        return date.toLocaleString('en-US', {
-          year: 'numeric',
-          month: '2-digit',
-          day: '2-digit',
-          hour: '2-digit',
-          minute: '2-digit',
-          second: '2-digit',
-        });
+        // Get the UTC offset for the date.
+        const utcOffset = date.getTimezoneOffset();
+
+        // Add the UTC offset to the date to convert it to UTC.
+        date.setMinutes(date.getMinutes() + utcOffset);
+
+        // Return the UTC date.
+        return date;
       };
 
-  const createdAtDateFormat = convertIso8601ToDateFormat(booking.createdAt);
-  const updatedAtDateFormat = convertIso8601ToDateFormat(booking.updatedAt);
+
+            const createdAtUtc = convertIso8601ToUtc(booking.createdAt);
+        const updatedAtUtc = convertIso8601ToUtc(booking.updatedAt);
+
+      const formattedCreatedAt = date.toLocaleString('en-US', {
+        timeZone: 'America/Los_Angeles',
+      });
+
+      const formattedUpdatedAt = date.toLocaleString('en-US', {
+        timeZone: 'America/Los_Angeles',
+      });
+
 
       return {
         id,
@@ -127,8 +136,8 @@ router.get('/current', requireAuth, async (req, res) => {
         userId,
         startDate: formatDate(startDate),
         endDate: formatDate(endDate),
-        createdAt: createdAtDateFormat,
-        updatedAt: updatedAtDateFormat,
+        createdAt: formattedCreatedAt,
+    updatedAt: formattedUpdatedAt,
       };
     });
 
