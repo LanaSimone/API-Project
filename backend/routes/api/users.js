@@ -55,7 +55,7 @@ router.post(
           firstName: firstName ? undefined : 'First Name is required',
           lastName: lastName ? undefined : 'Last Name is required',
         },
-      });
+      })
     }
 
     try {
