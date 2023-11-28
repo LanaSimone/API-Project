@@ -12,16 +12,54 @@ router.get("/api/csrf/restore", (req, res) => {
     });
   });
 
-  const apiRouter = require('./api');
-  router.use('/api', apiRouter);
+const apiRouter = require('./api');
+router.use('/api', apiRouter);
 
-  const spotsRouter = require('./api/spots');
+
+
+const spotsRouter = require('./api/spots');
   router.use('/api/spots', spotsRouter);
 
-  // const spotsRouter = require('./api/spots');
-  // router.use('/api/spots', spotsRouter);
+// Static routes
+// Serve React build files in production
+if (process.env.NODE_ENV === 'production') {
+  const path = require('path');
+  // Serve the frontend's index.html file at the root route
+  router.get('/', (req, res) => {
+    res.cookie('XSRF-TOKEN', req.csrfToken());
+    return res.sendFile(
+      path.resolve(__dirname, '../../frontend', 'dist', 'index.html')
+    );
+  });
+    // Serve the static assets in the frontend's build folder
+  router.use(express.static(path.resolve("../frontend/build")));
 
-  // const spotsRouter = require('./api/spots');
-  // router.use('/api/spots', spotsRouter);
+
+
+  // Serve the frontend's index.html file at all other routes NOT starting with /api
+  router.get(/^(?!\/?api).*/, (req, res) => {
+    res.cookie('XSRF-TOKEN', req.csrfToken());
+    return res.sendFile(
+      path.resolve(__dirname, '../../frontend', 'build', 'index.html')
+    );
+  });
+}
+
+if (process.env.NODE_ENV !== 'production') {
+  router.get('/api/csrf/restore', (req, res) => {
+    res.cookie('XSRF-TOKEN', req.csrfToken());
+    return res.json({});
+  });
+}
+
+// router.post('/test', (req, res) => {
+//   console.log('Received POST request to /api/test');
+//   res.json({ requestBody: req.body });
+// });
+
+
+
+
+
 
 module.exports = router;
