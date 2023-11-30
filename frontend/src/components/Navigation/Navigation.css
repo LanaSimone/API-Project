@@ -1,0 +1,8 @@
+.profile-dropdown.hidden {
+    display: none;
+}
+
+.profile-dropdown.show {
+    display: block;
+}
+
