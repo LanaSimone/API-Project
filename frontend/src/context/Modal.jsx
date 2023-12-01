@@ -51,7 +51,7 @@ export function Modal() {
       <div id="modal-content">{modalContent}</div>
     </div>,
     modalRef.current
-  );
+  )
 }
 
 export const useModal = () => useContext(ModalContext);
