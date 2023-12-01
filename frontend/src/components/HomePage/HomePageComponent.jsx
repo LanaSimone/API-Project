@@ -23,7 +23,7 @@ function HomePage() {
       }
     };
 
-    fetchSpots();
+    fetchSpots()
   }, []);
 
   console.log(spots, 'spots')
