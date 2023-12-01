@@ -10,6 +10,10 @@ module.exports = {
     // Assuming you have already retrieved user IDs in this file
     const userIds = [1, 2, 3]; // Use actual user IDs
 
+
+    // Truncate the "Spots" table
+    await queryInterface.bulkDelete('Spots', null, {});
+
     return Promise.all([
       queryInterface.bulkInsert('Spots', [
         {
@@ -72,6 +76,6 @@ module.exports = {
     return Promise.all([
       queryInterface.bulkDelete('Spots', null, {}),
       // Any other table deletions if needed
-    ]);
+    ])
   }
 };
