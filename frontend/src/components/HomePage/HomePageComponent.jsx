@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 function HomePage() {
   const [spots, setSpots] = useState([]);
