@@ -7,6 +7,7 @@ import { Outlet, createBrowserRouter, RouterProvider } from 'react-router-dom';
 import SignupFormPage from './components/SignupFormModal/SignupFromModal';
 import Navigation from './components/Navigation/Navigation';
 import * as sessionActions from './store/session';
+import HomePage from './components/HomePage/HomePageComponent';
 
 
 function Layout() {
@@ -33,7 +34,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <h1>Welcome!</h1>
+        element: <HomePage />
       },
       {
         path: "signup",
