@@ -7,7 +7,7 @@ import { Outlet, createBrowserRouter, RouterProvider } from 'react-router-dom';
 import SignupFormPage from './components/SignupFormModal/SignupFromModal';
 import Navigation from './components/Navigation/Navigation';
 import * as sessionActions from './store/session';
-import HomePage from './components/HomePage/HomePage';
+import HomePage from './components/HomePage/HomePageComponent';
 
 
 function Layout() {
