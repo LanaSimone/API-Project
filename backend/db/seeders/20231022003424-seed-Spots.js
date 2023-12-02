@@ -30,7 +30,7 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date(),
           avgStarRating: 3,
-          previewImage: "url-3"
+          previewImage: "images\aribnbVernon.jpg"
         },
         {
           ownerId: userIds[1], // Use the ID of the second user
@@ -46,7 +46,7 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date(),
           avgStarRating: 5,
-          previewImage: "url-2"
+          previewImage: "images\airbnbMachester1.jpg"
         },
         {
           ownerId: userIds[2], // Use the ID of the third user
@@ -62,7 +62,7 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date(),
           avgStarRating: 2,
-          previewImage: "url-1"
+          previewImage: "images\airbnbNewyork.jpg"
         },
         // Add more data objects for Spots as needed
       ]),

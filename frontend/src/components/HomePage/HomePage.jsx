@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import './HomePage.css'
 
 function HomePage() {
   const [spots, setSpots] = useState([]);

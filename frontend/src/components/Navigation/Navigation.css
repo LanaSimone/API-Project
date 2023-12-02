@@ -6,3 +6,15 @@
     display: block;
 }
 
+.NavBar {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    list-style: none;
+    margin-right: 17px;
+
+}
+
+.navLink {
+    padding-right: 10px;
+}
