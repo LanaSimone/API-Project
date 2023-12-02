@@ -66,6 +66,6 @@ module.exports = {
     } catch (error) {
       console.error('Error during SpotImages deletion:');
       console.error(error);
-    }
+    };
   }
 };
