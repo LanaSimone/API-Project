@@ -35,7 +35,7 @@ function HomePage() {
         {spots.map((spot) => (
           <div key={spot.id} className="spot-tile">
             {/* Thumbnail image */}
-            <img src={spot.thumbnailUrl} alt={`Thumbnail for ${spot.city}, ${spot.state}`} />
+            <img src={`../images/spot-${spot.id}.jpg`} alt={`Thumbnail for ${spot.city}, ${spot.state}`} />
 
             {/* City and State */}
             <p>{spot.city}, {spot.state}</p>

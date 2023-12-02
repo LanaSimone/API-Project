@@ -10,10 +10,6 @@ module.exports = {
     // Assuming you have already retrieved user IDs in this file
     const userIds = [1, 2, 3]; // Use actual user IDs
 
-
-    // Truncate the "Spots" table
-    await queryInterface.bulkDelete('Spots', null, {});
-
     return Promise.all([
       queryInterface.bulkInsert('Spots', [
         {
@@ -30,7 +26,7 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date(),
           avgStarRating: 3,
-          // previewImage: "images\aribnbVernon.jpg"
+          previewImage: "url-3"
         },
         {
           ownerId: userIds[1], // Use the ID of the second user
@@ -41,12 +37,12 @@ module.exports = {
           lat: 910.482,
           lng: 321.192,
           name: 'Spot 2',
-          description: 'The views from the park are to die for ',
+          description: 'The views from the park are to die for',
           price: 80.0,
           createdAt: new Date(),
           updatedAt: new Date(),
           avgStarRating: 5,
-          // previewImage: "images\airbnbMachester1.jpg"
+          previewImage: "url-2"
         },
         {
           ownerId: userIds[2], // Use the ID of the third user
@@ -62,7 +58,7 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date(),
           avgStarRating: 2,
-          // previewImage: "images\airbnbNewyork.jpg"
+          previewImage: "url-1"
         },
         // Add more data objects for Spots as needed
       ]),
@@ -76,6 +72,6 @@ module.exports = {
     return Promise.all([
       queryInterface.bulkDelete('Spots', null, {}),
       // Any other table deletions if needed
-    ])
+    ]);
   }
 };

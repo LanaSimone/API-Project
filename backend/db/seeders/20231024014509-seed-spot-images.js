@@ -14,18 +14,18 @@ module.exports = {
 
     const spotImages = [
       {
-        spotId: spotIds[0].id, // Use the ID of the first user
-        url: 'images\aribnbVernon.jpg',
+        spotId: spotIds[0], // Use the ID of the first user
+        url: 'url-1',
         preview: true,
       },
       {
-        spotId: spotIds[1].id, // Use the ID of the second spot
-        url: 'images\airbnbMachester1.jpg',
+        spotId: spotIds[1], // Use the ID of the second spot
+        url: 'url-2',
         preview: true,
       },
       {
-        spotId: spotIds[2].id, // Use the ID of the third spot
-        url: 'images\airbnbNewyork.jpg',
+        spotId: spotIds[2], // Use the ID of the third spot
+        url: 'url-3',
         preview: false,
       },
       // Add more data objects for Spots as needed
@@ -53,6 +53,6 @@ module.exports = {
 
     } catch (error) {
 
-    };
+    }
   }
 };
