@@ -191,10 +191,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.FLOAT, // or another appropriate data type
       allowNull: true, // or false, depending on your requirements
     },
-    previewImage: {
-      type: DataTypes.STRING(50),
-      allowNull: true, // or false, depending on your requirements
-    },
+   
   }, {
     sequelize,
     modelName: 'Spots',
