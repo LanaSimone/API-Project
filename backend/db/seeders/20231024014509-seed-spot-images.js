@@ -22,7 +22,7 @@ module.exports = {
         preview: true,
       },
       // Add more data objects for SpotImages as needed
-    ];
+    ]
 
     try {
       await queryInterface.bulkInsert('SpotImages', spotImages, {});
