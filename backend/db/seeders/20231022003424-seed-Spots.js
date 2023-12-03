@@ -25,7 +25,7 @@ module.exports = {
           price: 20.0,
           createdAt: new Date(),
           updatedAt: new Date(),
-          avgStarRating: 3
+          avgStarRating: 3,
           // previewImage: "../images/spot-1.jpg"
         },
         {
