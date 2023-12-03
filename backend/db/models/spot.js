@@ -42,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
 
     }
     // Adding a hook to set previewImage before saving the Spot
-    static async beforeCreat(spot, options) {
+    static async beforeCreate(spot, options) {
   console.log('!!!!!!!!!!!!!!Before save hook executed for Spot:', spot.id);
 
   // Use sequelize instance to access SpotImage model
@@ -191,7 +191,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.FLOAT, // or another appropriate data type
       allowNull: true, // or false, depending on your requirements
     },
-   
+
   }, {
     sequelize,
     modelName: 'Spots',

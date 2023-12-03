@@ -28,6 +28,7 @@ module.exports = {
       await queryInterface.bulkInsert('SpotImages', spotImages, {});
 
       // Fetch SpotImages to set previewImage in Spots
+         // Fetch SpotImages to set previewImage in Spots
       const spots = await queryInterface.sequelize.query('SELECT id FROM "Spots";', {
         type: queryInterface.sequelize.QueryTypes.SELECT,
       });
