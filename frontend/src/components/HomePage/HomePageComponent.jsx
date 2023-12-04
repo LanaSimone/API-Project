@@ -1,6 +1,4 @@
 import { useState, useEffect } from 'react';
-// import spot1 from '/images/spot1.jpg';
-// import spot1 from '../images/spot1.jpg';
 
 function HomePage() {
   const [spots, setSpots] = useState([]);
@@ -33,16 +31,13 @@ function HomePage() {
     <div>
       <h1>Home Page</h1>
       <div>
-        {/* <h2>Spot List</h2> */}
-
         <ul>
           {spots.map((spot) => (
             <li key={spot.id}>
-              {/* Render each spot information here */}
               <div>
-                {spot.previewImage && (
-                  <img src={spot.previewImage} alt={`Thumbnail for ${spot.name}`} />
-                )}
+                {/* Log the image URL to the console for debugging */}
+                {console.log('Image URL:', spot.previewImage)}
+                <img src={spot.previewImage} alt={`Thumbnail for ${spot.name}`} />
               </div>
               <div>
                 <h3>{spot.name}</h3>
