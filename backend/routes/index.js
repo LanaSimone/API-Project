@@ -87,6 +87,7 @@ if (process.env.NODE_ENV === 'production') {
     router.use(express.static(path.resolve("../frontend/dist")));
     router.use('/images', express.static(path.join(__dirname, 'db/images')));
 
+
   // console.log('Resolved Images Directory Path:', path.join(__dirname, 'images'));
 
   // Serve the frontend's index.html file at all other routes NOT starting with /api

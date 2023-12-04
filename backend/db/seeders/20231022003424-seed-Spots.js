@@ -1,15 +1,29 @@
 'use strict';
 const path = require('path');
+const axios = require('axios');
+
 
 let options = {};
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;  // define your schema in the options object
 }
 
+
+async function downloadImageToBase64(imageUrl) {
+  const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
+  const base64Data = Buffer.from(response.data, 'binary').toString('base64');
+  return base64Data;
+}
+
 module.exports = {
   async up(queryInterface, Sequelize) {
     // Assuming you have already retrieved user IDs in this file
     const userIds = [1, 2, 3]; // Use actual user IDs
+
+     // Download and convert image from URL to base64
+    const imageUrl3 = 'https://images.squarespace-cdn.com/content/v1/58ac50503a0411fac303cd5b/1487772918739-6XRN8KC47VZ0TKMWH5YO/image-asset.jpeg?format=2500w';
+    const previewImageBase64 = await downloadImageToBase64(imageUrl3);
+
 
     return Promise.all([
       queryInterface.bulkInsert('Spots', [
@@ -27,7 +41,7 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date(),
           avgStarRating: 3,
-         previewImage: 'images/spot-1.jpg'
+         previewImage: previewImageBase64
 
         },
         {
@@ -44,7 +58,7 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date(),
           avgStarRating: 5,
-          previewImage: 'images/spot-2.jpg'
+          previewImage: previewImageBase64
         },
         {
           ownerId: userIds[2], // Use the ID of the third user
@@ -60,7 +74,7 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date(),
           avgStarRating: 2,
-          previewImage: 'images/spot-3.jpg'
+          previewImage: previewImageBase64,
         },
         // Add more data objects for Spots as needed
       ]),
