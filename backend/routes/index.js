@@ -66,6 +66,7 @@ const apiRouter = require('./api');
 // module.exports = router;
 
 
+
 router.use('/api', apiRouter);
 
 
@@ -78,14 +79,15 @@ if (process.env.NODE_ENV === 'production') {
     res.cookie('XSRF-TOKEN', req.csrfToken());
     res.sendFile(
       path.resolve(__dirname, '../../frontend', 'dist', 'index.html')
-    );
-  });
+      );
+    });
 
 
-  // Serve the static assets in the frontend's build folder
-  router.use(express.static(path.resolve("../frontend/dist")));
+    // Serve the static assets in the frontend's build folder
+    router.use(express.static(path.resolve("../frontend/dist")));
+    router.use('/images', express.static(path.join(__dirname, 'db/images')));
+
   // console.log('Resolved Images Directory Path:', path.join(__dirname, 'images'));
-  router.use('/images', express.static(path.join(__dirname, 'db/images')));
 
   // Serve the frontend's index.html file at all other routes NOT starting with /api
   router.get(/^(?!\/?api).*/, (req, res) => {
