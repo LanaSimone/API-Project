@@ -279,10 +279,10 @@ router.get('/', async (req, res) => {
         name: spot.name,
         description: spot.description,
         price: parseFloat(spot.price),
-         createdAt: spot.createdAt.toISOString().slice(0, 19).replace('T', ' '),
+        createdAt: spot.createdAt.toISOString().slice(0, 19).replace('T', ' '),
         updatedAt: spot.updatedAt.toISOString().slice(0, 19).replace('T', ' '),
         avgRating: 4.5,
-        previewImage: 'url-1',
+        previewImage: spot.previewImage,
       };
     });
 
