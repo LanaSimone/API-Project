@@ -1,9 +1,16 @@
 'use strict';
 
+let options = {};
+if (process.env.NODE_ENV === 'production') {
+  options.schema = process.env.SCHEMA;  // define your schema in the options object
+}
+
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     // Assuming you have already retrieved user IDs in this file
     const spotIds = [1, 2, 3]; // Use actual spot IDs
+
 
     const spotImages = [
       {
@@ -19,39 +26,16 @@ module.exports = {
       {
         spotId: spotIds[2], // Use the ID of the third spot
         url: '../images/spot-3.jpg',
-        preview: true,
+        preview: false,
       },
-      // Add more data objects for SpotImages as needed
-    ]
+      // Add more data objects for Spots as needed
+    ];
+
+
 
     try {
       await queryInterface.bulkInsert('SpotImages', spotImages, {});
 
-      // Fetch SpotImages to set previewImage in Spots
-         // Fetch SpotImages to set previewImage in Spots
-      const spots = await queryInterface.sequelize.query('SELECT id FROM "Spots";', {
-        type: queryInterface.sequelize.QueryTypes.SELECT,
-      });
-
-      for (const spot of spots) {
-        const previewImage = await queryInterface.sequelize.query(
-          'SELECT url FROM "SpotImages" WHERE spotId = :spotId AND preview = true LIMIT 1;',
-          {
-            replacements: { spotId: spot.id },
-            type: queryInterface.sequelize.QueryTypes.SELECT,
-          }
-        );
-
-        if (previewImage.length > 0) {
-          await queryInterface.sequelize.query(
-            'UPDATE "Spots" SET "previewImage" = :url WHERE id = :spotId;',
-            {
-              replacements: { spotId: spot.id, url: previewImage[0].url },
-              type: queryInterface.sequelize.QueryTypes.UPDATE,
-            }
-          );
-        }
-      }
     } catch (error) {
       console.error('Error during SpotImages seeding:');
       console.error(error);
@@ -59,14 +43,16 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    // Assuming you have already retrieved user IDs in this file
-    const spotIds = [1, 2, 3]; // Use actual spot IDs
+
+
+    // Corrected this line
+    options.tableName = 'SpotImages';
 
     try {
-      await queryInterface.bulkDelete('SpotImages', { spotId: spotIds }, {});
+      await queryInterface.bulkDelete('SpotImages', null, {});
+
     } catch (error) {
-      console.error('Error during SpotImages deletion:');
-      console.error(error);
-    };
+
+    }
   }
 };
