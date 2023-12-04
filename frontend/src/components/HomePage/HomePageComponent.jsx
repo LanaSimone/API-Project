@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+// import spot1 from '/images/spot1.jpg';
+// import spot1 from '../images/spot1.jpg';
 
 function HomePage() {
   const [spots, setSpots] = useState([]);
@@ -31,7 +33,8 @@ function HomePage() {
     <div>
       <h1>Home Page</h1>
       <div>
-        <h2>Spot List</h2>
+        {/* <h2>Spot List</h2> */}
+
         <ul>
           {spots.map((spot) => (
             <li key={spot.id}>
