@@ -37,7 +37,7 @@ function HomePage() {
               <div>
                 {/* Log the image URL to the console for debugging */}
                 {console.log('Image URL:', spot.previewImage)}
-                <img src={spot.previewImage} alt={`Thumbnail for ${spot.name}`} />
+                <img src={spot.previewImage} alt={spot.name} />
               </div>
               <div>
                 <h3>{spot.name}</h3>
