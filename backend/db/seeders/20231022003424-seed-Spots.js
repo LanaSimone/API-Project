@@ -27,7 +27,7 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date(),
           avgStarRating: 3,
-          previewImage: path.join(__dirname, '../images/spot-1.jpg')
+          previewImage: 'images/spot-1.jpg'
 
         },
         {
@@ -44,7 +44,7 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date(),
           avgStarRating: 5,
-          previewImage: path.join(__dirname, '../images/spot-2.jpg')
+          previewImage: 'images/spot-2.jpg'
         },
         {
           ownerId: userIds[2], // Use the ID of the third user
@@ -60,7 +60,7 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date(),
           avgStarRating: 2,
-          previewImage: path.join(__dirname, '../images/spot-3.jpg')
+          previewImage: 'images/spot-3.jpg'
         },
         // Add more data objects for Spots as needed
       ]),
