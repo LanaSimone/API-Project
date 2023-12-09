@@ -44,15 +44,14 @@ function SpotDetails() {
         reviewsData.Reviews
       ) {
         const formattedSpot = {
-  ...detailsData,
-  SpotImages: Array.isArray(detailsData.SpotImages)
-    ? detailsData.SpotImages.map((image) => ({
-        ...image,
-        // Use the original URL instead of attempting to convert it to base64
-        url: image.url,
-      }))
-    : [],
-};
+          ...detailsData,
+          SpotImages: Array.isArray(detailsData.SpotImages)
+            ? detailsData.SpotImages.map((image) => ({
+              ...image,
+              url: `data:image/jpeg;base64,${image.url}`,
+            }))
+            : [],
+        }
 
         setSpotDetails(formattedSpot);
         setReviews(reviewsData.Reviews);

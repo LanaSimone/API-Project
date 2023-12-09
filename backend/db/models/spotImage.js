@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     url: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.STRING(1000000000000),
       allowNull: false,
     },
     preview: {
