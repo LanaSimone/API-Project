@@ -18,49 +18,68 @@ function SpotDetails() {
   const { setModalContent } = useModal();
   const [ setReviewError] = useState(null);
 
-  const fetchSpotDetailsAndReviews = useCallback(async () => {
-    try {
-      const detailsResponse = await fetch(`/api/spots/${spotId}`);
-      const reviewsResponse = await fetch(`/api/spots/${spotId}/reviews`);
 
-      if (!detailsResponse.ok || !reviewsResponse.ok) {
-        throw new Error('Failed to fetch spot details or reviews');
-      }
+const fetchSpotDetailsAndReviews = useCallback(async () => {
+  try {
+    const detailsResponse = await fetch(`/api/spots/${spotId}`);
+    console.log({ spotId }, 'spotId');
+    const reviewsResponse = await fetch(`/api/spots/${spotId}/reviews`);
 
-      const detailsData = await detailsResponse.json();
-      const reviewsData = await reviewsResponse.json();
-
-      if (
-        detailsData &&
-        detailsData.name &&
-        detailsData.city &&
-        detailsData.state &&
-        detailsData.country &&
-        detailsData.description &&
-        detailsData.price &&
-        detailsData.numReviews &&
-        reviewsData &&
-        reviewsData.Reviews
-      ) {
-        const formattedSpot = {
-          ...detailsData,
-          SpotImages: Array.isArray(detailsData.SpotImages)
-            ? detailsData.SpotImages.map((image) => ({
-              ...image,
-              url: `data:image/jpeg;base64,${image.url}`,
-            }))
-            : [],
-        }
-
-        setSpotDetails(formattedSpot);
-        setReviews(reviewsData.Reviews);
-      } else {
-        console.error('Invalid data format:', detailsData, reviewsData);
-      }
-    } catch (error) {
-      console.error('Error fetching spot details or reviews:', error);
+    if (!detailsResponse.ok || !reviewsResponse.ok) {
+      throw new Error('Failed to fetch spot details or reviews');
     }
-  }, [spotId, setSpotDetails, setReviews]);
+
+    const detailsData = await detailsResponse.json();
+    const reviewsData = await reviewsResponse.json();
+
+    if (
+      detailsData &&
+      detailsData.name &&
+      detailsData.city &&
+      detailsData.state &&
+      detailsData.country &&
+      detailsData.description &&
+      detailsData.price &&
+      detailsData.numReviews &&
+      reviewsData &&
+      reviewsData.Reviews
+    ) {
+      const formattedSpot = {
+        ...detailsData,
+        SpotImages: Array.isArray(detailsData.SpotImages)
+          ? detailsData.SpotImages.map((image) => {
+              // Log each image item for debugging
+              console.log('Image item:', image);
+
+              // Extract Base64 data from the image object
+              const base64Data =
+                typeof image.data === 'string'
+                  ? image.data
+                  : typeof image.data === 'object' &&
+                    (image.data.propertyName || image.data.data);
+
+              if (!base64Data) {
+                console.error('Invalid image data:', image.data);
+                return null; // Skip rendering this image
+              }
+
+              return {
+                ...image,
+                url: `data:image/jpeg;base64,${base64Data}`,
+              };
+            })
+          : [],
+      };
+
+      setSpotDetails(formattedSpot);
+      setReviews(reviewsData.Reviews);
+    } else {
+      console.error('Invalid data format:', detailsData, reviewsData);
+    }
+  } catch (error) {
+    console.error('Error fetching spot details or reviews:', error);
+  }
+}, [spotId, setSpotDetails, setReviews]);
 
   const getCookie = (name) => {
     const cookieValue = document.cookie
@@ -104,6 +123,8 @@ function SpotDetails() {
     return <p>Loading...</p>;
   }
 
+  console.log('Spot Details:', spotDetails);
+
   const openPostReviewModal = () => {
     setModalContent(
       <PostReviewModal
@@ -116,26 +137,50 @@ function SpotDetails() {
   };
 
   return (
-    <div className='spot-page-container'>
+    <div className="spot-page-container">
       <div className="spot-details-container">
         <div className="spot-info-container">
           <h1 className="spot-name">{spotDetails.name}</h1>
           <p className="location">{`${spotDetails.city}, ${spotDetails.state}, ${spotDetails.country}`}</p>
         </div>
         <div className="spot-images">
-          {spotDetails.SpotImages.map((image, index) => (
-            <img
-              key={index}
-              src={image.url}
-              alt={`Image ${index}`}
-              className={index === 0 ? 'large-image' : 'small-image'}
-            />
-          ))}
+         {spotDetails.SpotImages.map((image, index) => {
+  console.log('Image Data:', image.data, typeof image.data); // Log the image data and its type for debugging
+
+  if (!image.data || (typeof image.data !== 'string' && !Buffer.isBuffer(image.data))) {
+    console.error('Invalid image data:', image.data);
+    return null; // Skip rendering this image
+  }
+
+  let base64Data;
+
+  if (typeof image.data === 'string') {
+    // If it's already a string, use it
+    base64Data = image.data;
+  } else if (Buffer.isBuffer(image.data)) {
+    // If it's a Buffer, convert it to base64
+    base64Data = image.data.toString('base64');
+  } else {
+    console.error('Unsupported image data type:', typeof image.data);
+    return null; // Skip rendering this image
+  }
+
+  console.log('Base64 Data:', base64Data); // Log the extracted Base64 data
+
+  return (
+    <img
+      key={index}
+      src={`data:image/jpeg;base64,${base64Data}`}
+      alt={`Image ${index}`}
+      className={index === 0 ? 'large-image' : 'small-image'}
+    />
+  );
+})}
         </div>
       </div>
       <div className="spot-content">
         <div className="description-box">
-          <p className="spot-host">Hosted By {`${spotDetails.Owner.firstName} ${spotDetails.Owner.lastName}`}</p>
+          <p className="spot-host">{`Hosted By ${spotDetails.Owner.firstName} ${spotDetails.Owner.lastName}`}</p>
           <p className="spot-description">{spotDetails.description}</p>
         </div>
         <div className="price-rating-reviews-box">
@@ -143,18 +188,20 @@ function SpotDetails() {
           <div className="star-rating-box">
             <FontAwesomeIcon icon={solidStar} className="review-icon" />
             <p>{spotDetails.avgStarRating}</p>
-          <FontAwesomeIcon icon={faCircle} className='circle' />
+            <FontAwesomeIcon icon={faCircle} className="circle" />
           </div>
-          <p className="spot-reviews">{spotDetails.numReviews} reviews</p>
-          <button className="reserve-button" onClick={() => alert('Feature Coming Soon...')}>Reserve</button>
+          <p className="spot-reviews">{`${spotDetails.numReviews} reviews`}</p>
+          <button className="reserve-button" onClick={() => alert('Feature Coming Soon...')}>
+            Reserve
+          </button>
         </div>
       </div>
       <div className="reviews-container">
-        <div className='reviews-header'>
+        <div className="reviews-header">
           <FontAwesomeIcon icon={solidStar} className="review-icon" />
           <p className="review-text">{spotDetails.avgStarRating}</p>
-          <FontAwesomeIcon icon={faCircle} className='circle' />
-          <p className="reviews-title">{spotDetails.numReviews} reviews</p>
+          <FontAwesomeIcon icon={faCircle} className="circle" />
+          <p className="reviews-title">{`${spotDetails.numReviews} reviews`}</p>
         </div>
         <button onClick={() => openPostReviewModal(spotId)}>Post Your Review</button>
 
