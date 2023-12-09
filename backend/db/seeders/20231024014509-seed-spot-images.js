@@ -19,52 +19,63 @@ module.exports = {
 
     const imageUrl1 = 'https://media.architecturaldigest.com/photos/55f9e0394254f7de3455d6f9/master/w_1600%2Cc_limit/dam-images-daily-2015-05-ct-estate-greenwich-connecticut-english-style-estate-for-sale-02.jpg';
     const previewImageBase641 = await downloadImageToBase64(imageUrl1);
+    console.log('Length of previewImageBase641:', previewImageBase641.length);
 
     const imageUrl2 = 'https://media.architecturaldigest.com/photos/627155f88860a6509c871129/16:9/w_320%2Cc_limit/Chauncey%2520Boothby%25204-%2520Read%2520McKendree.jpg';
     const previewImageBase642 = await downloadImageToBase64(imageUrl2);
+    console.log('Length of previewImageBase642:', previewImageBase642.length);
 
     const imageUrl3 = 'https://images.mansionglobal.com/im-263914/?size=0&width=1280';
     const previewImageBase643 = await downloadImageToBase64(imageUrl3);
+    console.log('Length of previewImageBase643:', previewImageBase643.length);
 
     const imageUrl4 = 'https://townsquare.media/site/677/files/2022/03/attachment-14-15.jpg?w=980&q=75';
     const previewImageBase644 = await downloadImageToBase64(imageUrl4);
+    console.log('Length of previewImageBase644:', previewImageBase644.length);
 
     const imageUrl5 = 'https://townsquare.media/site/677/files/2022/06/attachment-10-35.jpg?w=980&q=75';
     const previewImageBase645 = await downloadImageToBase64(imageUrl5);
-
-
+    console.log('Length of previewImageBase645:', previewImageBase645.length);
 
     const imageUrl6 = 'https://hgtvhome.sndimg.com/content/dam/images/hgtv/fullset/2021/1/25/0/CI_Evan-Joseph-Images_Central-Park-West-living-room-wide.jpg.rend.hgtvcom.616.411.suffix/1611578666239.jpeg';
     const previewImageBase646 = await downloadImageToBase64(imageUrl6);
+    console.log('Length of previewImageBase646:', previewImageBase646.length);
 
     const imageUrl7 = 'https://i.redd.it/4qmetzsdehz71.jpg';
     const previewImageBase647 = await downloadImageToBase64(imageUrl7);
+    console.log('Length of previewImageBase647:', previewImageBase647.length);
 
     const imageUrl8 = 'https://www.compass.com/m/0/4bee6e21-bb08-45b9-a32c-37b58545180f/origin.jpg';
     const previewImageBase648 = await downloadImageToBase64(imageUrl8);
+    console.log('Length of previewImageBase648:', previewImageBase648.length);
 
     const imageUrl9 = 'https://cdn.vox-cdn.com/thumbor/5ePmcBTkKU0yrSJi3yMwHxAqNIE=/0x0:1200x800/1200x800/filters:focal(504x304:696x496)/cdn.vox-cdn.com/uploads/chorus_image/image/54913735/15_CPW.0.jpg';
     const previewImageBase649 = await downloadImageToBase64(imageUrl9);
+    console.log('Length of previewImageBase649:', previewImageBase649.length);
 
     const imageUrl10 = 'https://robbreport.com/wp-content/uploads/2022/11/15_Central_Park_West_14.jpg?w=1000';
     const previewImageBase6410 = await downloadImageToBase64(imageUrl10);
-
-
+    console.log('Length of previewImageBase6410:', previewImageBase6410.length);
 
     const imageUrl11 = 'https://www.tollbrothers.com/blog/wp-content/uploads/2019/03/160105_EJ_1110_park_0111-Edit.jpg';
     const previewImageBase6411 = await downloadImageToBase64(imageUrl11);
+    console.log('Length of previewImageBase6411:', previewImageBase6411.length);
 
     const imageUrl12 = 'https://www.tollbrothers.com/blog/wp-content/uploads/2019/03/edited2179.jpg';
     const previewImageBase6412 = await downloadImageToBase64(imageUrl12);
+    console.log('Length of previewImageBase6412:', previewImageBase6412.length);
 
     const imageUrl13 = 'https://nypost.com/wp-content/uploads/sites/2/2017/10/05641fifthavenueph452005hires1.jpg?quality=75&strip=all&w=744';
     const previewImageBase6413 = await downloadImageToBase64(imageUrl13);
+    console.log('Length of previewImageBase6413:', previewImageBase6413.length);
 
     const imageUrl14 = 'https://media.architecturaldigest.com/photos/619598440478fa4720349ce4/16:9/w_2560%2Cc_limit/_Workstead_JSF_138.jpeg'
     const previewImageBase6414 = await downloadImageToBase64(imageUrl14);
+    console.log('Length of previewImageBase6414:', previewImageBase6414.length);
 
     const imageUrl15 = 'https://media.architecturaldigest.com/photos/607f04c3c89710bb2f922c21/master/w_1600%2Cc_limit/*Workstead_JSF_237.jpg';
     const previewImageBase6415 = await downloadImageToBase64(imageUrl15);
+    console.log('Length of previewImageBase6415:', previewImageBase6415.length);
 
     const spotImages = [
       {
