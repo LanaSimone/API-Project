@@ -537,6 +537,7 @@ router.post('/', requireAuth, async (req, res) => {
 // });
 
 router.get('/:spotId', async (req, res) => {
+  console.log('Fetching spot details for spotId:', req.params.spotId);
   try {
     const spotId = req.params.spotId;
 
@@ -1002,7 +1003,8 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
 
 
 
-router.get('/:spotId/reviews',  async (req, res) => {
+router.get('/:spotId/reviews', async (req, res) => {
+  console.log('Fetching reviews for spotId:', req.params.spotId);
   const spotId = req.params.spotId;
 
   try {
@@ -1053,6 +1055,7 @@ router.get('/:spotId/reviews',  async (req, res) => {
 
 //create a review
 router.post('/:spotId/reviews', async (req, res) => {
+
   try {
     const spotId = req.params.spotId;
     const userId = req.user.id;

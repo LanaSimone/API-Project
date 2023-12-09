@@ -20,9 +20,9 @@ function SpotDetails() {
 
   const fetchSpotDetailsAndReviews = useCallback(async () => {
     try {
-      const detailsResponse = await fetch(`/spots/${spotId}`);
+      const detailsResponse = await fetch(`/api/spots/${spotId}`);
       console.log({spotId}, 'spotId')
-      const reviewsResponse = await fetch(`/spots/${spotId}/reviews`);
+      const reviewsResponse = await fetch(`/api/spots/${spotId}/reviews`);
 
       if (!detailsResponse.ok || !reviewsResponse.ok) {
         throw new Error('Failed to fetch spot details or reviews');
@@ -44,14 +44,15 @@ function SpotDetails() {
         reviewsData.Reviews
       ) {
         const formattedSpot = {
-          ...detailsData,
-          SpotImages: Array.isArray(detailsData.SpotImages)
-            ? detailsData.SpotImages.map((image) => ({
-              ...image,
-              url: `${image.url}`,
-            }))
-            : [],
-        }
+  ...detailsData,
+  SpotImages: Array.isArray(detailsData.SpotImages)
+    ? detailsData.SpotImages.map((image) => ({
+        ...image,
+        // Use the original URL instead of attempting to convert it to base64
+        url: image.url,
+      }))
+    : [],
+};
 
         setSpotDetails(formattedSpot);
         setReviews(reviewsData.Reviews);
