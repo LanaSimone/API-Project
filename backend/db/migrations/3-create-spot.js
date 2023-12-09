@@ -73,4 +73,4 @@ module.exports = {
     options.tableName = 'Spots'
     await queryInterface.dropTable('Spots');
   }
-};
+}
