@@ -46,11 +46,11 @@ function SpotDetails() {
           ...detailsData,
           SpotImages: Array.isArray(detailsData.SpotImages)
             ? detailsData.SpotImages.map((image) => ({
-                ...image,
-                url: `data:image/jpeg;base64,${image.url}`,
-              }))
+              ...image,
+              url: `data:image/jpeg;base64,${image.url}`,
+            }))
             : [],
-        }
+        };
 
         setSpotDetails(formattedSpot);
         setReviews(reviewsData.Reviews);
