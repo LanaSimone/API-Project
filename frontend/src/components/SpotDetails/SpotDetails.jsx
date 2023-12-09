@@ -20,9 +20,9 @@ function SpotDetails() {
 
   const fetchSpotDetailsAndReviews = useCallback(async () => {
     try {
-      const detailsResponse = await fetch(`/api/spots/${spotId}`);
+      const detailsResponse = await fetch(`/api/spots/${parseInt(spotId)}`);
       console.log({spotId}, 'spotId')
-      const reviewsResponse = await fetch(`/api/spots/${spotId}/reviews`);
+      const reviewsResponse = await fetch(`/api/spots/${parseInt(spotId)}/reviews`);
 
       if (!detailsResponse.ok || !reviewsResponse.ok) {
         throw new Error('Failed to fetch spot details or reviews');
