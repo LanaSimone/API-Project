@@ -50,7 +50,7 @@ function SpotDetails() {
               url: `data:image/jpeg;base64,${image.url}`,
             }))
             : [],
-        };
+        }
 
         setSpotDetails(formattedSpot);
         setReviews(reviewsData.Reviews);
