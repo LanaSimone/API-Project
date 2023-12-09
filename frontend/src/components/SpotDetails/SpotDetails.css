@@ -1,0 +1,193 @@
+/* SpotDetails.css */
+.spot-page-container{
+    max-width: 1000px;
+    margin: 0 auto;
+}
+.spot-details-container {
+    padding: 20px;
+
+}
+
+
+.spot-info-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.spot-name {
+    margin: 0;
+    text-align: left;
+    font-size: 24px;
+}
+
+.spot-host {
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+
+.location {
+    margin: 0;
+    font-size: 14px;
+}
+
+.spot-images {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+}
+
+.large-image {
+    width: 66.66%;
+    height: auto;
+}
+
+.small-image {
+    width: 33.33%;
+    height: auto;
+}
+
+.spot-images img {
+    max-width: 100%;
+    height: auto;
+}
+
+.spot-content {
+    display: flex;
+    flex-wrap: wrap;
+    /* Allow content to wrap to the next line */
+    justify-content: space-between;
+    margin-bottom: 20px;
+    border-bottom: 1px solid black;
+    margin: 20px;
+
+}
+/* .spot-description { */
+    /* margin-top: 40px; */
+    /* Other styles for description */
+/* }
+
+/* .price-rating-reviews-box {
+    border: 1px solid lightgrey;
+    display: flex;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 0px;
+    width: 200px;
+    margin-left: auto;
+    margin-right: 20px;
+} */
+
+.description-box {
+    width: 60%;
+    /* Adjust the width as needed */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+}
+
+
+.price-rating-reviews-box {
+    display: flex;
+    flex-wrap: wrap;
+    /* Allow content to wrap to the next line */
+    align-items: flex-start;
+    border: 1px solid lightgrey;
+
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 20px;
+    width: 280px;
+    white-space: nowrap;
+    margin-bottom: 90px;
+    /* margin-right: px; */
+
+
+}
+
+.spot-price,
+.spot-reviews,
+.spot-rating {
+    margin-right: 10px;
+    /* Add right margin */
+}
+
+
+.spot-price {
+    margin-top: 20px;
+}
+
+.star-rating-box {
+    display: flex;
+    align-items: center;
+    margin-left: 90px;
+    justify-content: flex-end;
+}
+
+.spot-reviews,
+.spot-rating {
+    margin-left: 5px;
+    /* Add left margin */
+}
+
+.spot-price,
+.spot-reviews,
+.star-rating-box {
+    flex: 1;
+    /* Allow items to take equal space */
+}
+
+.spot-rating {
+    margin-left: 10px;
+}
+
+
+.reserve-button {
+    width: 100%;
+    background-color: #FF5A5F;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    /* border-radius: 5px; */
+    margin-top: 10px;
+}
+
+.reviews-container {
+    margin-left: 20px;
+    margin-right: 20px;
+
+}
+
+.reviews-title {
+    margin-left: 5px
+}
+
+.reviews-header {
+  display: flex;
+  align-items: center;
+
+}
+
+.review-icon {
+    /* margin-right: px; */
+    width: 13px;
+    margin-right: 3px;
+    /* Adjust the value as needed */
+}
+
+.review-text {
+    margin-right: 4px;
+    /* Adjust the value as needed */
+}
+
+.review-count {
+    margin-right: 10px;
+    /* Adjust the value as needed */
+}
+ .circle {
+    width: 2px;
+    margin-left: 3px;
+ }

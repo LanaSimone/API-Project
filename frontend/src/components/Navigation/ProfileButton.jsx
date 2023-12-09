@@ -9,6 +9,7 @@ import { faUser } from '@fortawesome/free-regular-svg-icons';
 import OpenModalMenuItem from './OpenModalMenuItem';
 import LoginFormModal from '../LoginFormModal/LoginFormModal';
 import SignupFormModal from '../SignupFormModal/SignupFromModal';
+import './Navigation.css'
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
@@ -42,20 +43,20 @@ function ProfileButton({ user }) {
     closeMenu();
   };
 
-  const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
+  // const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
 
   return (
-    <>
-      <button onClick={toggleMenu}>
+    <div className='navButtonContainer profile-button'> {/* New container */}
+      <button onClick={toggleMenu} className='navButtonContainer'>
         <FontAwesomeIcon icon={faUser} />
       </button>
-      <ul className={ulClassName} ref={ulRef}>
+       <ul className={`profile-dropdown ${showMenu ? 'show' : 'hidden'}`} ref={ulRef}>
         {user ? (
           <>
             <li>{user.username}</li>
             <li>{user.firstName} {user.lastName}</li>
             <li>{user.email}</li>
-            <li>
+            <li className='centered'>
               <button onClick={logout}>Log Out</button>
             </li>
           </>
@@ -74,8 +75,7 @@ function ProfileButton({ user }) {
           </>
         )}
       </ul>
-    </>
+    </div>
   );
 }
-
 export default ProfileButton;

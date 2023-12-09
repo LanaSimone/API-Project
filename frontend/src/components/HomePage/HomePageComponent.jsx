@@ -1,7 +1,12 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import './HomePage.css'
 
 function HomePage() {
   const [spots, setSpots] = useState([]);
+    // const [spots, setSpots] = useState([]);
+  const navigate = useNavigate()  // Create a history object
 
   useEffect(() => {
     const fetchSpots = async () => {
@@ -14,8 +19,14 @@ function HomePage() {
 
         // Check if 'Spots' property exists and is an array
         if (data && data.Spots && Array.isArray(data.Spots)) {
-          console.log('Fetched spots data:', data.Spots);
-          setSpots(data.Spots);
+          // Map over the spots and format the previewImage
+          const formattedSpots = data.Spots.map((spot) => ({
+            ...spot,
+            // Assuming that base64 data is sent as an object
+            previewImage: `data:image/jpeg;base64,${spot.previewImage}`,
+          }));
+
+          setSpots(formattedSpots);
         } else {
           console.error('Invalid data format:', data);
         }
@@ -27,29 +38,31 @@ function HomePage() {
     fetchSpots();
   }, []);
 
+  const handleSpotClick = (spotId) => {
+    // Navigate to the SpotDetails component when a spot tile is clicked
+     navigate(`/details/${spotId}`);
+  };
+
   return (
-    <div>
-      <h1>Home Page</h1>
-      <div>
-        <ul>
-          {spots.map((spot) => (
-            <li key={spot.id}>
+  <div className='homePage'>
+    <ul className='homePageSpotList'>
+      {spots.map((spot) => (
+        <li key={spot.id} className="spotListItem" onClick={() => handleSpotClick(spot.id)}>
+          <div className="spotDetails">
+            <img src={spot.previewImage} alt={spot.name} className="spotImage" title={spot.name} />
+            <div className="textDetails">
               <div>
-                {/* Log the image URL to the console for debugging */}
-                {console.log('Image URL:', spot.previewImage)}
-                <img src={spot.previewImage} alt={spot.name} />
+                <p className="location">{`${spot.city}, ${spot.state}`}</p>
+                <p className="price">{`$ ${spot.price}`}/night</p>
               </div>
-              <div>
-                <h3>{spot.name}</h3>
-                <p>{spot.description}</p>
-                {/* Add more details as needed */}
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
-  );
+              <p className="avgRating">{`${spot.avgRating}`}</p>
+            </div>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+);
 }
 
 export default HomePage;

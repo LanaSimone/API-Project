@@ -21,8 +21,15 @@ module.exports = {
     const userIds = [1, 2, 3]; // Use actual user IDs
 
      // Download and convert image from URL to base64
-    const imageUrl3 = 'https://images.squarespace-cdn.com/content/v1/58ac50503a0411fac303cd5b/1487772918739-6XRN8KC47VZ0TKMWH5YO/image-asset.jpeg?format=2500w';
-    const previewImageBase64 = await downloadImageToBase64(imageUrl3);
+    const imageUrl1 = 'https://s.hdnux.com/photos/01/26/10/64/22580499/6/1200x0.jpg';
+    const previewImageBase641 = await downloadImageToBase64(imageUrl1);
+
+    const imageUrl2 = 'https://images-listings.coldwellbanker.com/CT/17/05/75/55/4/_P/170575554_P00.jpg?width=1024';
+    const previewImageBase642 = await downloadImageToBase64(imageUrl2);
+
+    const imageUrl3 = 'https://wp-tid.zillowstatic.com/streeteasy/2/GettyImages-165493611-fbd491.jpg';
+    const previewImageBase643 = await downloadImageToBase64(imageUrl3);
+
 
 
     return Promise.all([
@@ -41,7 +48,7 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date(),
           avgStarRating: 3,
-         previewImage: previewImageBase64
+          previewImage: previewImageBase641
 
         },
         {
@@ -58,7 +65,7 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date(),
           avgStarRating: 5,
-          previewImage: previewImageBase64
+          previewImage: previewImageBase642
         },
         {
           ownerId: userIds[2], // Use the ID of the third user
@@ -74,7 +81,7 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date(),
           avgStarRating: 2,
-          previewImage: previewImageBase64,
+          previewImage: previewImageBase643,
         },
         // Add more data objects for Spots as needed
       ]),

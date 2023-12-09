@@ -1,0 +1,119 @@
+/* LoginForm.css */
+
+body {
+    margin: 0;
+    padding: 0;
+}
+/* .login-form {
+    /* Other styles */
+    /* border-radius: 10px; */
+/* }  */
+.modal-background {
+    /* position: fixed; */
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Semi-transparent black background */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50px;
+    /* Add this line for rounded corners */
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+    padding: 20px;
+    border-radius: 60px !important;
+    /* Adjust the value as needed for rounded corners */
+    width: 300px;
+    /* Adjust the width as needed */
+}
+
+
+label {
+    margin-bottom: 10px;
+    font-weight: bold;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+input {
+    padding: 8px;
+    margin: 5px 0;
+    width: calc(100% - 40px);
+    /* Adjusted width to leave some space on both sides */
+    box-sizing: border-box;
+    background-color: #e0f7fa;
+    /* Light teal background */
+    /* border: 1px solid #b2dfdb; */
+    /* border-radius: 4px; */
+}
+
+/* Adjusted width of the button */
+.login-form button {
+    width: calc(100% - 6px);
+    padding: 10px 15px;
+    box-sizing: border-box;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+     /* margin-left: 20px; */
+    margin-right: 20px;
+}
+
+/* Enabled Button */
+.login-form button.enabled {
+    background-color: #ff5252;
+    color: white;
+    width: 100%;
+    /* margin-left: 20px;
+    margin-right:20px; */
+}
+
+/* Disabled Button */
+.login-form button.disabled {
+    background-color: white;
+    color: #CCCCCC;
+    border: 1px solid #CCCCCC;
+    cursor: not-allowed;
+    margin-left: 20px;
+
+}
+
+/* Demo User Link */
+.demo-link {
+    margin-top: 10px;
+    /* Adjust the margin to provide space between the button and the link */
+    text-align: center;
+}
+
+.demo-user-link {
+    color:#00525E;
+    /* Dark teal color */
+    text-decoration: underline;
+}
+
+.demo-user-link:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+/* Center the title */
+h1 {
+    text-align: center;
+}
+
+
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+}
+

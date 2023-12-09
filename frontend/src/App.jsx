@@ -8,6 +8,8 @@ import SignupFormPage from './components/SignupFormModal/SignupFromModal';
 import Navigation from './components/Navigation/Navigation';
 import * as sessionActions from './store/session';
 import HomePage from './components/HomePage/HomePageComponent';
+import SpotDetails from './components/SpotDetails/SpotDetails';
+import CreateSpot from './components/CreateSpot/CreateSpot';
 
 
 function Layout() {
@@ -40,6 +42,14 @@ const router = createBrowserRouter([
         path: "signup",
         element: <SignupFormPage />
       },
+      {
+        path: '/details/:spotId',
+        element: <SpotDetails  />
+      },
+      {
+        path: '/create-spot',
+        element: <CreateSpot />
+      }
 
     ]
   }

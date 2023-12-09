@@ -1,0 +1,44 @@
+.createspot {
+    text-align: left;
+}
+
+.heading {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: left;
+    max-width: 600px;
+    margin-left: 250px;
+    /* Center the heading horizontally */
+}
+
+.heading h2,
+.heading h3,
+.heading p {
+    text-align: left;
+    margin-left: 20px;
+}
+
+/* @media (max-width: 1200px) {
+
+
+    .createspot {
+        /* Adjust the styles as needed for this screen size */
+    /* }
+} */
+
+/* @media (max-width: 800px) {
+
+
+    .createspot {
+        /* Adjust the styles as needed for this screen size */
+    /* }
+} */
+
+/* @media (max-width: 600px) {
+
+
+    .createspot { */
+        /* Adjust the styles as needed for this screen size */
+    /* }
+}  */

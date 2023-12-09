@@ -1,0 +1,48 @@
+.star-icon {
+    cursor: pointer;
+}
+
+.review-modal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 400px;
+
+
+}
+
+
+textarea {
+    width: 80%;
+    height: 60px;
+    margin-bottom: 20px;
+    /* border: none; */
+    /* Remove the border */
+    resize: none;
+    background-color: #E8F0FE;
+    /* Remove the resizable icon */
+}
+
+
+
+/* Style for the disabled button */
+button.disabled-button {
+    margin-bottom: 20px;
+    margin-top: 20px;
+    background-color: #FFFFFF;
+    color: #CCCCCC;
+    width: calc(100% - 80px);
+    height: 30px;
+
+
+}
+
+/* Style for the enabled button */
+button.enabled-button {
+    margin-bottom: 20px;
+    margin-top: 20px;
+    background-color: #FF5A5F;
+    color: white;
+    width: calc(100% - 80px);
+    height: 30px;
+}

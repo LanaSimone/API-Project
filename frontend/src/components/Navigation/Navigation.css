@@ -1,20 +1,131 @@
+/* Navigation.css */
+
 .profile-dropdown.hidden {
     display: none;
 }
 
 .profile-dropdown.show {
     display: block;
+
+}
+
+.profile-button {
+    margin-right: 30px;
+    position: relative;
 }
 
 .NavBar {
+    border: 1px solid black;
+    border-radius: 40px;
+    padding: 5px;
+    list-style: none;
     display: flex;
-    justify-content: flex-end;
+    padding-right: 30px;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    cursor: pointer;
+    margin-right: 20px;
+}
+
+.navLinkContainer {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
     list-style: none;
-    margin-right: 17px;
+    border-bottom: 2px solid lightgrey;
+    padding-right: 90px;
+    width: 100%;
+    height: 70px;
+    /* cursor: pointer; */
 
 }
 
 .navLink {
     padding-right: 10px;
+}
+
+@media (max-width: 600px) {
+    .NavBar {
+        align-items: center;
+        padding-left: 20px;
+        padding-right: 990px;
+    }
+
+    .navLink {
+        padding-bottom: 10px;
+    }
+}
+
+.profile-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 20px;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    z-index: 1;
+    width: max-content;
+}
+
+.profile-dropdown.show {
+    display: block;
+}
+
+.profile-button .profile-dropdown {
+    position: absolute;
+    top: calc(100% + 5px);
+    right: 50%;
+    transform: translateX(50%);
+}
+
+.profile-dropdown li {
+    list-style: none;
+    margin: 0;
+    padding: 5px;
+}
+
+.profile-dropdown li.centered {
+    text-align: center;
+}
+
+.profile-dropdown div {
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.profile-dropdown button {
+    background-color: darkgray;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+.profile-dropdown button.logout {
+    border-radius: 20px;
+}
+
+.profile-dropdown button:hover {
+    background-color: #555;
+}
+
+.smaller-image {
+    width: 40px;
+        /* Adjust the width to your desired size */
+    height: auto;
+        /* Maintain the aspect ratio */
+    transform: rotate(180deg);
+    margin-left: 20px;
+    cursor: pointer;
+}
+.navButtonContainer {
+    cursor: pointer;
+}
+
+a {
+    text-decoration: none;
 }
