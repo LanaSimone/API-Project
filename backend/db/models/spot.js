@@ -192,7 +192,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true, // or false, depending on your requirements
     },
     previewImage: {
-      type: DataTypes.STRING(500),
+      type: DataTypes.STRING(100),
       allowNull: true,
     }
 
