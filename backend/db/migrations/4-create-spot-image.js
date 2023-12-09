@@ -23,12 +23,12 @@ module.exports = {
         }
       },
       url: {
-        type: Sequelize.STRING(500),
+        type: Sequelize.STRING(100),
         allowNull: false
       },
       preview: {
         type: Sequelize.BOOLEAN,
-      
+
       },
       createdAt: {
         allowNull: false,
