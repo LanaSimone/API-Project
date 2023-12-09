@@ -64,7 +64,7 @@ module.exports = {
         type: Sequelize.DATE
       },
       previewImage: {
-        type: Sequelize.STRING(500),
+        type: Sequelize.STRING(1000),
         allowNull: true,
       }
     }, options)
