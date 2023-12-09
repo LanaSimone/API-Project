@@ -86,7 +86,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     address: {
-      type: DataTypes.STRING(100),
+      type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notNull: {
@@ -159,7 +159,7 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     description: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notNull: {
@@ -192,7 +192,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true, // or false, depending on your requirements
     },
     previewImage: {
-      type: DataTypes.STRING(100),
+      type: DataTypes.STRING,
       allowNull: true,
     }
 
