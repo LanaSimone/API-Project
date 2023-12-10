@@ -89,15 +89,10 @@ function SpotDetails() {
             ))}
           </div>
         </div>
-      ) : (
-        <p>Loading spot details...</p>
-      )}
+      ) : null}
+
       {spotDetails && (
         <div className="spot-content">
-          <div className="description-box">
-            <p className="spot-host">Hosted By {`${spotDetails.Owner.firstName} ${spotDetails.Owner.lastName}`}</p>
-            <p className="spot-description">{spotDetails.description}</p>
-          </div>
           <div className="price-rating-reviews-box">
             <p className="spot-price">$ {spotDetails.price}/night</p>
             <div className="star-rating-box">
