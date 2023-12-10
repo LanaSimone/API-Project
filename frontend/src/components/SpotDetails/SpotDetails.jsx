@@ -33,7 +33,7 @@ function SpotDetails() {
         console.error('Invalid data format:', data);
       }
     } catch (error) {
-      console.error('Error fetching spot details:', error);
+      console.error('Error fetching spot details:', error.message);
     }
   }, [spotId, setSpotDetails]);
 
