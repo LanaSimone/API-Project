@@ -27,6 +27,7 @@ function SpotDetails() {
       console.log({ spotId: numericSpotId, detailsResponse }, 'spotId');
 
 
+
       const reviewsResponse = await fetch(`/api/spots/${numericSpotId}/reviews`);
 
       if (!detailsResponse.ok || !reviewsResponse.ok) {
@@ -66,6 +67,8 @@ function SpotDetails() {
       }
     } catch (error) {
       console.error('Error fetching spot details or reviews:', error);
+      console.error('Error message:', error.message); // Log the specific error message
+  console.error('Error response:', error.response)
     }
   }, [spotId, setSpotDetails, setReviews]);
 
