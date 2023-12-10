@@ -1,4 +1,4 @@
-import { useState, useEffect,useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useModal } from '../../context/Modal';
@@ -18,7 +18,7 @@ function SpotDetails() {
   const { setModalContent } = useModal();
   const [ setReviewError] = useState(null);
 
-  const fetchSpotDetailsAndReviews = useCallback(async () => {
+  const fetchSpotDetailsAndReviews = useEffect(() => async () => {
     try {
 
       const numericSpotId = parseInt(spotId, 10);
