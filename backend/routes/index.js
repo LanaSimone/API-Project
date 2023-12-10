@@ -4,14 +4,14 @@ const router = express.Router();
 const apiRouter = require('./api');
 
 
-// // Add a XSRF-TOKEN cookie
-router.get("/api/csrf/restore", (req, res) => {
-    const csrfToken = req.csrfToken();
-    res.cookie("XSRF-TOKEN", csrfToken);
-    res.status(200).json({
-      'XSRF-Token': csrfToken
-    });
-  });
+// // // Add a XSRF-TOKEN cookie
+// router.get("/api/csrf/restore", (req, res) => {
+//     const csrfToken = req.csrfToken();
+//     res.cookie("XSRF-TOKEN", csrfToken);
+//     res.status(200).json({
+//       'XSRF-Token': csrfToken
+//     });
+//   });
 
 // const apiRouter = require('./api');
 // router.use('/api', apiRouter);
@@ -85,7 +85,7 @@ if (process.env.NODE_ENV === 'production') {
 
     // Serve the static assets in the frontend's build folder
     router.use(express.static(path.resolve("../frontend/dist")));
-    router.use('/images', express.static(path.join(__dirname, 'db/images')));
+    // router.use('/images', express.static(path.join(__dirname, 'db/images')));
 
 
   // console.log('Resolved Images Directory Path:', path.join(__dirname, 'images'));
