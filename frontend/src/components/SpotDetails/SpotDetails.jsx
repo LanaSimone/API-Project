@@ -20,17 +20,13 @@ function SpotDetails() {
 
   const fetchSpotDetailsAndReviews = useCallback(async () => {
     try {
+      const detailsResponse = await fetch(`/api/spots/${spotId}`);
+      console.log({spotId}, 'spotId')
+      const reviewsResponse = await fetch(`/api/spots/${spotId}/reviews`);
 
-      const numericSpotId = parseInt(spotId, 10);
-
-      const detailsResponse = await fetch(`/api/spots/${numericSpotId}`);
-      console.log({ spotId: numericSpotId }, 'spotId');
-
-      const reviewsResponse = await fetch(`/api/spots/${numericSpotId}/reviews`);
-
-      if (!detailsResponse.ok || !reviewsResponse.ok) {
-        throw new Error('Failed to fetch spot details or reviews');
-      }
+      // if (!detailsResponse.ok || !reviewsResponse.ok) {
+      //   throw new Error('Failed to fetch spot details or reviews');
+      // }
 
       const detailsData = await detailsResponse.json();
       const reviewsData = await reviewsResponse.json();
@@ -77,10 +73,7 @@ function SpotDetails() {
 
   const handlePostReview = async (reviewText, rating) => {
     try {
-
-      const numericSpotId = parseInt(spotId, 10);
-      
-    const response = await fetch(`/api/spots/${numericSpotId}/reviews`, {
+    const response = await fetch(`/api/spots/${spotId}/reviews`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
