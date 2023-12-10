@@ -23,10 +23,10 @@ function SpotDetails() {
 
       const numericSpotId = parseInt(spotId, 10);
 
-      const detailsResponse = await fetch(`/api/spots/${spotId}`);
+      const detailsResponse = await fetch(`/api/spots/${numericSpotId}`);
       console.log({ spotId: numericSpotId }, 'spotId');
 
-      const reviewsResponse = await fetch(`/api/spots/${spotId}/reviews`);
+      const reviewsResponse = await fetch(`/api/spots/${numericSpotId}/reviews`);
 
       if (!detailsResponse.ok || !reviewsResponse.ok) {
         throw new Error('Failed to fetch spot details or reviews');
@@ -77,7 +77,10 @@ function SpotDetails() {
 
   const handlePostReview = async (reviewText, rating) => {
     try {
-    const response = await fetch(`/api/spots/${spotId}/reviews`, {
+
+      const numericSpotId = parseInt(spotId, 10);
+      
+    const response = await fetch(`/api/spots/${numericSpotId}/reviews`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
