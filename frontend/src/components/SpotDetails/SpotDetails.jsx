@@ -23,10 +23,10 @@ function SpotDetails() {
 
       const numericSpotId = parseInt(spotId, 10);
 
-      const detailsResponse = await fetch(`/api/spots/${numericSpotId}`);
+      const detailsResponse = await fetch(`/api/spots/${spotId}`);
       console.log({ spotId: numericSpotId }, 'spotId');
 
-      const reviewsResponse = await fetch(`/api/spots/${numericSpotId}/reviews`);
+      const reviewsResponse = await fetch(`/api/spots/${spotId}/reviews`);
 
       if (!detailsResponse.ok || !reviewsResponse.ok) {
         throw new Error('Failed to fetch spot details or reviews');
