@@ -565,7 +565,7 @@ router.get('/:spotId', async (req, res) => {
 
     if (!spot) {
       // If the Spot with the specified ID is not found
-      return res.status(404).json({ message: "Spot couldn't be found" });
+      return res.status(404).json({ message: "Spot couldn't be found", spotId: req.params.spotId });
     }
 
     // Count the number of reviews for the spot
