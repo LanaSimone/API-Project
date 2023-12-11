@@ -9,33 +9,57 @@ import { faStar } from '@fortawesome/free-regular-svg-icons';
 import './SpotDetails.css';
 
 function SpotDetails() {
-  const  spotId  = useParams();
+  const  {spotId}  = useParams();
   const [spotDetails, setSpotDetails] = useState(null);
   const [reviews, setReviews] = useState([]);
   const { setModalContent } = useModal();
 
+  // const fetchSpotDetails = useCallback(async () => {
+  //   try {
+  //     const response = await fetch(`/api/spots/${spotId}`);
+  //     if (!response.ok) {
+  //       throw new Error('Failed to fetch spot details', {spotId});
+  //     }
+  //     const data = await response.json();
+  //     if (data && data.name && data.city && data.state && data.country && data.description && data.price && data.numReviews) {
+  //       const formattedSpot = {
+  //         ...data,
+  //         SpotImages: Array.isArray(data.SpotImages)
+  //           ? data.SpotImages.map(image => ({ ...image, url: `data:image/jpeg;base64,${image.url}` }))
+  //           : [],
+  //       };
+  //       setSpotDetails(formattedSpot);
+  //     } else {
+  //       console.error('Invalid data format:', data);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error fetching spot details:', error.message);
+  //   }
+  // }, [spotId, setSpotDetails]);
+
   const fetchSpotDetails = useCallback(async () => {
-    try {
-      const response = await fetch(`/api/spots/${spotId}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch spot details', {spotId});
-      }
-      const data = await response.json();
-      if (data && data.name && data.city && data.state && data.country && data.description && data.price && data.numReviews) {
-        const formattedSpot = {
-          ...data,
-          SpotImages: Array.isArray(data.SpotImages)
-            ? data.SpotImages.map(image => ({ ...image, url: `data:image/jpeg;base64,${image.url}` }))
-            : [],
-        };
-        setSpotDetails(formattedSpot);
-      } else {
-        console.error('Invalid data format:', data);
-      }
-    } catch (error) {
-      console.error('Error fetching spot details:', error.message);
+  try {
+    const response = await fetch(`/api/spots/${spotId}`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch spot details');
     }
-  }, [spotId, setSpotDetails]);
+    const data = await response.json();
+
+    if (data && data.name && data.city && data.state && data.country && data.description && data.price && data.numReviews) {
+      const formattedSpot = {
+        ...data,
+        SpotImages: Array.isArray(data.SpotImages)
+          ? data.SpotImages.map(image => ({ ...image, url: `data:image/jpeg;base64,${image.url}` }))
+          : [],
+      };
+      setSpotDetails(formattedSpot);
+    } else {
+      console.error('Invalid data format:', data);
+    }
+  } catch (error) {
+    console.error('Error fetching spot details:', error.message);
+  }
+}, [spotId, setSpotDetails]);
 
   const fetchReviews = useCallback(async () => {
     try {
