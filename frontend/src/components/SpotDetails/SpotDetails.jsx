@@ -9,7 +9,7 @@ import { faStar } from '@fortawesome/free-regular-svg-icons';
 import './SpotDetails.css';
 
 function SpotDetails() {
-  const { spotId } = useParams();
+  const  spotId  = useParams();
   const [spotDetails, setSpotDetails] = useState(null);
   const [reviews, setReviews] = useState([]);
   const { setModalContent } = useModal();
@@ -18,7 +18,7 @@ function SpotDetails() {
     try {
       const response = await fetch(`/api/spots/${spotId}`);
       if (!response.ok) {
-        throw new Error('Failed to fetch spot details');
+        throw new Error('Failed to fetch spot details', {spotId});
       }
       const data = await response.json();
       if (data && data.name && data.city && data.state && data.country && data.description && data.price && data.numReviews) {
