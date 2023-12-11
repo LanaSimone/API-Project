@@ -603,7 +603,7 @@ router.get('/:spotId', async (req, res) => {
     res.status(200).json(formattedSpot);
   } catch (error) {
      console.error('Sequelize error:', error.message);
-  console.error('Sequelize error stack:', error.stack);
+      console.error('Sequelize error stack:', error.stack);
     res.status(500).json({ message: 'Internal server error' });
   }
 });
