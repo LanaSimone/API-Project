@@ -41,7 +41,7 @@ function SpotDetails() {
   try {
     const response = await fetch(`/api/spots/${spotId}`);
     if (!response.ok) {
-      throw new Error('Failed to fetch spot details');
+      throw new Error(`Failed to fetch spot details (${response.status})`);
     }
     const data = await response.json();
 
