@@ -5,6 +5,7 @@ import { PostReviewModal } from '../CreateReviews/CreateReviews';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar as solidStar, faCircle } from '@fortawesome/free-solid-svg-icons';
 import { faStar } from '@fortawesome/free-regular-svg-icons';
+import { csrfFetch } from '../../store/csrf';
 
 import './SpotDetails.css';
 
@@ -14,56 +15,34 @@ function SpotDetails() {
   const [reviews, setReviews] = useState([]);
   const { setModalContent } = useModal();
 
-  // const fetchSpotDetails = useCallback(async () => {
-  //   try {
-  //     const response = await fetch(`/api/spots/${spotId}`);
-  //     if (!response.ok) {
-  //       throw new Error('Failed to fetch spot details', {spotId});
-  //     }
-  //     const data = await response.json();
-  //     if (data && data.name && data.city && data.state && data.country && data.description && data.price && data.numReviews) {
-  //       const formattedSpot = {
-  //         ...data,
-  //         SpotImages: Array.isArray(data.SpotImages)
-  //           ? data.SpotImages.map(image => ({ ...image, url: `data:image/jpeg;base64,${image.url}` }))
-  //           : [],
-  //       };
-  //       setSpotDetails(formattedSpot);
-  //     } else {
-  //       console.error('Invalid data format:', data);
-  //     }
-  //   } catch (error) {
-  //     console.error('Error fetching spot details:', error.message);
-  //   }
-  // }, [spotId, setSpotDetails]);
-
   const fetchSpotDetails = useCallback(async () => {
-  try {
-    const response = await fetch(`/api/spots/${spotId}`);
-    if (!response.ok) {
-      throw new Error(`Failed to fetch spot details (${response.status})`);
-    }
-    const data = await response.json();
+    try {
+      const response = await csrfFetch(`/api/spots/${spotId}`);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch spot details (${response.status})`);
+      }
+      const data = await response.json();
 
-    if (data && data.name && data.city && data.state && data.country && data.description && data.price && data.numReviews) {
-      const formattedSpot = {
-        ...data,
-        SpotImages: Array.isArray(data.SpotImages)
-          ? data.SpotImages.map(image => ({ ...image, url: `data:image/jpeg;base64,${image.url}` }))
-          : [],
-      };
-      setSpotDetails(formattedSpot);
-    } else {
-      console.error('Invalid data format:', data);
+      if (data && data.name && data.city && data.state && data.country && data.description && data.price && data.numReviews) {
+        const formattedSpot = {
+          ...data,
+          SpotImages: Array.isArray(data.SpotImages)
+            ? data.SpotImages.map(image => ({ ...image, url: `data:image/jpeg;base64,${image.url}` }))
+            : [],
+        };
+        setSpotDetails(formattedSpot);
+      } else {
+        console.error('Invalid data format:', data);
+      }
+    } catch (error) {
+      console.error('Error fetching spot details:', error.message);
     }
-  } catch (error) {
-    console.error('Error fetching spot details:', error.message);
-  }
-}, [spotId, setSpotDetails]);
+  }, [spotId, setSpotDetails]);
+
 
   const fetchReviews = useCallback(async () => {
     try {
-      const response = await fetch(`/api/spots/${spotId}/reviews`);
+      const response = await csrfFetch(`/api/spots/${spotId}/reviews`);
       if (!response.ok) {
         throw new Error('Failed to fetch reviews');
       }
