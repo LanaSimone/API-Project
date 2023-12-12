@@ -37,18 +37,21 @@ function SpotDetails() {
   console.log('spotDetailsState:', spotDetailsState);
   console.log('reviewsState:', reviewsState);
 
-  return (
+  if (!spotDetailsState) {
+    return <div>Loading...</div>;
+  }
+
+ return (
     <div className="spot-page-container">
-      {spotDetailsState && !spotDetailsState.loading && !spotDetailsState.error && (
+      {!spotDetailsState.loading && !spotDetailsState.error && (
         <div className="spot-content">
-          {spotDetailsState.SpotImages.map((image, index) => (
-            <img
-              key={index}
-              src={image.url}
-              alt={`Image ${index}`}
-              className="spot-image"
-            />
-          ))}
+           {spotDetailsState.PreviewImage && (
+  <img
+    src={`data:image/jpeg;base64,${spotDetailsState.PreviewImage.url}`}
+    alt="Spot Preview"
+    className="spot-image"
+  />
+)}
           <div className="spot-images-container">
             <div className="price-rating-reviews-box">
               {spotDetailsState.price !== null && (
@@ -61,7 +64,10 @@ function SpotDetails() {
               </div>
             </div>
             <p className="spot-reviews">{spotDetailsState.numReviews} reviews</p>
-            <button className="reserve-button" onClick={() => alert('Feature Coming Soon...')}>
+            <button
+              className="reserve-button"
+              onClick={() => alert('Feature Coming Soon...')}
+            >
               Reserve
             </button>
           </div>
@@ -69,7 +75,9 @@ function SpotDetails() {
             <div className="reviews-header">
               <FontAwesomeIcon icon={faStar} className="review-icon" />
               <p className="review-text">{spotDetailsState.avgStarRating}</p>
-              <p className="reviews-title">{spotDetailsState.numReviews} reviews</p>
+              <p className="reviews-title">
+                {spotDetailsState.numReviews} reviews
+              </p>
             </div>
             <button onClick={openPostReviewModal}>Post Your Review</button>
             {reviewsState.length > 0 &&

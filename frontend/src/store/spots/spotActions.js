@@ -21,12 +21,20 @@ export const fetchSpotDetails = (spotId) => async (dispatch) => {
       throw new Error(`Failed to fetch spot details (${response.status})`);
     }
     const data = await response.json();
-    dispatch(fetchSpotDetailsSuccess(data));
+
+    // Assuming previewImage is correctly set in the server response
+    const spotDetails = {
+      ...data,
+      PreviewImage: data.previewImage
+        ? { url: `data:image/jpeg;base64,${data.previewImage}` }
+        : null,
+    };
+
+    dispatch(fetchSpotDetailsSuccess(spotDetails));
   } catch (error) {
     console.error('Error fetching spot details:', error.message);
   }
 };
-
 // Thunk to Fetch Reviews
 export const fetchReviews = (spotId) => async (dispatch) => {
   try {
