@@ -167,7 +167,7 @@ module.exports = {
       await queryInterface.bulkDelete('SpotImages', null, {});
 
     } catch (error) {
-
+      console.error(error);
     }
   }
 };

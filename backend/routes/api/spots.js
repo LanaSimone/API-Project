@@ -620,6 +620,7 @@ router.get('/:spotId', async (req, res) => {
         'avgStarRating',
         'previewImage',
       ],
+      
     });
 
     if (!spot) {
