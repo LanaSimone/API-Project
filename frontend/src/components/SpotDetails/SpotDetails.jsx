@@ -55,7 +55,7 @@ return (
             className="spot-image"
           />
         ))}
-<div className="spot-images-container">
+        <div className="spot-images-container">
         <div className="price-rating-reviews-box">
           {spotDetailsState.price && (
             <p className="spot-price">$ {spotDetailsState.price}/night</p>
