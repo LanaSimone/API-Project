@@ -614,7 +614,7 @@ router.get('/:spotId', async (req, res) => {
 
 
     const spot = await Spots.findByPk(spotId, {
-      attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'description', 'price', 'createdAt', 'updatedAt'],
+      attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'description', 'price', 'createdAt', 'updatedAt', 'avgStarRating', 'previewImage'],
     });
 
     if (!spot) {
@@ -633,7 +633,9 @@ router.get('/:spotId', async (req, res) => {
       description: spot.description,
       price: spot.price,
       createdAt: spot.createdAt,
-      updatedAt: spot.updatedAt
+      updatedAt: spot.updatedAt,
+      avgStarRating: spot.avgStarRating,
+      previewImage: spot.previewImage
 
     });
   } catch (error) {
