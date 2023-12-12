@@ -23,16 +23,7 @@ export const fetchSpotDetails = (spotId) => async (dispatch) => {
       throw new Error(`Failed to fetch spot details (${response.status})`);
     }
     const data = await response.json();
-
-    // Modify SpotImages if present
-    const spotDetails = {
-      ...data,
-      SpotImages: Array.isArray(data.SpotImages)
-        ? data.SpotImages.map(image => ({ ...image, url: `data:image/jpeg;base64,${image.url}` }))
-        : [],
-    };
-
-    dispatch(fetchSpotDetailsSuccess(spotDetails));
+    dispatch(fetchSpotDetailsSuccess(data));
   } catch (error) {
     console.error('Error fetching spot details:', error.message);
   }
