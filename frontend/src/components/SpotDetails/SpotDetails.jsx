@@ -6,11 +6,7 @@ import { PostReviewModal } from '../CreateReviews/CreateReviews';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar as solidStar, faCircle } from '@fortawesome/free-solid-svg-icons';
 import { faStar } from '@fortawesome/free-regular-svg-icons';
-
-
-
 import { fetchSpotDetails, fetchReviews } from '../../store/spots/spotActions';
-
 import './SpotDetails.css';
 
 
