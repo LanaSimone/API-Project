@@ -626,9 +626,10 @@ router.get('/:spotId', async (req, res) => {
       return res.status(404).json({ message: "Spot couldn't be found", spotId: req.params.spotId });
     }
 
-    const lat = parseInt(spot.lat);
-    const lng = parseInt(spot.lng);
+    const lat = parseFloat(spot.lat);
+    const lng = parseFloat(spot.lng);
     const price = parseInt(spot.price);
+    const avgStarRating = parseFloat(spot.avgStarRating)
 
     res.status(200).json({
       id: spot.id,
@@ -643,7 +644,7 @@ router.get('/:spotId', async (req, res) => {
       price: price,
       createdAt: spot.createdAt,
       updatedAt: spot.updatedAt,
-      avgStarRating: spot.avgStarRating || 0,
+      avgStarRating: avgStarRating || 0,
       previewImage: spot.previewImage,
 
     });
