@@ -631,8 +631,9 @@ router.get('/:spotId', async (req, res) => {
       lng: spot.lng,
       name: spot.name,
       description: spot.description,
-
-
+      price: spot.price,
+      createdAt: spot.createdAt,
+      updatedAt: spot.updatedAt
 
     });
   } catch (error) {
