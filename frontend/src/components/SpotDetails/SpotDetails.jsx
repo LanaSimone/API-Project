@@ -1,77 +1,57 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useModal } from '../../context/Modal';
+import { useModal} from '../../context/Modal';
 import { PostReviewModal } from '../CreateReviews/CreateReviews';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar as solidStar, faCircle } from '@fortawesome/free-solid-svg-icons';
 import { faStar } from '@fortawesome/free-regular-svg-icons';
-import { csrfFetch } from '../../store/csrf';
+import { connect } from 'react-redux';
+// import setModalContent
+
+
+import { fetchSpotDetails, fetchReviews } from '../../store/spots/spotActions';
 
 import './SpotDetails.css';
 
-function SpotDetails() {
-  const  {spotId}  = useParams();
-  const [spotDetails, setSpotDetails] = useState(null);
-  const [reviews, setReviews] = useState([]);
-  const { setModalContent } = useModal();
-
-  const fetchSpotDetails = useCallback(async () => {
-    try {
-      const response = await csrfFetch(`/api/spots/${spotId}`);
-      if (!response.ok) {
-        throw new Error(`Failed to fetch spot details (${response.status})`);
-      }
-      const data = await response.json();
-
-      if (data && data.name && data.city && data.state && data.country && data.description && data.price && data.numReviews) {
-        const formattedSpot = {
-          ...data,
-          SpotImages: Array.isArray(data.SpotImages)
-            ? data.SpotImages.map(image => ({ ...image, url: `data:image/jpeg;base64,${image.url}` }))
-            : [],
-        };
-        setSpotDetails(formattedSpot);
-      } else {
-        console.error('Invalid data format:', data);
-      }
-    } catch (error) {
-      console.error('Error fetching spot details:', error.message);
-    }
-  }, [spotId, setSpotDetails]);
-
-
-  const fetchReviews = useCallback(async () => {
-    try {
-      const response = await csrfFetch(`/api/spots/${spotId}/reviews`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch reviews');
-      }
-      const data = await response.json();
-      if (data && data.Reviews) {
-        setReviews(data.Reviews);
-      } else {
-        console.error('Invalid reviews data format:', data);
-      }
-    } catch (error) {
-      console.error('Error fetching reviews:', error);
-    }
-  }, [spotId, setReviews]);
+function SpotDetails({ spotDetails, fetchSpotDetails, fetchReviewsAction }) {
+  const [reviews] = useState([]);
+  const { spotId } = useParams(); // Get spotId from URL params
 
   useEffect(() => {
-    fetchSpotDetails();
-    fetchReviews();
-  }, [spotId, fetchSpotDetails, fetchReviews]);
+    fetchSpotDetails(spotId);
+    fetchReviewsAction(spotId);
+  }, [spotId, fetchSpotDetails, fetchReviewsAction]);
 
+
+  // const fetchReviews = useCallback(async () => {
+  //   try {
+  //     const response = await csrfFetch(`/api/spots/${spotId}/reviews`);
+  //     if (!response.ok) {
+  //       throw new Error('Failed to fetch reviews');
+  //     }
+  //     const data = await response.json();
+  //     if (data && data.Reviews) {
+  //       setReviews(data.Reviews);
+  //     } else {
+  //       console.error('Invalid reviews data format:', data);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error fetching reviews:', error);
+  //   }
+  // }, [spotId, setReviews]);
+
+
+const { setModalContent } = useModal();
   const openPostReviewModal = () => {
-    setModalContent(
-      <PostReviewModal
-        onClose={() => {
-          setModalContent(null);
-          fetchReviews();
-        }}
-      />
-    );
-  };
+  setModalContent(
+    <PostReviewModal
+      onClose={() => {
+        setModalContent(null);
+        fetchReviews();
+      }}
+    />
+  );
+};
 
   return (
     <div className='spot-page-container'>
@@ -127,4 +107,17 @@ function SpotDetails() {
   );
 }
 
-export default SpotDetails;
+// SpotDetails.displayName = 'SpotDetails';
+
+const mapStateToProps = (state) => ({
+  spotDetails: state.spot.spotDetails,
+  reviews: state.spot.reviews,
+});
+
+
+const mapDispatchToProps = {
+  fetchSpotDetails,
+  fetchReviewsAction: fetchReviews, // Corrected the name here
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SpotDetails);

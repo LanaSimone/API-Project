@@ -43,7 +43,7 @@ module.exports = (sequelize, DataTypes) => {
     }
     // Adding a hook to set previewImage before saving the Spot
     static async beforeCreate(spot, options) {
-  console.log('!!!!!!!!!!!!!!Before save hook executed for Spot:', spot.id);
+
 
   // Use sequelize instance to access SpotImage model
   const SpotImage = sequelize.models.SpotImage;
@@ -56,7 +56,7 @@ module.exports = (sequelize, DataTypes) => {
       },
     });
 
-    console.log('!!!!!!!!!Spot Images:', spotImages);
+
 
     if (spotImages.length > 0) {
       spot.previewImage = spotImages[0].url;
