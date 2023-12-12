@@ -614,7 +614,7 @@ router.get('/:spotId', async (req, res) => {
 
 
     const spot = await Spots.findByPk(spotId, {
-      attributes: ['id', 'ownerId', 'address'],
+      attributes: ['id', 'ownerId', 'address', 'city', 'state'],
     });
 
     if (!spot) {
@@ -623,8 +623,11 @@ router.get('/:spotId', async (req, res) => {
 
     res.status(200).json({
       id: spot.id,
-      ownerId: spot.ownderId,
-      address: spot.address
+      owner: spot.ownderId,
+      address: spot.address,
+      city: spot.city,
+      state: spot.state
+
     });
   } catch (error) {
     console.error(error);
