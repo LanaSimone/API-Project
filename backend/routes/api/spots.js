@@ -620,7 +620,8 @@ router.get('/:spotId', async (req, res) => {
         'avgStarRating',
         'previewImage',
       ],
-      
+       include: spotImages,
+
     });
 
     if (!spot) {
@@ -631,6 +632,11 @@ router.get('/:spotId', async (req, res) => {
     const lng = parseFloat(spot.lng);
     const price = parseInt(spot.price);
     const avgStarRating = parseFloat(spot.avgStarRating)
+
+    const spotImages = spot.spotImages.map(image => ({
+      ...image.toJSON(),
+      url: `data:image/jpeg;base64,${image.url}`,
+    }));
 
     res.status(200).json({
       id: spot.id,
@@ -647,6 +653,7 @@ router.get('/:spotId', async (req, res) => {
       updatedAt: spot.updatedAt,
       avgStarRating: avgStarRating || 0,
       previewImage: spot.previewImage,
+      spotImages: spotImages,
 
     });
   } catch (error) {

@@ -22,12 +22,12 @@ export const fetchSpotDetails = (spotId) => async (dispatch) => {
     }
     const data = await response.json();
 
-    // Assuming previewImage is correctly set in the server response
+    // Assuming spotImages is correctly set in the server response
     const spotDetails = {
       ...data,
-      PreviewImage: data.previewImage
-        ? { url: `data:image/jpeg;base64,${data.previewImage}` }
-        : null,
+      spotImages: Array.isArray(data.spotImages)
+        ? data.spotImages.map(image => ({ ...image, url: `data:image/jpeg;base64,${image.url}` }))
+        : [],
     };
 
     dispatch(fetchSpotDetailsSuccess(spotDetails));
