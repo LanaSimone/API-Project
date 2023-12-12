@@ -1,5 +1,3 @@
-// spotReducer.js
-
 import { FETCH_SPOT_DETAILS_SUCCESS, FETCH_REVIEWS_SUCCESS } from './spotActions';
 
 const initialState = {

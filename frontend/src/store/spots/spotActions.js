@@ -1,5 +1,3 @@
-// spotActions.js
-
 import { csrfFetch } from "../csrf";
 
 // Action Types
@@ -26,19 +24,20 @@ export const fetchSpotDetails = (spotId) => async (dispatch) => {
     }
     const data = await response.json();
 
-    // Modify the structure of SpotImages in spotDetails
-    const formattedSpotDetails = {
+    // Modify SpotImages if present
+    const spotDetails = {
       ...data,
       SpotImages: Array.isArray(data.SpotImages)
         ? data.SpotImages.map(image => ({ ...image, url: `data:image/jpeg;base64,${image.url}` }))
         : [],
     };
 
-    dispatch(fetchSpotDetailsSuccess(formattedSpotDetails));
+    dispatch(fetchSpotDetailsSuccess(spotDetails));
   } catch (error) {
     console.error('Error fetching spot details:', error.message);
   }
 };
+
 // Thunk to Fetch Reviews
 export const fetchReviews = (spotId) => async (dispatch) => {
   try {
