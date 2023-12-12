@@ -614,10 +614,10 @@ router.get('/:spotId', async (req, res) => {
 
 
     const spot = await Spots.findByPk(spotId, {
-      attributes: [
+       attributes: [
         'id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name',
         'description', 'price', 'createdAt', 'updatedAt',
-        [sequelize.fn('AVG', sequelize.col('avgStarRating')), 'avgStarRating'],
+        'avgStarRating',
         'previewImage',
       ],
     });

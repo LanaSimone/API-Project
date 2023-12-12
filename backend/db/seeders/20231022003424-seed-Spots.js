@@ -17,10 +17,9 @@ async function downloadImageToBase64(imageUrl) {
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    // Assuming you have already retrieved user IDs in this file
-    const userIds = [1, 2, 3]; // Use actual user IDs
 
-     // Download and convert image from URL to base64
+    const userIds = [1, 2, 3];
+
     const imageUrl1 = 'https://s.hdnux.com/photos/01/26/10/64/22580499/6/1200x0.jpg';
     const previewImageBase641 = await downloadImageToBase64(imageUrl1);
 
@@ -35,7 +34,7 @@ module.exports = {
     return Promise.all([
       queryInterface.bulkInsert('Spots', [
         {
-          ownerId: userIds[0], // Use the ID of the first user
+          ownerId: userIds[0],
           address: '123 Main St',
           city: 'Vernon',
           state: 'Connecticut',
@@ -52,7 +51,7 @@ module.exports = {
 
         },
         {
-          ownerId: userIds[1], // Use the ID of the second user
+          ownerId: userIds[1],
           address: '199 Center St',
           city: 'Manchester',
           state: 'Connecticut',
@@ -68,7 +67,7 @@ module.exports = {
           previewImage: previewImageBase642
         },
         {
-          ownerId: userIds[2], // Use the ID of the third user
+          ownerId: userIds[2],
           address: '1363 Hill St',
           city: 'Manhattan',
           state: 'New York',
@@ -83,18 +82,18 @@ module.exports = {
           avgStarRating: 2,
           previewImage: previewImageBase643,
         },
-        // Add more data objects for Spots as needed
+
       ]),
     ]);
   },
 
   async down(queryInterface, Sequelize) {
-    // Corrected this line
+
     options.tableName = 'Spots';
 
     return Promise.all([
       queryInterface.bulkDelete('Spots', null, {}),
-      // Any other table deletions if needed
+ 
     ]);
   }
 };
