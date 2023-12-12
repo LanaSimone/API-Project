@@ -626,17 +626,21 @@ router.get('/:spotId', async (req, res) => {
       return res.status(404).json({ message: "Spot couldn't be found", spotId: req.params.spotId });
     }
 
+    const lat = parseInt(spot.lat);
+    const lng = parseInt(spot.lng);
+    const price = parseInt(spot.price);
+
     res.status(200).json({
       id: spot.id,
       owner: spot.ownerId,
       address: spot.address,
       city: spot.city,
       state: spot.state,
-      lat: spot.lat,
-      lng: spot.lng,
+      lat: lat,
+      lng: lng,
       name: spot.name,
       description: spot.description,
-      price: spot.price,
+      price: price,
       createdAt: spot.createdAt,
       updatedAt: spot.updatedAt,
       avgStarRating: spot.avgStarRating || 0,
