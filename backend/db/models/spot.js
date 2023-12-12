@@ -188,8 +188,8 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
     },
     avgStarRating: {
-      type: DataTypes.FLOAT, // or another appropriate data type
-      allowNull: true, // or false, depending on your requirements
+      type: DataTypes.FLOAT, 
+      allowNull: true,
     },
     previewImage: {
       type: DataTypes.STRING(1000000000000),

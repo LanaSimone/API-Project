@@ -614,7 +614,12 @@ router.get('/:spotId', async (req, res) => {
 
 
     const spot = await Spots.findByPk(spotId, {
-      attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'description', 'price', 'createdAt', 'updatedAt', 'avgStarRating', 'previewImage'],
+      attributes: [
+        'id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name',
+        'description', 'price', 'createdAt', 'updatedAt',
+        [sequelize.fn('AVG', sequelize.col('avgStarRating')), 'avgStarRating'],
+        'previewImage',
+      ],
     });
 
     if (!spot) {
@@ -623,7 +628,7 @@ router.get('/:spotId', async (req, res) => {
 
     res.status(200).json({
       id: spot.id,
-      owner: spot.ownderId,
+      owner: spot.ownerId,
       address: spot.address,
       city: spot.city,
       state: spot.state,
@@ -634,8 +639,8 @@ router.get('/:spotId', async (req, res) => {
       price: spot.price,
       createdAt: spot.createdAt,
       updatedAt: spot.updatedAt,
-      avgStarRating: spot.avgStarRating,
-      previewImage: spot.previewImage
+      avgStarRating: spot.avgStarRating || 0,
+      previewImage: spot.previewImage,
 
     });
   } catch (error) {
