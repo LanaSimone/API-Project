@@ -621,7 +621,11 @@ router.get('/:spotId', async (req, res) => {
       return res.status(404).json({ message: "Spot couldn't be found", spotId: req.params.spotId });
     }
 
-    res.status(200).json({ id: spot.id });
+    res.status(200).json({
+      id: spot.id,
+      ownerId: spot.ownderId,
+      address: spot.address
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal server error' });
