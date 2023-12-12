@@ -536,74 +536,94 @@ router.post('/', requireAuth, async (req, res) => {
 //   }
 // });
 
+// router.get('/:spotId', async (req, res) => {
+//   console.log('Fetching spot details for spotId:', req.params.spotId);
+//   try {
+//     const spotId = req.params.spotId;
+
+//     // Find the Spot by its ID along with SpotImages
+//     const spot = await Spots.findOne({
+//       where: { id: spotId },
+//       include: [
+//         {
+//           model: SpotImage,
+//           as: 'SpotImages',  // Provide the alias used in the association
+//           where: { spotId: spotId },  // Filter SpotImages by spotId
+//           attributes: ['id', 'url', 'preview'],
+//         },
+//         {
+//           model: User,
+//           attributes: ['id', 'firstName', 'lastName'],
+//         },
+//         {
+//           model: Review,
+//           as: 'Reviews',
+//           attributes: ['stars'],
+//         },
+//       ],
+//     });
+
+//     if (!spot) {
+//       // If the Spot with the specified ID is not found
+//       return res.status(404).json({ message: "Spot couldn't be found", spotId: req.params.spotId });
+//     }
+
+//     // Count the number of reviews for the spot
+//     const numReviews = await Review.count({
+//       where: { spotId: spot.id },
+//     });
+
+//     // Calculate the average star rating based on reviews
+//     const avgStarRating = spot.Reviews.length > 0
+//       ? spot.Reviews.reduce((acc, review) => acc + review.stars, 0) / spot.Reviews.length
+//       : 0;
+//     console.log('SpotImages data:', spot.SpotImages);
+//     // Format the response
+//     const formattedSpot = {
+//       id: spot.id,
+//       ownerId: spot.ownerId,
+//       address: spot.address,
+//       city: spot.city,
+//       state: spot.state,
+//       country: spot.country,
+//       lat: parseFloat(spot.lat),
+//       lng: parseFloat(spot.lng),
+//       name: spot.name,
+//       description: spot.description,
+//       price: parseFloat(spot.price),
+//       createdAt: spot.createdAt.toISOString().slice(0, 19).replace('T', ' '),
+//       updatedAt: spot.updatedAt.toISOString().slice(0, 19).replace('T', ' '),
+//       numReviews: numReviews,
+//       avgStarRating: avgStarRating,
+//       SpotImages: spot.SpotImages, // Include SpotImages directly
+//       Owner: spot.User,
+//     };
+
+//     // Send the formatted response
+//     res.status(200).json(formattedSpot);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: 'Internal server error' });
+//   }
+// });
+
 router.get('/:spotId', async (req, res) => {
   console.log('Fetching spot details for spotId:', req.params.spotId);
   try {
     const spotId = req.params.spotId;
 
-    // Find the Spot by its ID along with SpotImages
-    const spot = await Spots.findOne({
-      where: { id: spotId },
-      include: [
-        {
-          model: SpotImage,
-          as: 'SpotImages',  // Provide the alias used in the association
-          where: { spotId: spotId },  // Filter SpotImages by spotId
-          attributes: ['id', 'url', 'preview'],
-        },
-        {
-          model: User,
-          attributes: ['id', 'firstName', 'lastName'],
-        },
-        {
-          model: Review,
-          as: 'Reviews',
-          attributes: ['stars'],
-        },
-      ],
+
+    const spot = await Spots.findByPk(spotId, {
+      attributes: ['id'],
     });
 
     if (!spot) {
-      // If the Spot with the specified ID is not found
       return res.status(404).json({ message: "Spot couldn't be found", spotId: req.params.spotId });
     }
 
-    // Count the number of reviews for the spot
-    const numReviews = await Review.count({
-      where: { spotId: spot.id },
-    });
-
-    // Calculate the average star rating based on reviews
-    const avgStarRating = spot.Reviews.length > 0
-      ? spot.Reviews.reduce((acc, review) => acc + review.stars, 0) / spot.Reviews.length
-      : 0;
-    console.log('SpotImages data:', spot.SpotImages);
-    // Format the response
-    const formattedSpot = {
-      id: spot.id,
-      ownerId: spot.ownerId,
-      address: spot.address,
-      city: spot.city,
-      state: spot.state,
-      country: spot.country,
-      lat: parseFloat(spot.lat),
-      lng: parseFloat(spot.lng),
-      name: spot.name,
-      description: spot.description,
-      price: parseFloat(spot.price),
-      createdAt: spot.createdAt.toISOString().slice(0, 19).replace('T', ' '),
-      updatedAt: spot.updatedAt.toISOString().slice(0, 19).replace('T', ' '),
-      numReviews: numReviews,
-      avgStarRating: avgStarRating,
-      SpotImages: spot.SpotImages, // Include SpotImages directly
-      Owner: spot.User,
-    };
-
-    // Send the formatted response
-    res.status(200).json(formattedSpot);
+    res.status(200).json({ id: spot.id });
   } catch (error) {
-     console.error('Sequelize error:', error.message);
-      console.error('Sequelize error stack:', error.stack);
+    console.error(error);
     res.status(500).json({ message: 'Internal server error' });
   }
 });
