@@ -672,8 +672,8 @@ router.get('/:spotId/images', async (req, res) => {
 
     const imageUrls = spotImages.map(image => image.url);
 
-    
-    res.status(200).json({ spotImages: spotImages.url});
+
+    res.status(200).json({ spotImages: imageUrls});
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal server error' });
