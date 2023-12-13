@@ -611,6 +611,7 @@ router.get('/:spotId', async (req, res) => {
   try {
     const spotId = req.params.spotId;
 
+    // Fetch spot details
     const spot = await Spots.findByPk(spotId, {
       attributes: [
         'id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name',
@@ -618,23 +619,24 @@ router.get('/:spotId', async (req, res) => {
         'avgStarRating',
         'previewImage',
       ],
-      include: [{ model: SpotImage, as: 'SpotImages' }],
     });
 
     if (!spot) {
       return res.status(404).json({ message: "Spot couldn't be found", spotId: req.params.spotId });
     }
 
+    // Fetch SpotImages for the specific spotId
+    const spotImages = await SpotImage.findAll({
+      attributes: ['url'],
+      where: {
+        spotId: spot.id,
+      },
+    });
+
     const lat = parseFloat(spot.lat);
     const lng = parseFloat(spot.lng);
     const price = parseInt(spot.price);
     const avgStarRating = parseFloat(spot.avgStarRating);
-
-   const spotImages = spot.SpotImages
-    .filter(image => image.spotId === spot.id)
-    .map(image => ({ url: `${image.url}` }));
-
-    console.log(spotImages)
 
     res.status(200).json({
       id: spot.id,
@@ -651,7 +653,7 @@ router.get('/:spotId', async (req, res) => {
       updatedAt: spot.updatedAt,
       avgStarRating: avgStarRating || 0,
       previewImage: spot.previewImage,
-       spotImages: spotImages,
+      spotImages: spotImages.map(image => ({ url: `${image.url}` })),
     });
   } catch (error) {
     console.error(error);
