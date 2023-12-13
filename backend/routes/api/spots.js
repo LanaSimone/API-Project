@@ -659,7 +659,7 @@ router.get('/:spotId/images', async (req, res) => {
   try {
     const spotId = req.params.spotId;
 
-    const spotImages = await Spots.findByPk(spotId, {
+    const spotImages = await SpotImage.findByPk(spotId, {
       attributes: ['url']
     })
 
