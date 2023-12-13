@@ -656,7 +656,7 @@ router.post('/', requireAuth, async (req, res) => {
 // });
 
 router.get('/:spotId', async(req, res) => {
-  const spot = await Spot.findOne({where: { id: req.params.spotId },
+  const spot = await Spots.findOne({where: { id: req.params.spotId },
     attributes: { exclude: ["previewImage"] }
   });
 
