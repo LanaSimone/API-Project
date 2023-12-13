@@ -11,6 +11,28 @@ const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { validationResult, body } = require('express-validator'); // Add this line
 
+const calculateAvgRating = async spotId => {
+  const spot = await Spot.findByPk(spotId, {
+    include: {
+      model: Review,
+      attributes: ['stars'],
+    },
+  });
+
+  if (!spot) {
+    return 0;
+  }
+
+  const reviews = spot.Reviews;
+
+  if (!reviews || reviews.length === 0) {
+      return 0;
+    }
+
+    const totalStars = reviews.reduce((sum, review) => sum + review.stars, 0);
+    const avgRating = totalStars / reviews.length;
+    return parseFloat(avgRating.toFixed(2));
+};
 // Create a middleware to check spot ownership
 const requireSpotOwnership = async (req, res, next) => {
   try {
