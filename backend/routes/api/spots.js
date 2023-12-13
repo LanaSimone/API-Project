@@ -665,9 +665,13 @@ router.get('/:spotId/images', async (req, res) => {
   try {
     const spotId = req.params.spotId;
 
-    const spotImages = await SpotImage.findAll({
-      attributes: ['url'],
-      where: { spotId: spotId },
+    const spot = await Spot.findByPk(spotId);
+    if (!spot) {
+      return res.status(404).json({ message: 'Spot not found' });
+    }
+
+    const spotImages = spot.spotImages.map((image) => {
+      return { url: image.url };
     });
 
     res.status(200).json({ spotImages: spotImages });
@@ -677,7 +681,7 @@ router.get('/:spotId/images', async (req, res) => {
   }
 });
 
-module.exports = router;
+
 
 
 //create a spot image

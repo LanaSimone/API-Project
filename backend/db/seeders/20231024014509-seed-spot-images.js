@@ -1,6 +1,7 @@
 'use strict';
 const path = require('path');
 const axios = require('axios');
+const {Spot} = require('../models')
 
 let options = {};
 if (process.env.NODE_ENV === 'production') {
@@ -15,7 +16,9 @@ async function downloadImageToBase64(imageUrl) {
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     // Assuming you have already retrieved user IDs in this file
-    const spotIds = [1, 2, 3]; // Use actual spot IDs
+     const spots = await Spot.findAll({ attributes: ['id'] });
+
+    const spotIds = spots.map((spot) => spot.id);
 
     const imageUrl1 = 'https://media.architecturaldigest.com/photos/55f9e0394254f7de3455d6f9/master/w_1600%2Cc_limit/dam-images-daily-2015-05-ct-estate-greenwich-connecticut-english-style-estate-for-sale-02.jpg';
     const previewImageBase641 = await downloadImageToBase64(imageUrl1);
@@ -68,17 +71,17 @@ module.exports = {
 
     const spotImages = [
       {
-        spotId: spotIds[0], // Use the ID of the first user
+        spotId: spotIds[0],
         url: previewImageBase641,
         preview: true,
       },
       {
-        spotId: spotIds[0], // Use the ID of the first user
+        spotId: spotIds[0],
         url: previewImageBase642,
         preview: true,
       },
       {
-        spotId: spotIds[0], // Use the ID of the first user
+        spotId: spotIds[0],
         url: previewImageBase643,
         preview: true,
       },
