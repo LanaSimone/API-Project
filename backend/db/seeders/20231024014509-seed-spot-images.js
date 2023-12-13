@@ -70,78 +70,78 @@ module.exports = {
     const spotImages = [
       {
         spotId: spotIds[0],
-        url: previewImageBase641,
+        url: 'https://media.architecturaldigest.com/photos/55f9e0394254f7de3455d6f9/master/w_1600%2Cc_limit/dam-images-daily-2015-05-ct-estate-greenwich-connecticut-english-style-estate-for-sale-02.jpg',
         preview: true,
       },
       {
         spotId: spotIds[0],
-        url: previewImageBase642,
+        url: 'https://media.architecturaldigest.com/photos/627155f88860a6509c871129/16:9/w_320%2Cc_limit/Chauncey%2520Boothby%25204-%2520Read%2520McKendree.jpg',
         preview: true,
       },
       {
         spotId: spotIds[0],
-        url: previewImageBase643,
+        url: 'https://images.mansionglobal.com/im-263914/?size=0&width=1280',
         preview: true,
       },
       {
         spotId: spotIds[0], // Use the ID of the first user
-        url: previewImageBase644,
+        url: 'https://townsquare.media/site/677/files/2022/03/attachment-14-15.jpg?w=980&q=75',
         preview: true,
       },
       {
         spotId: spotIds[0], // Use the ID of the first user
-        url: previewImageBase645,
+        url: 'https://townsquare.media/site/677/files/2022/06/attachment-10-35.jpg?w=980&q=75',
         preview: true,
       },
 
       {
         spotId: spotIds[1], // Use the ID of the second spot
-        url:  previewImageBase646,
+        url:  'https://hgtvhome.sndimg.com/content/dam/images/hgtv/fullset/2021/1/25/0/CI_Evan-Joseph-Images_Central-Park-West-living-room-wide.jpg.rend.hgtvcom.616.411.suffix/1611578666239.jpeg',
         preview: true,
       },
       {
         spotId: spotIds[1], // Use the ID of the second spot
-        url: previewImageBase647,
+        url: 'https://i.redd.it/4qmetzsdehz71.jpg',
         preview: true,
       },
       {
         spotId: spotIds[1], // Use the ID of the second spot
-        url: previewImageBase648,
+        url:  'https://www.compass.com/m/0/4bee6e21-bb08-45b9-a32c-37b58545180f/origin.jpg',
         preview: true,
       },
       {
         spotId: spotIds[1], // Use the ID of the second spot
-        url: previewImageBase649,
+        url: 'https://cdn.vox-cdn.com/thumbor/5ePmcBTkKU0yrSJi3yMwHxAqNIE=/0x0:1200x800/1200x800/filters:focal(504x304:696x496)/cdn.vox-cdn.com/uploads/chorus_image/image/54913735/15_CPW.0.jpg',
         preview: true,
       },
       {
         spotId: spotIds[1], // Use the ID of the second spot
-        url: previewImageBase6410,
+        url: 'https://robbreport.com/wp-content/uploads/2022/11/15_Central_Park_West_14.jpg?w=1000',
         preview: true,
       },
       {
         spotId: spotIds[2], // Use the ID of the third spot
-        url: previewImageBase6411,
+        url: 'https://www.tollbrothers.com/blog/wp-content/uploads/2019/03/160105_EJ_1110_park_0111-Edit.jpg',
         preview: false,
       },
       {
         spotId: spotIds[2], // Use the ID of the third spot
-        url: previewImageBase6412,
+        url: 'https://www.tollbrothers.com/blog/wp-content/uploads/2019/03/edited2179.jpg',
         preview: false,
       },
       {
         spotId: spotIds[2], // Use the ID of the third spot
-        url: previewImageBase6413,
+        url: 'https://nypost.com/wp-content/uploads/sites/2/2017/10/05641fifthavenueph452005hires1.jpg?quality=75&strip=all&w=744',
         preview: false,
       },
       {
         spotId: spotIds[2], // Use the ID of the third spot
-        url: previewImageBase6414,
+        url: 'https://media.architecturaldigest.com/photos/619598440478fa4720349ce4/16:9/w_2560%2Cc_limit/_Workstead_JSF_138.jpeg',
         preview: false,
       },
       {
         spotId: spotIds[2], // Use the ID of the third spot
-        url: previewImageBase6415,
+        url: 'https://media.architecturaldigest.com/photos/607f04c3c89710bb2f922c21/master/w_1600%2Cc_limit/*Workstead_JSF_237.jpg',
         preview: false,
       },
       // Add more data objects for Spots as needed
