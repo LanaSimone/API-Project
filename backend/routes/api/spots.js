@@ -612,16 +612,14 @@ router.get('/:spotId', async (req, res) => {
   try {
     const spotId = req.params.spotId;
 
-
     const spot = await Spots.findByPk(spotId, {
-       attributes: [
+      attributes: [
         'id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name',
         'description', 'price', 'createdAt', 'updatedAt',
         'avgStarRating',
         'previewImage',
       ],
-       include: spotImages,
-
+      include: SpotImages, // Use the association name, not the variable name
     });
 
     if (!spot) {
@@ -631,9 +629,9 @@ router.get('/:spotId', async (req, res) => {
     const lat = parseFloat(spot.lat);
     const lng = parseFloat(spot.lng);
     const price = parseInt(spot.price);
-    const avgStarRating = parseFloat(spot.avgStarRating)
+    const avgStarRating = parseFloat(spot.avgStarRating);
 
-    const spotImages = spot.spotImages.map(image => ({
+    const spotImages = spot.SpotImages.map(image => ({
       ...image.toJSON(),
       url: `data:image/jpeg;base64,${image.url}`,
     }));
@@ -654,7 +652,6 @@ router.get('/:spotId', async (req, res) => {
       avgStarRating: avgStarRating || 0,
       previewImage: spot.previewImage,
       spotImages: spotImages,
-
     });
   } catch (error) {
     console.error(error);
