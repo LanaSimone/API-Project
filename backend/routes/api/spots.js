@@ -12,7 +12,7 @@ const { handleValidationErrors } = require('../../utils/validation');
 const { validationResult, body } = require('express-validator'); // Add this line
 
 const calculateAvgRating = async spotId => {
-  const spot = await Spot.findByPk(spotId, {
+  const spot = await Spots.findByPk(spotId, {
     include: {
       model: Review,
       attributes: ['stars'],
