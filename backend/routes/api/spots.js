@@ -11,7 +11,6 @@ const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { validationResult, body } = require('express-validator'); // Add this line
 
-
 // Create a middleware to check spot ownership
 const requireSpotOwnership = async (req, res, next) => {
   try {
@@ -619,7 +618,7 @@ router.get('/:spotId', async (req, res) => {
         'avgStarRating',
         'previewImage',
       ],
-      include: SpotImages, // Use the association name, not the variable name
+      include: [{ model: SpotImage, as: 'SpotImages' }],
     });
 
     if (!spot) {
@@ -631,10 +630,11 @@ router.get('/:spotId', async (req, res) => {
     const price = parseInt(spot.price);
     const avgStarRating = parseFloat(spot.avgStarRating);
 
-    const spotImages = spot.SpotImages.map(image => ({
-      ...image.toJSON(),
-      url: `data:image/jpeg;base64,${image.url}`,
-    }));
+   const spotImages = spot.SpotImages
+    .filter(image => image.spotId === spot.id)
+    .map(image => ({ url: `${image.url}` }));
+
+    console.log(spotImages)
 
     res.status(200).json({
       id: spot.id,
@@ -651,7 +651,7 @@ router.get('/:spotId', async (req, res) => {
       updatedAt: spot.updatedAt,
       avgStarRating: avgStarRating || 0,
       previewImage: spot.previewImage,
-      spotImages: spotImages,
+       spotImages: spotImages,
     });
   } catch (error) {
     console.error(error);

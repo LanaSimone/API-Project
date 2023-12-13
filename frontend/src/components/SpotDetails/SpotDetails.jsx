@@ -34,62 +34,70 @@ function SpotDetails() {
     );
   };
 
+  console.log('spotDetailsState:', spotDetailsState);
+  console.log('reviewsState:', reviewsState);
 
-   return (
+  if (!spotDetailsState) {
+    return <div>Loading...</div>;
+  }
+
+ return (
     <div className="spot-page-container">
-      <div className="spot-content">
-        {/* Render spotImages instead of PreviewImage */}
-        {spotDetailsState.spotImages && spotDetailsState.spotImages.length > 0 && (
-          <div className="spot-images-container">
-            {spotDetailsState.spotImages.map((image, index) => (
-              <img
-                key={index}
-                src={`data:image/jpeg;base64,${image.url}`}
-                alt={`Spot Image ${index + 1}`}
-                className="spot-image"
-              />
-            ))}
-          </div>
-        )}
-
-        <div className="price-rating-reviews-box">
-          {spotDetailsState.price !== null && (
-            <p className="spot-price">$ {spotDetailsState.price}/night</p>
-          )}
-          <div className="star-rating-box">
-            <FontAwesomeIcon icon={solidStar} className="review-icon" />
-            <p>{spotDetailsState.avgStarRating}</p>
-            <FontAwesomeIcon icon={faCircle} className="circle" />
-          </div>
-        </div>
-        <p className="spot-reviews">{spotDetailsState.numReviews} reviews</p>
-        <button
-          className="reserve-button"
-          onClick={() => alert('Feature Coming Soon...')}
-        >
-          Reserve
-        </button>
-      </div>
-      <div className="reviews-container">
-        <div className="reviews-header">
-          <FontAwesomeIcon icon={faStar} className="review-icon" />
-          <p className="review-text">{spotDetailsState.avgStarRating}</p>
-          <p className="reviews-title">
-            {spotDetailsState.numReviews} reviews
-          </p>
-        </div>
-        <button onClick={openPostReviewModal}>Post Your Review</button>
-        {reviewsState.length > 0 &&
-          reviewsState.map((review, index) => (
-            <div key={index} className="review-item">
-              <p>{review.firstName}</p>
-              <p>{review.createdAt}</p>
-              <p>{review.reviewText}</p>
+      {!spotDetailsState.loading && !spotDetailsState.error && (
+        <div className="spot-content">
+          {spotDetailsState.spotImages && spotDetailsState.spotImages.length > 0 && (
+            <div className="spot-images-container">
+              {spotDetailsState.spotImages.map((spotImage, index) => (
+                <img
+                  key={index}
+                  src={`data:image/jpeg;base64,${spotImage.url}`}
+                  alt={`Spot Image ${index + 1}`}
+                  className="spot-image"
+                />
+              ))}
             </div>
-          ))}
-      </div>
+          )}
+          <div className="spot-images-container">
+            <div className="price-rating-reviews-box">
+              {spotDetailsState.price !== null && (
+                <p className="spot-price">$ {spotDetailsState.price}/night</p>
+              )}
+              <div className="star-rating-box">
+                <FontAwesomeIcon icon={solidStar} className="review-icon" />
+                <p>{spotDetailsState.avgStarRating}</p>
+                <FontAwesomeIcon icon={faCircle} className="circle" />
+              </div>
+            </div>
+            <p className="spot-reviews">{spotDetailsState.numReviews} reviews</p>
+            <button
+              className="reserve-button"
+              onClick={() => alert('Feature Coming Soon...')}
+            >
+              Reserve
+            </button>
+          </div>
+          <div className="reviews-container">
+            <div className="reviews-header">
+              <FontAwesomeIcon icon={faStar} className="review-icon" />
+              <p className="review-text">{spotDetailsState.avgStarRating}</p>
+              <p className="reviews-title">
+                {spotDetailsState.numReviews} reviews
+              </p>
+            </div>
+            <button onClick={openPostReviewModal}>Post Your Review</button>
+            {reviewsState.length > 0 &&
+              reviewsState.map((review, index) => (
+                <div key={index} className="review-item">
+                  <p>{review.firstName}</p>
+                  <p>{review.createdAt}</p>
+                  <p>{review.reviewText}</p>
+                </div>
+              ))}
+          </div>
+        </div>
+      )}
     </div>
-  );
+  )
 }
 
 export default SpotDetails;

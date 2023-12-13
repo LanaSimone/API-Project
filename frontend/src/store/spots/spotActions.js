@@ -26,9 +26,10 @@ export const fetchSpotDetails = (spotId) => async (dispatch) => {
     const spotDetails = {
       ...data,
       spotImages: Array.isArray(data.spotImages)
-        ? data.spotImages.map(image => ({ ...image, url: `data:image/jpeg;base64,${image.url}` }))
+        ? data.spotImages.map(image => ({ ...image, url: `${image.url}` }))
         : [],
     };
+    console.log('Spot Details:', spotDetails); // Log spotDetails
 
     dispatch(fetchSpotDetailsSuccess(spotDetails));
   } catch (error) {
