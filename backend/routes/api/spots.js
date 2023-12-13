@@ -666,14 +666,15 @@ router.get('/:spotId/images', async (req, res) => {
       },
     });
 
-    if (!spotImages) {
-      return res.status(404).json({ message: 'Spot not found' });
+    console.log('Spot Images:', spotImages);
+
+    if (!spotImages || spotImages.length === 0) {
+      return res.status(404).json({ message: 'Spot not found or no images available' });
     }
 
     const imageUrls = spotImages.map(image => image.url);
 
-
-    res.status(200).json({ spotImages: imageUrls});
+    res.status(200).json({ spotImages: imageUrls });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal server error' });
