@@ -659,16 +659,20 @@ router.get('/:spotId/images', async (req, res) => {
   try {
     const spotId = req.params.spotId;
 
-    const spotImages = await SpotImage.findByPk(spotId, {
-      attributes: ['url']
-    })
+    const spotImages = await SpotImage.findAll({
+      attributes: ['url'],
+      where: {
+        spotId: spotId,
+      },
+    });
 
     if (!spotImages) {
       return res.status(404).json({ message: 'Spot not found' });
     }
 
+    const imageUrls = spotImages.map(image => image.url);
 
-
+    
     res.status(200).json({ spotImages: spotImages.url});
   } catch (error) {
     console.error(error);
