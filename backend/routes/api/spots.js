@@ -674,7 +674,7 @@ console.log('!!Received spotId:', spotId);
     }
 
     const imageUrls = spotImages.map(image => image.url);
-
+    console.log('!!!!!!!', imageUrls)
     res.status(200).json({ spotImages: imageUrls });
   } catch (error) {
     console.error(error);
