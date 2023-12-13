@@ -25,6 +25,15 @@ const calculateAvgRating = async spotId => {
 
   const reviews = spot.Reviews;
 
+  const calculateNumReviews = async spotId => {
+  const reviews = await Review.findAll({
+    where: {
+      spotId: spotId,
+    }
+  });
+  return reviews.length;
+};
+
   if (!reviews || reviews.length === 0) {
       return 0;
     }
