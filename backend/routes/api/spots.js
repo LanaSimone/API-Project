@@ -606,81 +606,129 @@ router.post('/', requireAuth, async (req, res) => {
 //   }
 // });
 
-router.get('/:spotId', async (req, res) => {
-  console.log('Fetching spot details for spotId:', req.params.spotId);
-  try {
-    const spotId = req.params.spotId;
+// router.get('/:spotId', async (req, res) => {
+//   console.log('Fetching spot details for spotId:', req.params.spotId);
+//   try {
+//     const spotId = req.params.spotId;
 
-    // Fetch spot details
-    const spot = await Spots.findByPk(spotId, {
-      attributes: [
-        'id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name',
-        'description', 'price', 'createdAt', 'updatedAt',
-        'avgStarRating',
-        'previewImage',
-      ],
-    });
+//     // Fetch spot details
+//     const spot = await Spots.findByPk(spotId, {
+//       attributes: [
+//         'id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name',
+//         'description', 'price', 'createdAt', 'updatedAt',
+//         'avgStarRating',
+//         'previewImage',
+//       ],
+//     });
 
-    if (!spot) {
-      return res.status(404).json({ message: "Spot couldn't be found", spotId: req.params.spotId });
-    }
+//     if (!spot) {
+//       return res.status(404).json({ message: "Spot couldn't be found", spotId: req.params.spotId });
+//     }
 
 
 
-    const lat = parseFloat(spot.lat);
-    const lng = parseFloat(spot.lng);
-    const price = parseInt(spot.price);
-    const avgStarRating = parseFloat(spot.avgStarRating);
+//     const lat = parseFloat(spot.lat);
+//     const lng = parseFloat(spot.lng);
+//     const price = parseInt(spot.price);
+//     const avgStarRating = parseFloat(spot.avgStarRating);
 
-    res.status(200).json({
-      id: spot.id,
-      owner: spot.ownerId,
-      address: spot.address,
-      city: spot.city,
-      state: spot.state,
-      lat: lat,
-      lng: lng,
-      name: spot.name,
-      description: spot.description,
-      price: price,
-      createdAt: spot.createdAt,
-      updatedAt: spot.updatedAt,
-      avgStarRating: avgStarRating || 0,
-      previewImage: spot.previewImage,
-      // spotImages: spotImages.map(image => ({ url: `${image.url}` })),
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Internal server error' });
-  }
+//     res.status(200).json({
+//       id: spot.id,
+//       owner: spot.ownerId,
+//       address: spot.address,
+//       city: spot.city,
+//       state: spot.state,
+//       lat: lat,
+//       lng: lng,
+//       name: spot.name,
+//       description: spot.description,
+//       price: price,
+//       createdAt: spot.createdAt,
+//       updatedAt: spot.updatedAt,
+//       avgStarRating: avgStarRating || 0,
+//       previewImage: spot.previewImage,
+//       // spotImages: spotImages.map(image => ({ url: `${image.url}` })),
+//     });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: 'Internal server error' });
+//   }
+// });
+
+router.get('/:spotId', async(req, res) => {
+  const spot = await Spot.findOne({where: { id: req.params.spotId },
+    attributes: { exclude: ["previewImage"] }
+  });
+
+  if (!spot) return res.status(404).json({ "message": "Spot couldn't be found"});
+
+  spot.avgStarRating = await calculateAvgRating(spot.id);
+
+  spot.SpotImages = await SpotImage.findAll({
+    attributes: ['id', 'url', 'preview'],
+    where: {
+      spotId: spot.id,
+    },
+  });
+
+  const ownerUser = await User.findByPk(spot.ownerId);
+
+  spot.Owner = {
+    id: ownerUser.id,
+    firstName: ownerUser.firstName,
+    lastName: ownerUser.lastName,
+  };
+
+  const spotResponse = {};
+
+  spotResponse.id = spot.id;
+  spotResponse.ownerId = spot.ownerId;
+  spotResponse.address = spot.address;
+  spotResponse.city = spot.city;
+  spotResponse.state = spot.state;
+  spotResponse.country = spot.country;
+  spotResponse.lat = spot.lat;
+  spotResponse.lng = spot.lng;
+  spotResponse.name = spot.name;
+  spotResponse.description = spot.description;
+  spotResponse.price = spot.price;
+  spotResponse.createdAt = spot.createdAt;
+  spotResponse.updatedAt = spot.updatedAt;
+  spotResponse.numReviews = await calculateNumReviews(spot.id);
+  spotResponse.avgStarRating = spot.avgStarRating;
+  spotResponse.SpotImages = spot.SpotImages;
+  spotResponse.Owner = spot.Owner;
+
+  return res.status(200).json(spotResponse);
+
 });
 
-router.get('/:spotId/images', async (req, res) => {
-  try {
-    // const spotId = req.params.spotId;
-    const spotId = parseInt(req.params.spotId, 10);
-console.log('!!Received spotId:', spotId);
-    const spotImages = await SpotImage.findAll({
-      attributes: ['url'],
-      where: {
-        spotId: spotId,
-      },
-    });
+// router.get('/:spotId/images', async (req, res) => {
+//   try {
+//     // const spotId = req.params.spotId;
+//     const spotId = parseInt(req.params.spotId, 10);
+// console.log('!!Received spotId:', spotId);
+//     const spotImages = await SpotImage.findAll({
+//       attributes: ['url'],
+//       where: {
+//         spotId: spotId,
+//       },
+//     });
 
-    console.log('!!!!!Spot Images:', spotImages);
+//     console.log('!!!!!Spot Images:', spotImages);
 
-    if (!spotImages || spotImages.length === 0) {
-      return res.status(404).json({ message: 'Spot not found or no images available' });
-    }
+//     if (!spotImages || spotImages.length === 0) {
+//       return res.status(404).json({ message: 'Spot not found or no images available' });
+//     }
 
-    const imageUrls = spotImages.map(image => image.url);
-    console.log('!!!!!!!', imageUrls)
-    res.status(200).json({ spotImages: imageUrls });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Internal server error' });
-  }
-});
+//     const imageUrls = spotImages.map(image => image.url);
+//     console.log('!!!!!!!', imageUrls)
+//     res.status(200).json({ spotImages: imageUrls });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: 'Internal server error' });
+//   }
+// });
 
 
 
