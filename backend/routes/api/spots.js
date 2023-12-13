@@ -661,6 +661,24 @@ router.get('/:spotId', async (req, res) => {
   }
 });
 
+router.get('/:spotId/images', async (req, res) => {
+  try {
+    const spotId = req.params.spotId;
+
+    const spotImages = await SpotImage.findAll({
+      attributes: ['url'],
+      where: { spotId: spotId },
+    });
+
+    res.status(200).json({ spotImages: spotImages });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+module.exports = router;
+
 
 //create a spot image
 router.post('/:spotId/images', requireAuth,   async (req, res) => {
