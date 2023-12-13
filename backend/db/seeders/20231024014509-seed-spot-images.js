@@ -16,9 +16,7 @@ async function downloadImageToBase64(imageUrl) {
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     // Assuming you have already retrieved user IDs in this file
-     const spots = await Spot.findAll({ attributes: ['id'] });
-
-    const spotIds = spots.map((spot) => spot.id);
+    const spotIds = [1, 2, 3]; // Use actual spot IDs
 
     const imageUrl1 = 'https://media.architecturaldigest.com/photos/55f9e0394254f7de3455d6f9/master/w_1600%2Cc_limit/dam-images-daily-2015-05-ct-estate-greenwich-connecticut-english-style-estate-for-sale-02.jpg';
     const previewImageBase641 = await downloadImageToBase64(imageUrl1);
