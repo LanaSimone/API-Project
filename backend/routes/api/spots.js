@@ -647,7 +647,7 @@ router.get('/:spotId', async (req, res) => {
       updatedAt: spot.updatedAt,
       avgStarRating: avgStarRating || 0,
       previewImage: spot.previewImage,
-      spotImages: spotImages.map(image => ({ url: `${image.url}` })),
+      // spotImages: spotImages.map(image => ({ url: `${image.url}` })),
     });
   } catch (error) {
     console.error(error);
@@ -657,8 +657,9 @@ router.get('/:spotId', async (req, res) => {
 
 router.get('/:spotId/images', async (req, res) => {
   try {
-    const spotId = req.params.spotId;
-
+    // const spotId = req.params.spotId;
+    const spotId = parseInt(req.params.spotId, 10);
+console.log('!!Received spotId:', spotId);
     const spotImages = await SpotImage.findAll({
       attributes: ['url'],
       where: {
@@ -666,7 +667,7 @@ router.get('/:spotId/images', async (req, res) => {
       },
     });
 
-    console.log('Spot Images:', spotImages);
+    console.log('!!!!!Spot Images:', spotImages);
 
     if (!spotImages || spotImages.length === 0) {
       return res.status(404).json({ message: 'Spot not found or no images available' });
