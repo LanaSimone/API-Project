@@ -665,7 +665,7 @@ router.get('/:spotId/images', async (req, res) => {
   try {
     const spotId = req.params.spotId;
 
-    const spot = await Spot.findByPk(spotId);
+    const spot = await Spots.findByPk(spotId);
     if (!spot) {
       return res.status(404).json({ message: 'Spot not found' });
     }
