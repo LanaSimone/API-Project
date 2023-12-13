@@ -24,12 +24,12 @@ export const fetchSpotDetails = (spotId) => async (dispatch) => {
 
     // Assuming spotImages is correctly set in the server response
     const spotDetails = {
-      ...data,
-      spotImages: Array.isArray(data.spotImages)
-        ? data.spotImages.map(image => ({ ...image, url: `${image.url}` }))
-        : [],
-    };
-    console.log('Spot Details:', spotDetails); // Log spotDetails
+  ...data,
+  SpotImages: Array.isArray(data.SpotImages)
+    ? data.SpotImages.map(image => ({ ...image, url: `${image.url}` }))
+    : [],
+};
+
 
     dispatch(fetchSpotDetailsSuccess(spotDetails));
   } catch (error) {
