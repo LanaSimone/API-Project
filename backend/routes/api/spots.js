@@ -625,13 +625,7 @@ router.get('/:spotId', async (req, res) => {
       return res.status(404).json({ message: "Spot couldn't be found", spotId: req.params.spotId });
     }
 
-    // Fetch SpotImages for the specific spotId
-    const spotImages = await SpotImage.findAll({
-      attributes: ['url'],
-      where: {
-        spotId: spot.id,
-      },
-    });
+
 
     const lat = parseFloat(spot.lat);
     const lng = parseFloat(spot.lng);
@@ -665,7 +659,9 @@ router.get('/:spotId/images', async (req, res) => {
   try {
     const spotId = req.params.spotId;
 
-    const spotImages = await SpotImage.findByPk(spotId);
+    const spotImages = await Spots.findByPk(spotId, {
+      attributes: ['url']
+    })
 
     if (!spotImages) {
       return res.status(404).json({ message: 'Spot not found' });
@@ -673,7 +669,7 @@ router.get('/:spotId/images', async (req, res) => {
 
 
 
-    res.status(200).json({ spotImages: spotImages });
+    res.status(200).json({ spotImages: url});
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal server error' });
