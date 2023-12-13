@@ -686,7 +686,34 @@ router.post('/', requireAuth, async (req, res) => {
 //   }
 // });
 
-router.get('/:spotId', async(req, res) => {
+router.get('/:spotId', async (req, res) => {
+
+  const calculateAvgRating = async spotId => {
+  const spot = await Spots.findByPk(spotId, {
+    include: {
+      model: Review,
+      attributes: ['stars'],
+    },
+  });
+
+  if (!spot) {
+    return 0;
+  }
+
+  const reviews = spot.Reviews;
+
+
+
+  if (!reviews || reviews.length === 0) {
+      return 0;
+    }
+
+    const totalStars = reviews.reduce((sum, review) => sum + review.stars, 0);
+    const avgRating = totalStars / reviews.length;
+    return parseFloat(avgRating.toFixed(2));
+  };
+
+
   const spot = await Spots.findOne({where: { id: req.params.spotId },
     attributes: { exclude: ["previewImage"] }
   });
@@ -694,6 +721,7 @@ router.get('/:spotId', async(req, res) => {
   if (!spot) return res.status(404).json({ "message": "Spot couldn't be found"});
 
   spot.avgStarRating = await calculateAvgRating(spot.id);
+
 
   spot.SpotImages = await SpotImage.findAll({
     attributes: ['id', 'url', 'preview'],
@@ -725,7 +753,7 @@ router.get('/:spotId', async(req, res) => {
   spotResponse.price = spot.price;
   spotResponse.createdAt = spot.createdAt;
   spotResponse.updatedAt = spot.updatedAt;
-  spotResponse.numReviews = await calculateNumReviews(spot.id);
+  // spotResponse.numReviews = await calculateNumReviews(spot.id);
   spotResponse.avgStarRating = spot.avgStarRating;
   spotResponse.SpotImages = spot.SpotImages;
   spotResponse.Owner = spot.Owner;
