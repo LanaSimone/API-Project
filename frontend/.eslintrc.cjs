@@ -16,8 +16,7 @@ module.exports = {
       'warn',
       { allowConstantExport: true },
     ],
-    'react/prop-types': 'off',
-    "no-case-declarations": "off",
+    'react/prop-types': 'off'
   },
   overrides: [
  {

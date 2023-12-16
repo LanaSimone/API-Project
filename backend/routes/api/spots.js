@@ -1202,7 +1202,7 @@ router.get('/:spotId/reviews', async (req, res) => {
 
     // Find all reviews for the spot, including associated user and review images
     const reviews = await Review.findAll({
-      where: { spotId},
+      where: { spotId },
       attributes: ['id', 'userId', 'spotId', 'review', 'stars', 'createdAt', 'updatedAt'],
       include: [
         {
@@ -1224,11 +1224,9 @@ router.get('/:spotId/reviews', async (req, res) => {
       ];
 
       return {
-        id: review.id,
         firstName: review.User.firstName,
         createdAt: `${monthNames[createdAt.getMonth()]} ${createdAt.getFullYear()}`,
         reviewText: review.review,
-        userId: review.userId
       };
     });
 
@@ -1241,25 +1239,21 @@ router.get('/:spotId/reviews', async (req, res) => {
 
 //create a review
 router.post('/:spotId/reviews', async (req, res) => {
-  try {
-    console.log('Received review submission request');
 
+  try {
     const spotId = req.params.spotId;
     const userId = req.user.id;
 
     // Check if the spot exists
-    console.log('Checking if the spot exists...');
     const spot = await Spots.findByPk(spotId);
 
     if (!spot) {
-      console.log('Spot not found. Responding with 404 error.');
       return res.status(404).json({ message: "Spot couldn't be found" });
     }
 
     const { review, stars } = req.body;
 
     if (!review || typeof stars !== 'number' || stars < 1 || stars > 5) {
-      console.log('Bad request. Responding with 400 error.');
       return res.status(400).json({
         message: "Bad Request",
         errors: {
@@ -1268,40 +1262,29 @@ router.post('/:spotId/reviews', async (req, res) => {
         },
       });
     }
-
-    console.log('Validating review...');
-
     const now = new Date();
-
     // Check if the user already has a review for this spot
-    console.log('Checking if the user already has a review...');
     const [existingReview, created] = await Review.findCreateFind({
-  where: {
-    spotId,
-    userId,
-  },
-  defaults: {
-    review,
-    stars,
-    createdAt: now,
-    updatedAt: now,
-  },
-  attributes: ['id', 'userId', 'spotId', 'review', 'stars', 'createdAt', 'updatedAt'],
-  include: [
-    {
-      model: User, // Assuming your User model is named User
-      attributes: ['firstName'], // Include only the firstName field
-    },
-  ],
-});
+      where: {
+        spotId,
+        userId,
+      },
+      defaults: {
+        review,
+        stars,
+        createdAt: now,
+        updatedAt: now,
+
+      },
+      attributes: ['id', 'userId', 'spotId', 'review', 'stars', 'createdAt', 'updatedAt'],
+
+    });
 
     if (!created) {
-        const errorMessage = "User already has a review for this spot";
-        console.log(`User already has a review. Responding with 500 error: ${errorMessage}`);
-        return res.status(500).json({errorMessage });
+      return res.status(500).json({ message: "User already has a review for this spot" });
     }
 
-    const formatTimestamp = (timestamp) => {
+      const formatTimestamp = (timestamp) => {
       if (!timestamp) return '';
       const date = new Date(timestamp);
       const year = date.getFullYear();
@@ -1312,9 +1295,7 @@ router.post('/:spotId/reviews', async (req, res) => {
       const seconds = String(date.getSeconds()).padStart(2, '0');
       return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
     };
-
     // Respond with the newly created review
-    console.log('Review submission successful. Responding with 201 status.');
     return res.status(201).json({
       id: existingReview.id,
       userId: existingReview.userId,
@@ -1325,8 +1306,6 @@ router.post('/:spotId/reviews', async (req, res) => {
       updatedAt: "2023-11-05 20:44:58",
     });
   } catch (error) {
-    console.error('Error in review submission:', error);
-    // Log the complete error object
     console.error(error);
 
     if (error.name === 'SequelizeValidationError') {
@@ -1335,13 +1314,11 @@ router.post('/:spotId/reviews', async (req, res) => {
         errors[err.path] = err.message;
       });
 
-      console.log('Validation error. Responding with 400 error.');
       return res.status(400).json({
         message: 'Validation error',
         errors,
       });
     } else {
-      console.log('Internal server error. Responding with 500 error.');
       return res.status(500).json({ message: 'Internal server error' });
     }
   }
