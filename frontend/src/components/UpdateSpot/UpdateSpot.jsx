@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { csrfFetch } from "../../../store/csrf";
+import { csrfFetch } from "../../store/csrf";
 
 // import './CreateSpot.css'
 

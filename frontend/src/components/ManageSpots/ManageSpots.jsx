@@ -4,10 +4,13 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
+import ConfirmSpotDelete from "../ConfirmModals/ConfirmSpotDelete";
+import { useModal } from "../../context/Modal";
 
 
 
 function ManageSpots() {
+    const {setModalContent} = useModal()
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -27,15 +30,28 @@ console.log('!!!!!!!!!!userSpot', currentUserSpots);
     fetchUserSpots();
   }, [dispatch]);
 
-  const handleCreateButtonClick = () => {
-    navigate('/create-spot');
-  }
-  const handleUpdateButtonClick = () => {
-    navigate('/update-spot');
-  }
-  const handleDeleteButtonClick = () => {
-    navigate('/create-spot');
-  }
+
+    const handleCreateButtonClick = () => {
+      navigate('/create-spot');
+    }
+
+    const handleUpdateButtonClick = () => {
+        navigate('/update-spot');
+    }
+
+
+ const openDeleteSpotModal = (spotId, spotName) => {
+    // Set the modal content to ConfirmSpotDelete component
+    setModalContent(
+      <ConfirmSpotDelete
+        spotId={spotId}
+        spotName={spotName}
+            onCancel={() => setModalContent(null)}
+            onClose={() => setModalContent(null)}
+      />
+    );
+  };
+
 
   return (
     <div>
@@ -48,10 +64,10 @@ console.log('!!!!!!!!!!userSpot', currentUserSpots);
                       <p>{spot.city}</p>
                       <p>{spot.state}</p>
                       <FontAwesomeIcon icon={solidStar} className="review-icon" /> {`${spot.avgRating}`}
-                      <p>{spot.avgRating}</p>
-                      <p>{spot.price}</p>
+
+                      <p>$ {spot.price}</p>
                       <button onClick={handleUpdateButtonClick}>Update</button>
-                      <button onClick={handleDeleteButtonClick}>Delete</button>
+                      <button onClick={() => openDeleteSpotModal(spot.id, spot.name)}>Delete</button>
                   </li>
               ))}
           </ul>

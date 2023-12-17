@@ -10,6 +10,7 @@ export const FETCH_REVIEWS_SUCCESS = 'FETCH_REVIEWS_SUCCESS';
 export const FETCH_CURRENT_USER_SPOTS_SUCCESS = 'FETCH_CURRENT_USER_SPOTS_SUCCESS'
 export const POST_REVIEWS_SUCCESS = 'POST_REVIEWS_SUCCESS';
 export const DELETE_REVIEW_SUCCESS = 'DELETE_REVIEW_SUCCESS';
+export const DELETE_SPOTS_SUCCESS = 'DELETE_SPOTS_SUCCESS'
 
 export const fetchSpotsSuccess = (data) => {
   const spots = data && data.Spots ? data.Spots : [];
@@ -46,6 +47,11 @@ export const postReviewSuccess = (reviews) => ({
   type: POST_REVIEWS_SUCCESS,
   payload: reviews,
 });
+
+export const deleteSpotsSuccess = (spotId) => ({
+  type: DELETE_SPOTS_SUCCESS,
+  payload: spotId,
+})
 
 
 export const fetchSpots = () => async (dispatch) => {
@@ -106,6 +112,29 @@ export const fetchSpotDetails = (spotId) => async (dispatch) => {
     console.error('Error fetching spot details:', error.message);
   }
 };
+
+export const deleteSpots = (spotId) => async (dispatch) => {
+  try {
+    const response = await csrfFetch(`/api/spots/${spotId}`, {
+      method: 'DELETE',
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to delete spot (${response.status})`);
+    }
+
+    const data = await response.json();
+    dispatch(deleteSpotsSuccess(spotId));
+
+    // Return the response to handle it in the component
+    return { ok: true, payload: data };
+  } catch (error) {
+    console.error('Error deleting spot:', error.message);
+    // Throw the error to be caught in the component
+    throw error;
+  }
+};
+
 // Thunk to Fetch Reviews
 export const fetchReviews = (spotId) => async (dispatch) => {
   try {
@@ -179,13 +208,26 @@ const spotSlice = createSlice({
   initialState: {
     spotDetails: null,
     reviews: [],
+    spots: []
+
   },
   reducers: {
     DELETE_REVIEW_SUCCESS: (state, action) => {
       console.log('action payload:', action.payload)
       const updatedReviews = action.payload;
-      return { ...state, reviews: updatedReviews };
+      return {
+        ...state,
+        reviews: updatedReviews
+      };
     },
+    DELETE_SPOT_SUCCESS: (state, action) => {
+      console.log('action payload', action.payload)
+      const updatedSpots = action.payload;
+      return {
+        ...state,
+        spots: updatedSpots
+      }
+    }
 
   },
   extraReducers: (builder) => {

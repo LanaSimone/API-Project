@@ -11,7 +11,7 @@ import HomePage from './components/HomePage/HomePageComponent';
 import SpotDetails from './components/SpotDetails/SpotDetails';
 import CreateSpot from './components/CreateSpot/CreateSpot';
 import ManageSpots from './components/ManageSpots/ManageSpots';
-import UpdateSpot from './components/ManageSpots/UpdateSpot/UpdateSpot';
+import UpdateSpot from './components/UpdateSpot/UpdateSpot';
 
 
 function Layout() {
@@ -57,7 +57,7 @@ const router = createBrowserRouter([
         element: <ManageSpots />
       },
       {
-        path: '/update-spot',
+        path: '/update-spots',
         element: <UpdateSpot />
       }
 
