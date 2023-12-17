@@ -1,4 +1,4 @@
-import { FETCH_SPOT_SUCCESS, FETCH_SPOT_DETAILS_SUCCESS, FETCH_REVIEWS_SUCCESS, FETCH_CURRENT_USER_SPOTS_SUCCESS ,DELETE_REVIEW_SUCCESS, POST_REVIEWS_SUCCESS, DELETE_SPOTS_SUCCESS } from './spotActions';
+import { FETCH_SPOT_SUCCESS, FETCH_SPOT_DETAILS_SUCCESS, FETCH_REVIEWS_SUCCESS, UPDATE_SPOTS_SUCCESS, FETCH_CURRENT_USER_SPOTS_SUCCESS ,DELETE_REVIEW_SUCCESS, POST_REVIEWS_SUCCESS, DELETE_SPOTS_SUCCESS } from './spotActions';
 
 const initialState = {
   spotDetails: null,
@@ -21,6 +21,15 @@ const spotReducer = (state = initialState, action) => {
         ...state,
         reviews: action.payload,
       };
+    case UPDATE_SPOTS_SUCCESS:
+      // Update your state with the new data from action.payload
+      return {
+        ...state,
+        // Assuming action.payload is an object containing updated spot data
+        spots: state.spots.map((spot) =>
+          spot.id === action.payload.id ? action.payload : spot
+        ),
+      }
     case FETCH_CURRENT_USER_SPOTS_SUCCESS:
       return {
         ...state,

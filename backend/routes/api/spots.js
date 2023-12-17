@@ -897,6 +897,7 @@ function formatDate(date) {
 
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
+
 //update spot
 router.put('/:spotId',  requireAuth,  async (req, res, next) => {
   try {
@@ -911,7 +912,7 @@ router.put('/:spotId',  requireAuth,  async (req, res, next) => {
       return res.status(403).json({ message: "Forbidden" });
     }
 
-    const {
+    let {
       address,
       city,
       state,
@@ -922,6 +923,8 @@ router.put('/:spotId',  requireAuth,  async (req, res, next) => {
       description,
       price,
     } = req.body;
+
+    console.log("Received data:", req.body);
 
     const errors = {};
     // let lat;
@@ -1000,6 +1003,9 @@ router.put('/:spotId',  requireAuth,  async (req, res, next) => {
 
     try {
       await existingSpot.save();
+
+      console.log("Spot saved successfully:", existingSpot);
+
       const formattedSpot = {
         id: existingSpot.id,
         ownerId: existingSpot.ownerId,
@@ -1029,6 +1035,7 @@ router.put('/:spotId',  requireAuth,  async (req, res, next) => {
         };
 
         return res.status(400).json({
+
           message: 'Bad Request',
           errors: responseErrors,
         });

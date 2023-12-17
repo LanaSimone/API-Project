@@ -7,7 +7,8 @@ import { csrfFetch } from "../csrf";
 export const FETCH_SPOT_SUCCESS = 'FETCH_SPOT_SUCCESS'
 export const FETCH_SPOT_DETAILS_SUCCESS = 'FETCH_SPOT_DETAILS_SUCCESS';
 export const FETCH_REVIEWS_SUCCESS = 'FETCH_REVIEWS_SUCCESS';
-export const FETCH_CURRENT_USER_SPOTS_SUCCESS = 'FETCH_CURRENT_USER_SPOTS_SUCCESS'
+export const FETCH_CURRENT_USER_SPOTS_SUCCESS = 'FETCH_CURRENT_USER_SPOTS_SUCCESS';
+export const UPDATE_SPOTS_SUCCESS = 'UPDATE_SPOTS_SUCCESS'
 export const POST_REVIEWS_SUCCESS = 'POST_REVIEWS_SUCCESS';
 export const DELETE_REVIEW_SUCCESS = 'DELETE_REVIEW_SUCCESS';
 export const DELETE_SPOTS_SUCCESS = 'DELETE_SPOTS_SUCCESS'
@@ -20,6 +21,10 @@ export const fetchSpotsSuccess = (data) => {
   };
 };
 
+export const updateSpotsSuccess = (data) => ({
+  type: UPDATE_SPOTS_SUCCESS,
+  payload: data,
+})
 
 export const fetchSpotDetailsSuccess = (spotDetails) => ({
   type: FETCH_SPOT_DETAILS_SUCCESS,
@@ -89,6 +94,43 @@ export const fetchCurrentUserSpots = () =>async (dispatch) => {
 
   }
 }
+
+export const updateSpots = (spotId, address, city, state, country, lat, lng, name, description, price) => async (dispatch) => {
+  try {
+    const response = await csrfFetch(`/api/spots/${spotId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        address,
+        city,
+        state,
+        country,
+        lat,
+        lng,
+        name,
+        description,
+        price,
+      }),
+    });
+
+    console.log('Response from backend:', response);
+    if (!response.ok) {
+      const responseData = await response.json();
+      console.log(`Error updating spot: ${responseData.message}`);
+      return { ok: false, error: responseData.message };
+    } else {
+      const data = await response.json();
+
+      dispatch(updateSpotsSuccess(data));
+      return { ok: true, payload: data };
+    }
+  } catch (error) {
+    console.error("An unexpected error occurred:", error);
+    throw error;
+  }
+};
 
 export const fetchSpotDetails = (spotId) => async (dispatch) => {
   try {

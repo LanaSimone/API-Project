@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
 import ConfirmSpotDelete from "../ConfirmModals/ConfirmSpotDelete";
 import { useModal } from "../../context/Modal";
+// import UpdateSpot from "../UpdateSpot/UpdateSpot";
 
 
 
@@ -35,10 +36,9 @@ console.log('!!!!!!!!!!userSpot', currentUserSpots);
       navigate('/create-spot');
     }
 
-    const handleUpdateButtonClick = () => {
-        navigate('/update-spot');
-    }
-
+    const handleUpdateButtonClick = (spotId) => {
+  navigate(`/update-spots/${spotId}`); // Update the path to '/update-spots'
+}
 
  const openDeleteSpotModal = (spotId, spotName) => {
     // Set the modal content to ConfirmSpotDelete component
@@ -66,7 +66,7 @@ console.log('!!!!!!!!!!userSpot', currentUserSpots);
                       <FontAwesomeIcon icon={solidStar} className="review-icon" /> {`${spot.avgRating}`}
 
                       <p>$ {spot.price}</p>
-                      <button onClick={handleUpdateButtonClick}>Update</button>
+                       <button onClick={() => handleUpdateButtonClick(spot.id)}>Update</button>
                       <button onClick={() => openDeleteSpotModal(spot.id, spot.name)}>Delete</button>
                   </li>
               ))}
