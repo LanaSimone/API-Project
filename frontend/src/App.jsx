@@ -10,6 +10,8 @@ import * as sessionActions from './store/session';
 import HomePage from './components/HomePage/HomePageComponent';
 import SpotDetails from './components/SpotDetails/SpotDetails';
 import CreateSpot from './components/CreateSpot/CreateSpot';
+import ManageSpots from './components/ManageSpots/ManageSpots';
+import UpdateSpot from './components/ManageSpots/UpdateSpot/UpdateSpot';
 
 
 function Layout() {
@@ -49,6 +51,14 @@ const router = createBrowserRouter([
       {
         path: '/create-spot',
         element: <CreateSpot />
+      },
+      {
+        path: '/manage-spots',
+        element: <ManageSpots />
+      },
+      {
+        path: '/update-spot',
+        element: <UpdateSpot />
       }
 
     ]

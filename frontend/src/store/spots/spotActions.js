@@ -4,15 +4,31 @@ import { csrfFetch } from "../csrf";
 
 
 
+export const FETCH_SPOT_SUCCESS = 'FETCH_SPOT_SUCCESS'
 export const FETCH_SPOT_DETAILS_SUCCESS = 'FETCH_SPOT_DETAILS_SUCCESS';
 export const FETCH_REVIEWS_SUCCESS = 'FETCH_REVIEWS_SUCCESS';
+export const FETCH_CURRENT_USER_SPOTS_SUCCESS = 'FETCH_CURRENT_USER_SPOTS_SUCCESS'
 export const POST_REVIEWS_SUCCESS = 'POST_REVIEWS_SUCCESS';
 export const DELETE_REVIEW_SUCCESS = 'DELETE_REVIEW_SUCCESS';
+
+export const fetchSpotsSuccess = (data) => {
+  const spots = data && data.Spots ? data.Spots : [];
+  return {
+    type: FETCH_SPOT_SUCCESS,
+    payload: spots,
+  };
+};
+
 
 export const fetchSpotDetailsSuccess = (spotDetails) => ({
   type: FETCH_SPOT_DETAILS_SUCCESS,
   payload: spotDetails,
 });
+
+export const fetchCurrentUserSpotsSuccess = (userSpots) => ({
+  type: FETCH_CURRENT_USER_SPOTS_SUCCESS,
+  payload: userSpots
+})
 
 export const fetchReviewsSuccess = (reviews) => {
   return {
@@ -31,6 +47,42 @@ export const postReviewSuccess = (reviews) => ({
   payload: reviews,
 });
 
+
+export const fetchSpots = () => async (dispatch) => {
+  try {
+    const response = await csrfFetch('/api/spots')
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch spots (${response.status})`);
+    }
+    const data = await response.json();
+
+    console.log('API Response for fetchSpots:', data); // Add this line
+
+    dispatch(fetchSpotsSuccess(data));
+  } catch (error) {
+    console.log('Error fetching spots:', error.message);
+  }
+}
+
+export const fetchCurrentUserSpots = () =>async (dispatch) => {
+  try {
+    const response = await csrfFetch('/api/spots/current');
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch current users spots (${response.status})`);
+    }
+    const data = await response.json()
+
+    console.log('Response for fetch current user spots', data)
+
+    dispatch(fetchCurrentUserSpotsSuccess(data));
+  }
+  catch (error) {
+    console.log('Error fetching spots:', error.message)
+
+  }
+}
 
 export const fetchSpotDetails = (spotId) => async (dispatch) => {
   try {
@@ -144,6 +196,7 @@ const spotSlice = createSlice({
 
       state.reviews = [review, ...state.reviews];
     }
+
   });
   },
 });
