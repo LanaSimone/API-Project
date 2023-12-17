@@ -1,213 +1,226 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
+import { csrfFetch } from "../../store/csrf";
 import './CreateSpot.css'
 
 function CreateSpot() {
   const [spotData, setSpotData] = useState({
-    address: '',
-    city: '',
-    state: '',
-    country: '',
-    lat: '',
-    lng: '',
-    name: '',
-    description: '',
-    price: '',
-    previewImages: [],
+    address: "",
+    city: "",
+    state: "",
+    country: "",
+    lat: 0,
+    lng: 0,
+    name: "",
+    description: "",
+    price: "",
+    previewImage: "",
+    additionalImages: [],
   });
 
-  const [imageFiles, setImageFiles] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+  e.preventDefault();
+  setLoading(true);
 
-    try {
-      const previewImageBase64Array = await Promise.allSettled(
-        imageFiles.map(async (file) => await convertImageToBase64(file))
-      ).then((results) =>
-        results
-          .filter((result) => result.status === 'fulfilled')
-          .map((result) => result.value)
-      );
+  try {
+    const { additionalImages, ...spotFormData } = spotData;
 
-      setSpotData((prevData) => ({
-        ...prevData,
-        previewImages: previewImageBase64Array,
-      }));
 
-      const response = await fetch('/your-backend-route', {
-        method: 'POST',
+    console.log("Additional Images:", additionalImages);
+
+      // Create spot and get the response
+      const spotResponse = await csrfFetch("/api/spots", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(spotData),
-      });
+        body: JSON.stringify({
+        ...spotFormData,
+        // Ensure previewImage is not an empty string before adding it to the request
+        previewImage: spotFormData.previewImage,
+        // Filter out empty strings from additionalImages
+        additionalImages: additionalImages.filter(image => image !== ""),
+      }),
+    });
 
-      if (response.ok) {
-        console.log('Spot created successfully!');
-        setSpotData({
-          address: '',
-          city: '',
-          state: '',
-          country: '',
-          lat: '',
-          lng: '',
-          name: '',
-          description: '',
-          price: '',
-          previewImages: [],
-        });
-      } else {
-        const errorData = await response.json();
-        setError(`Error creating spot: ${errorData.message}`);
+      if (!spotResponse.ok) {
+        const errorData = await spotResponse.json();
+        throw new Error(`Error creating spot: ${errorData.message}`);
       }
+
+    // const spot = await spotResponse.json();
+    navigate('/')
+
+
     } catch (error) {
-      console.error('Unexpected error creating spot:', error);
-      setError('Unexpected error. Please try again.');
+      console.error("Unexpected error:", error);
+      setError(error.message || "Unexpected error. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+const handleChange = (e) => {
+  const { name, value } = e.target;
+  console.log("handleChange function called");
+  console.log("Before State Update", spotData);
+
+  const updatedValue = name === "previewImage" ? value : value;
+
+  setSpotData((prevData) => ({
+    ...prevData,
+    [name]: updatedValue,
+  }));
+
+  console.log("After State Update", spotData);
+  };
+
+  const handleAdditionalImageChange = (index, value) => {
+    const updatedAdditionalImages = [...spotData.additionalImages];
+    updatedAdditionalImages[index] = value;
+
     setSpotData((prevData) => ({
       ...prevData,
-      [name]: value,
+      additionalImages: updatedAdditionalImages,
     }));
   };
 
-  const handleImageChange = (e) => {
-    const files = Array.from(e.target.files);
-    setImageFiles(files);
+  const handleAddImageField = () => {
+    setSpotData((prevData) => ({
+      ...prevData,
+      additionalImages: [...prevData.additionalImages, ""],
+    }));
   };
 
-  const convertImageToBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
-    });
+  const handleRemoveImageField = (index) => {
+    const updatedAdditionalImages = [...spotData.additionalImages];
+    updatedAdditionalImages.splice(index, 1);
+
+    setSpotData((prevData) => ({
+      ...prevData,
+      additionalImages: updatedAdditionalImages,
+    }));
   };
 
   return (
-      <form onSubmit={handleSubmit} className="createSpot">
-        <div className="heading">
-            <h2>Create a new Spot</h2>
-            <h3>Where&rsquo;s your place located?</h3>
-            <p>
-                Guests will only get your exact address once they booked a reservation.
-            </p>
+    <form onSubmit={handleSubmit} className="createSpot">
+      <div className="heading">
+        <h2>Create a new Spot</h2>
+        <h3>Where&rsquo;s your place located?</h3>
+        <p>
+          Guests will only get your exact address once they booked a reservation.
+        </p>
+      </div>
+      <div className="locationDetails">
+        <label htmlFor="country">Country</label>
+        <input
+          type="text"
+          id="country"
+          name="country"
+          value={spotData.country}
+          onChange={handleChange}
+        />
 
-        </div>
-        <div className="locationDetails">
-            <label htmlFor="country">Country</label>
-                <input
-                type="text"
-                id="country"
-                name="country"
-                value={spotData.country}
-                onChange={handleChange} 
-            />
+        <label htmlFor="address">Street Address</label>
+        <input
+          type="text"
+          id="address"
+          name="address"
+          value={spotData.address}
+          onChange={handleChange}
+        />
 
-            <label htmlFor="address">Street Address</label>
-            <input
-                type="text"
-                id="address"
-                name="address"
-                value={spotData.address}
-                onChange={handleChange}
-            />
+        <label htmlFor="city">City</label>
+        <input
+          type="text"
+          id="city"
+          name="city"
+          value={spotData.city}
+          onChange={handleChange}
+        />
 
-            <label htmlFor="city">City</label>
-            <input
-                type="text"
-                id="city"
-                name="city"
-                value={spotData.city}
-                onChange={handleChange}
-            />
-
-            <label htmlFor="state">State</label>
-                <input
-                type="text"
-                id="state"
-                name="state"
-                value={spotData.state}
-                onChange={handleChange}
-            />
-
-        </div>
-    <label htmlFor="name">Name:</label>
-    <input
+        <label htmlFor="state">State</label>
+        <input
+          type="text"
+          id="state"
+          name="state"
+          value={spotData.state}
+          onChange={handleChange}
+        />
+      </div>
+      <label htmlFor="name">Name:</label>
+      <input
         type="text"
         id="name"
         name="name"
         value={spotData.name}
         onChange={handleChange}
-    />
+      />
 
-    <label htmlFor="description">Description</label>
-    <textarea
+      <label htmlFor="description">Description</label>
+      <textarea
         id="description"
         name="description"
         value={spotData.description}
         onChange={handleChange}
-    ></textarea>
+      ></textarea>
 
-    <label htmlFor="price">$</label>
-    <input
-        type="number"
+      <label htmlFor="price">$</label>
+      <input
+        type="text"
         id="price"
         name="price"
         value={spotData.price}
         onChange={handleChange}
-    />
+      />
 
-  {/* Image Upload */}
-  <label>
-    Upload Preview Images:
-    <input
-      type='text'
-      onChange={handleImageChange}
-      multiple
-              />
-              <input
-      type='text'
-      onChange={handleImageChange}
-      multiple
-    /><input
-      type='text'
-      onChange={handleImageChange}
-      multiple
-    /><input
-      type='text'
-      onChange={handleImageChange}
-      multiple
-    /><input
-      type='text'
-      onChange={handleImageChange}
-      multiple
-    />
-  </label>
+       {/* Image Upload */}
+      <div className="imageUpload">
+        <label htmlFor="previewImage">Upload Preview Image (URL):</label>
+        <input
+          type="text"
+          id="previewImage"
+          name="previewImage"
+          value={spotData.previewImage}
+          onChange={handleChange}
+        />
 
-  {spotData.previewImages.length > 0 && (
-    <>
-      <h4>Preview Images:</h4>
-      {spotData.previewImages.map((image, index) => (
-        <img key={index} src={image} alt={`Preview ${index + 1}`} />
-      ))}
-    </>
-  )}
+        {spotData.previewImage && (
+          <>
+            <h4>Preview Image:</h4>
+            <img src={spotData.previewImage} alt="Preview" />
+          </>
+        )}
 
-  {loading && <p>Creating spot...</p>}
-  {error && <p style={{ color: 'red' }}>{error}</p>}
+        <label htmlFor="additionalImages">Upload Additional Images (URLs):</label>
+        {spotData.additionalImages.map((image, index) => (
+          <div key={index}>
+            <input
+              type="text"
+              value={image}
+              onChange={(e) => handleAdditionalImageChange(index, e.target.value)}
+            />
+            <button type="button" onClick={() => handleRemoveImageField(index)}>
+              Remove
+            </button>
+          </div>
+        ))}
 
-  <button type="submit">Create Spot</button>
-</form>
+        <button type="button" onClick={handleAddImageField}>
+          Add Image
+        </button>
+      </div>
+
+      {loading && <p>Creating spot...</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
+
+      <button type="submit">Create Spot</button>
+    </form>
   );
 }
 

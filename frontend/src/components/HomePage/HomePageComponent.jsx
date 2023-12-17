@@ -23,7 +23,7 @@ function HomePage() {
           const formattedSpots = data.Spots.map((spot) => ({
             ...spot,
             // Assuming that base64 data is sent as an object
-            previewImage: `data:image/jpeg;base64,${spot.previewImage}`,
+            previewImage: `${spot.previewImage}`,
           }));
 
           setSpots(formattedSpots);

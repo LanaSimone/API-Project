@@ -393,10 +393,10 @@ router.post('/', requireAuth, async (req, res) => {
       name,
       description,
       price,
-      previewImages
+      previewImage,
+      additionalImages
 
     } = req.body;
-
 
 
 
@@ -456,18 +456,18 @@ router.post('/', requireAuth, async (req, res) => {
     const ownerId = req.user.id;
     const now = new Date();
 
-    const downloadPromises = previewImages.map(async (imageUrl) => {
-      try {
-        return await downloadImageToBase64(imageUrl);
-      } catch (error) {
-        // Handle individual image download errors if needed
-        return null;
-      }
-    });
+    // const downloadPromises = previewImages.map(async (imageUrl) => {
+    //   try {
+    //     return await downloadImageToBase64(imageUrl);
+    //   } catch (error) {
+    //     // Handle individual image download errors if needed
+    //     return null;
+    //   }
+    // });
 
-     const previewImageBase64Array = await Promise.allSettled(downloadPromises)
-      .then((results) => results.filter((result) => result.status === 'fulfilled'))
-      .then((fulfilledResults) => fulfilledResults.map((result) => result.value));
+    //  const previewImageBase64Array = await Promise.allSettled(downloadPromises)
+    //   .then((results) => results.filter((result) => result.status === 'fulfilled'))
+    //   .then((fulfilledResults) => fulfilledResults.map((result) => result.value));
 
 
 
@@ -484,8 +484,41 @@ router.post('/', requireAuth, async (req, res) => {
       price,
       createdAt: now,
       updatedAt: now,
+      previewImage: previewImage
+
     });
 
+    console.log('Before create - previewImage:', previewImage)
+
+
+
+    if (previewImage) {
+      try {
+        await SpotImage.create({
+          spotId: newSpot.id,
+          url: previewImage,
+          preview: true,
+        });
+      } catch (error) {
+        console.error(`Error creating SpotImage for previewImage ${previewImage}:`, error);
+        throw error;
+      }
+    }
+
+if (Array.isArray(additionalImages) && additionalImages.length > 0) {
+  await Promise.all(additionalImages.map(async (imageUrl) => {
+    try {
+      await SpotImage.create({
+        spotId: newSpot.id,
+        url: imageUrl,
+        preview: false, // Assuming additional images are not preview images
+      });
+    } catch (error) {
+      console.error(`Error creating SpotImage for imageUrl ${imageUrl}:`, error);
+      throw error;
+    }
+  }));
+}
     const formattedSpot = {
       id: newSpot.id,
       ownerId: newSpot.ownerId,
@@ -500,7 +533,7 @@ router.post('/', requireAuth, async (req, res) => {
       price: parseFloat(newSpot.price),
       createdAt: now.toISOString().slice(0, 19).replace('T', ' '),
       updatedAt: now.toISOString().slice(0, 19).replace('T', ' '),
-      previewImages: previewImageBase64Array,
+      previewImages: previewImage,
     };
 
     return res.status(201).json(formattedSpot);

@@ -1,12 +1,13 @@
-import {  useEffect} from 'react';
+import {  useEffect,  useState} from 'react';
 import {useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { useModal} from '../../context/Modal';
+import { useModal } from '../../context/Modal';
+// import { openModal } from '../../store/modal.js/modal';
 import { PostReviewModal } from '../CreateReviews/CreateReviews';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar as solidStar, faCircle } from '@fortawesome/free-solid-svg-icons';
 // import { faStar } from '@fortawesome/free-regular-svg-icons';
-import { fetchSpotDetails, fetchReviews } from '../../store/spots/spotActions';
+import { fetchSpotDetails, fetchReviews, deleteReview } from '../../store/spots/spotActions';
 import './SpotDetails.css';
 
 
@@ -14,6 +15,8 @@ function SpotDetails() {
   const { spotId } = useParams();
   const dispatch = useDispatch();
   const { setModalContent } = useModal();
+  const [numReviews, setNumReviews] = useState(0)
+  // const [reviewsStateLocal, setReviewsStateLocal] = useState([]);
 
   useEffect(() => {
     dispatch(fetchSpotDetails(spotId));
@@ -22,27 +25,45 @@ function SpotDetails() {
 
   const spotDetailsState = useSelector((state) => state.spot.spotDetails);
   const reviewsState = useSelector((state) => state.spot.reviews);
+  const loggedInUser = useSelector((state) => state.session.user);
+  const loggedInUserId = loggedInUser ? loggedInUser.id : null;
+
+  console.log(loggedInUser, '!!!!!@#!@#!@#!@3spitDetailstate')
+
+  useEffect(() => {
+    if (Array.isArray(reviewsState)) {
+      setNumReviews(reviewsState.length);
+    }
+  }, [reviewsState]);
 
   const openPostReviewModal = () => {
-    setModalContent(
-      <PostReviewModal
-        onClose={() => {
-          setModalContent(null);
-          dispatch(fetchReviews(spotId));
-        }}
-      />
-    );
+    setModalContent(<PostReviewModal spotId={spotId} onClose={() => setModalContent(null)} />);
   };
-
-  console.log('!!!spotDetailsState:', spotDetailsState);
-  console.log('reviewsState:', reviewsState);
 
   if (!spotDetailsState) {
     return <div>Loading...</div>;
   }
+  { console.log('Reviews State:', reviewsState); }
+
+const handleDeleteReview = async (reviewId) => {
+  try {
+    const response = await dispatch(deleteReview(reviewId));
+    if (response && response.ok) {
+      // Assuming the response includes the updated reviews
+      console.log(response.payload); // Check what data is received
+      // You may need to update the state with the updated reviews here
+    } else {
+      console.error('Error deleting review:', response && response.error);
+    }
+  } catch (error) {
+    console.error('An unexpected error occurred:', error);
+  }
+};
 
 
-   return (
+
+
+  return (
     <div className="spot-page-container">
       {!spotDetailsState.loading && !spotDetailsState.error && (
         <div className="spot-content">
@@ -78,12 +99,12 @@ function SpotDetails() {
               />
             </div>
           </div>
-           <div className='spot-details-container'>
-             <h3>Hosted by {spotDetailsState.Owner.firstName} {spotDetailsState.Owner.lastName}</h3>
-             <p>{spotDetailsState.description}</p>
+          <div className='spot-details-container'>
+            <h3>Hosted by {spotDetailsState.Owner.firstName} {spotDetailsState.Owner.lastName}</h3>
+            <p>{spotDetailsState.description}</p>
+            <div className="reviews-container">
 
-          <div className="reviews-container">
-          </div>
+            </div>
           </div>
           <div className="price-rating-reviews-box">
             <p className="spot-price">${spotDetailsState.price}/night</p>
@@ -91,7 +112,7 @@ function SpotDetails() {
               <FontAwesomeIcon icon={solidStar} className="review-icon" />
               <p className="spot-rating">{spotDetailsState.avgStarRating}</p>
               <FontAwesomeIcon icon={faCircle} className="circle" />
-              <p className="spot-reviews">{spotDetailsState.numReviews} reviews</p>
+              <p className="spot-reviews">{numReviews} reviews</p>
             </div>
             <button className="reserve-button" onClick={() => alert('Feature Coming Soon...')}>
               Reserve
@@ -99,21 +120,42 @@ function SpotDetails() {
           </div>
         </div>
       )}
-            <div className="reviews-header">
-              <FontAwesomeIcon icon={solidStar} className="review-icon" />
-         <p className="review-text">{spotDetailsState.avgStarRating}</p>
-         <FontAwesomeIcon icon={faCircle} className="circle" />
-              <p className="reviews-title">{spotDetailsState.numReviews} reviews</p>
-            </div>
-            <button onClick={openPostReviewModal}>Post Your Review</button>
-      {reviewsState.length > 0 &&
-        reviewsState.map((review, index) => (
-          <div key={index} className="review-item">
-            <p>{review.firstName}</p>
-            <p>{review.createdAt}</p>
-            <p>{review.reviewText}</p>
-          </div>
-        ))}
+      <div className="reviews-header">
+        <FontAwesomeIcon icon={solidStar} className="review-icon" />
+        <p className="review-text">{spotDetailsState.avgStarRating}</p>
+        <FontAwesomeIcon icon={faCircle} className="circle" />
+        <p className="reviews-title">{numReviews} reviews</p>
+      </div>
+      {loggedInUser && (
+        <button onClick={openPostReviewModal}>Post Your Review</button>
+      )}
+      {reviewsState && Array.isArray(reviewsState) ? (
+          reviewsState.map((review, index) => (
+            <div key={index}>
+            <p>First Name: {review.firstName || 'N/A'}</p>
+            <p>Review Text: {review.reviewText || review.review || 'N/A'}</p>
+            <p>Created At: {review.createdAt || review.updatedAt || 'N/A'}</p>
+
+      {loggedInUserId && loggedInUserId === review.userId && (
+              <button onClick={() => handleDeleteReview(review.id)}>Delete</button>
+            )}
+    </div>
+  ))
+) : (
+  reviewsState ? (
+    <div>
+      <p>First Name: {reviewsState[0]?.firstName || 'N/A'}</p>
+      <p>Review Text: {reviewsState[0]?.reviewText || reviewsState[0]?.review || 'N/A'}</p>
+      <p>Created At: {reviewsState[0]?.createdAt || reviewsState[0]?.updatedAt || 'N/A'}</p>
+
+      {loggedInUserId && loggedInUserId === reviewsState[0]?.userId && (
+              <button onClick={() => handleDeleteReview(reviewsState[0]?.id)}>Delete</button>
+            )}
+    </div>
+  ) : (
+    <p>No reviews available.</p>
+  )
+)}
     </div>
   );
 }

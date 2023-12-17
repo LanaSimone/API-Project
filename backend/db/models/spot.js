@@ -52,7 +52,7 @@ module.exports = (sequelize, DataTypes) => {
     const spotImages = await SpotImage.findAll({
       where: {
         spotId: spot.id,
-        preview: 1, // Filter to get only preview images
+        preview: 1,
       },
     });
 
@@ -188,7 +188,7 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
     },
     avgStarRating: {
-      type: DataTypes.FLOAT, 
+      type: DataTypes.FLOAT,
       allowNull: true,
     },
     previewImage: {
@@ -201,8 +201,8 @@ module.exports = (sequelize, DataTypes) => {
     modelName: 'Spots',
     tableName: 'Spots',
     hooks: {
-      beforeSave: async (spot, options) => {
-        await Spots.beforeSave(spot, options);
+      beforeCreate: async (spot, options) => {
+        await Spots.beforeCreate(spot, options);
       },
     },
   });
