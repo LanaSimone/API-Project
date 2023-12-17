@@ -7,11 +7,6 @@ let options = {};
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;  // define your schema in the options object
 }
-async function downloadImageToBase64(imageUrl) {
-  const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
-  const base64Data = Buffer.from(response.data, 'binary').toString('base64');
-  return base64Data;
-}
 
 
 module.exports = {
@@ -168,5 +163,5 @@ module.exports = {
     } catch (error) {
       console.error(error);
     }
-  },
+  }
 };
