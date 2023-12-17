@@ -46,7 +46,7 @@ module.exports = (sequelize, DataTypes) => {
 
 
   // Use sequelize instance to access SpotImage model
-  const SpotImage = sequelize.models.SpotImage;
+  const SpotImage = sequelize.models.SpotImage
 
   try {
     const spotImages = await SpotImage.findAll({
