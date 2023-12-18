@@ -12,6 +12,12 @@ export const UPDATE_SPOTS_SUCCESS = 'UPDATE_SPOTS_SUCCESS'
 export const POST_REVIEWS_SUCCESS = 'POST_REVIEWS_SUCCESS';
 export const DELETE_REVIEW_SUCCESS = 'DELETE_REVIEW_SUCCESS';
 export const DELETE_SPOTS_SUCCESS = 'DELETE_SPOTS_SUCCESS'
+export const UPDATE_REVIEWS_AFTER_DELETE = 'UPDATE_REVIEWS_AFTER_DELETE';
+
+export const updateReviewsAfterDelete = (reviewId) => ({
+  type: UPDATE_REVIEWS_AFTER_DELETE,
+  payload: reviewId,
+});
 
 export const fetchSpotsSuccess = (data) => {
   const spots = data && data.Spots ? data.Spots : [];
@@ -225,22 +231,24 @@ export const postReviews = (spotId, reviewText, stars) => async (dispatch) => {
 
 export const deleteReview = (reviewId) => async (dispatch) => {
   try {
+    // Send a DELETE request to the server
     const response = await csrfFetch(`/api/reviews/${reviewId}`, {
       method: 'DELETE',
     });
 
-    if (!response.ok) {
-      throw new Error(`Failed to delete review (${response.status})`);
+    // Check if the deletion was successful
+    if (response.ok) {
+      // Dispatch the success action
+      dispatch(deleteReviewSuccess(reviewId));
+    } else if (response.status === 404) {
+      // Handle 404 (Not Found) separately, if needed
+      console.log('Review not found');
+    } else {
+      // Handle other error cases
+      throw new Error('Error deleting review');
     }
-
-    const data = await response.json();
-    dispatch(deleteReviewSuccess(reviewId));
-
-    // Return the response to handle it in the component
-    return { ok: true, payload: data };
   } catch (error) {
     console.error('Error deleting review:', error.message);
-    // Throw the error to be caught in the component
     throw error;
   }
 };
@@ -251,15 +259,14 @@ const spotSlice = createSlice({
     spotDetails: null,
     reviews: [],
     spots: []
-
   },
   reducers: {
     DELETE_REVIEW_SUCCESS: (state, action) => {
       console.log('action payload:', action.payload)
-      const updatedReviews = action.payload;
+      const reviewIdToDelete = action.payload;
       return {
         ...state,
-        reviews: updatedReviews
+        reviews: state.reviews.filter((review) => review.id !== reviewIdToDelete),
       };
     },
     DELETE_SPOT_SUCCESS: (state, action) => {
@@ -270,18 +277,16 @@ const spotSlice = createSlice({
         spots: updatedSpots
       }
     }
-
   },
   extraReducers: (builder) => {
     builder
-  .addCase(postReviews.fulfilled, (state, action) => {
-    if (action.payload.ok) {
-      const { review } = action.payload.payload;
+      .addCase(postReviews.fulfilled, (state, action) => {
+        if (action.payload.ok) {
+          const { review } = action.payload.payload;
 
-      state.reviews = [review, ...state.reviews];
-    }
-
-  });
+          state.reviews = [review, ...state.reviews];
+        }
+      });
   },
 });
 export default spotSlice.reducer;

@@ -7,7 +7,8 @@ import { PostReviewModal } from '../CreateReviews/CreateReviews';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar as solidStar, faCircle } from '@fortawesome/free-solid-svg-icons';
 // import { faStar } from '@fortawesome/free-regular-svg-icons';
-import { fetchSpotDetails, fetchReviews, deleteReview } from '../../store/spots/spotActions';
+import { fetchSpotDetails, fetchReviews } from '../../store/spots/spotActions';
+import DeleteReview from '../CreateReviews/CreateReviewDeleteModal';
 import './SpotDetails.css';
 
 
@@ -46,21 +47,14 @@ function SpotDetails() {
   }
   { console.log('Reviews State:', reviewsState); }
 
-const handleDeleteReview = async (reviewId) => {
-  try {
-    const response = await dispatch(deleteReview(reviewId));
-    if (response && response.ok) {
-      // Assuming the response includes the updated reviews
-      console.log(response.payload); // Check what data is received
-      // You may need to update the state with the updated reviews here
-    } else {
-      console.error('Error deleting review:', response && response.error);
-    }
-  } catch (error) {
-    console.error('An unexpected error occurred:', error);
+const handleDeleteReview = (reviewId) => {
+  if (reviewId !== undefined && reviewId !== null) {
+    console.log('Deleting review with ID:', reviewId);
+    setModalContent(<DeleteReview reviewId={reviewId} onCancel={() => setModalContent(null)} />);
+  } else {
+    console.error('Review ID is undefined or null.');
   }
 };
-
 
 
 
@@ -108,8 +102,8 @@ const handleDeleteReview = async (reviewId) => {
             </div>
           </div>
           <div className="price-rating-reviews-box">
-            <p className="spot-price">${spotDetailsState.price}/night</p>
             <div className="star-rating-box">
+            <p className="spot-price">${spotDetailsState.price}/night</p>
               <FontAwesomeIcon icon={solidStar} className="review-icon" />
               <p className="spot-rating">{spotDetailsState.avgStarRating}</p>
               <FontAwesomeIcon icon={faCircle} className="circle" />
@@ -125,22 +119,29 @@ const handleDeleteReview = async (reviewId) => {
         <FontAwesomeIcon icon={solidStar} className="review-icon" />
         <p className="review-text">{spotDetailsState.avgStarRating}</p>
         <FontAwesomeIcon icon={faCircle} className="circle" />
-        <p className="reviews-title">{numReviews} reviews</p>
       </div>
+        <p className="reviews-title">{numReviews} reviews</p>
       {loggedInUser && (
         <button onClick={openPostReviewModal}>Post Your Review</button>
       )}
       {reviewsState && Array.isArray(reviewsState) ? (
           reviewsState.map((review, index) => (
             <div key={index}>
-            <p>First Name: {review.firstName || 'N/A'}</p>
-            <p>Review Text: {review.reviewText || review.review || 'N/A'}</p>
-            <p>Created At: {review.createdAt || review.updatedAt || 'N/A'}</p>
 
-            {loggedInUserId && loggedInUserId === review.userId && (
-                    <button onClick={() => handleDeleteReview(review.id)}>Delete</button>
-                  )}
-    </div>
+              <p>First Name: {review.firstName || 'N/A'}</p>
+
+
+              <p>Review Text: {review.reviewText || review.review || 'N/A'}</p>
+
+              <p>Created At: {review.createdAt || review.updatedAt || 'N/A'}</p>
+
+
+              {loggedInUserId && loggedInUserId === review.userId && (
+    <button onClick={() => handleDeleteReview(review.id)}>Delete</button>
+)}
+            </div>
+
+
   ))
 ) : (
   reviewsState ? (

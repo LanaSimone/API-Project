@@ -1,50 +1,45 @@
 
-// import { useModal } from "../../context/Modal";
+import { useDispatch } from "react-redux";
+import { useModal } from "../../context/Modal";
+import { deleteReview } from "../../store/spots/spotActions";
 
-// function DeleteReview() {
-//     const { setModalContent, closeModal } = useModal(); // Use closeModal instead of onClose
+function DeleteReview({ reviewId, onCancel }) {
+    console.log('Received reviewId:', reviewId);
+  const { setModalContent, closeModal } = useModal();
+  const dispatch = useDispatch();
 
-//     const confirmDelete = async () => {
-//       try {
-//         const response = await dispatch(deleteReview(reviewId));
-//        if (response.ok) {
 
-//          setModalContent(
-//            <div>
-//              <p>Review successfully deleted!</p>
-//            </div>
-//          );
+        const confirmDelete = async () => {
+            try {
+                await dispatch(deleteReview(reviewId));
+                setModalContent(
+                    <div>
+                        <p>Review successfully deleted!</p>
+                    </div>
+                );
 
-//         // Close the modal using closeModal
-//          closeModal();
-//        } else {
-//          setModalContent(
-//            <div>
-//              <p>Error deleting Review. Please try again.</p>
-//            </div>
-//          );
-//        }
-//      } catch (error) {
-//       console.error('An unexpected error occurred:', error);
-//      }
-//     };
+                // Close the modal
+                closeModal();
+            } catch (error) {
+                // Handle error
+                console.error('Error deleting review:', error.message);
+            }
+        
+    }
 
-//  const cancelDelete = () => {
-//     // Clear the modal content
-//     setModalContent(null);
-//     // Call the onCancel callback passed from the parent component
-//     onCancel();
+  const cancelDelete = () => {
+    setModalContent(null);
+    onCancel(); // Call the onCancel callback passed from the parent component
+  };
 
-//     }
+  return (
+    <div>
+      <h1>Confirm Delete</h1>
+      <p>Are you sure you want to delete this review?</p>
+         <button onClick={confirmDelete}>Yes (Delete Review)</button>
+      <button onClick={cancelDelete}>No (Keep Review)</button>
+    </div>
+  );
+}
 
-//     return (
-//         <div>
-//             <h1>Confirm Delete</h1>
-//             <p>Are you sure you want ot delete this review?</p>
-//             <button onClick={() => confirmDelete(reviewId)}>Yes (Delete Spot)</button>
-//             <button onClick={cancelDelete}>No (Keep Spot)</button>
-//         </div>
-//     )
-//  }
-
-// export default DeleteReview;
+export default DeleteReview;

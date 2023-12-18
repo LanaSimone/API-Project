@@ -1264,6 +1264,7 @@ router.get('/:spotId/reviews', async (req, res) => {
       ];
 
       return {
+        id: review.id,
         userId: review.userId,
         firstName: review.User.firstName,
         createdAt: `${monthNames[createdAt.getMonth()]} ${createdAt.getFullYear()}`,
