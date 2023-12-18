@@ -28,6 +28,7 @@ function SpotDetails() {
   const loggedInUser = useSelector((state) => state.session.user);
   const loggedInUserId = loggedInUser ? loggedInUser.id : null;
 
+
   console.log(loggedInUser, '!!!!!@#!@#!@#!@3spitDetailstate')
 
   useEffect(() => {
@@ -136,9 +137,9 @@ const handleDeleteReview = async (reviewId) => {
             <p>Review Text: {review.reviewText || review.review || 'N/A'}</p>
             <p>Created At: {review.createdAt || review.updatedAt || 'N/A'}</p>
 
-      {loggedInUserId && loggedInUserId === review.userId && (
-              <button onClick={() => handleDeleteReview(review.id)}>Delete</button>
-            )}
+            {loggedInUserId && loggedInUserId === review.userId && (
+                    <button onClick={() => handleDeleteReview(review.id)}>Delete</button>
+                  )}
     </div>
   ))
 ) : (
@@ -148,9 +149,10 @@ const handleDeleteReview = async (reviewId) => {
       <p>Review Text: {reviewsState[0]?.reviewText || reviewsState[0]?.review || 'N/A'}</p>
       <p>Created At: {reviewsState[0]?.createdAt || reviewsState[0]?.updatedAt || 'N/A'}</p>
 
-      {loggedInUserId && loggedInUserId === reviewsState[0]?.userId && (
-              <button onClick={() => handleDeleteReview(reviewsState[0]?.id)}>Delete</button>
-            )}
+
+{loggedInUserId && loggedInUserId === reviewsState.userId && (
+  <button >Delete</button>
+)}
     </div>
   ) : (
     <p>No reviews available.</p>

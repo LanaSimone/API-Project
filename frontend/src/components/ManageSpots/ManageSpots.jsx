@@ -55,7 +55,7 @@ console.log('!!!!!!!!!!userSpot', currentUserSpots);
 
   return (
     <div>
-      <h1>Manage Your Spots</h1>
+      <h1>Manage Spots</h1>
           <button onClick={handleCreateButtonClick}>Create a New Spot </button>
           <ul>
               {currentUserSpots.map((spot) => (
