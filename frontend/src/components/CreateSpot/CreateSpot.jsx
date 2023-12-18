@@ -123,6 +123,7 @@ const handleChange = (e) => {
           id="country"
           name="country"
           value={spotData.country}
+          placeholder="Country"
           onChange={handleChange}
         />
 
@@ -132,6 +133,7 @@ const handleChange = (e) => {
           id="address"
           name="address"
           value={spotData.address}
+          placeholder="Street Address"
           onChange={handleChange}
         />
 
@@ -141,6 +143,7 @@ const handleChange = (e) => {
           id="city"
           name="city"
           value={spotData.city}
+          placeholder="City"
           onChange={handleChange}
         />
 
@@ -150,43 +153,64 @@ const handleChange = (e) => {
           id="state"
           name="state"
           value={spotData.state}
+          placeholder="State"
           onChange={handleChange}
         />
       </div>
-      <label htmlFor="name">Name:</label>
-      <input
-        type="text"
-        id="name"
-        name="name"
-        value={spotData.name}
-        onChange={handleChange}
-      />
+      <div>
+        <h2>Describe your place to guests</h2>
+        <p>Mention the best features of your space, any secial amentities like fast wifi or parking, and what you love about the neighborhood.</p>
+        {/* <label htmlFor="description">Description</label> */}
+        <textarea
+          id="description"
+          name="description"
+          value={spotData.description}
+          placeholder="Please write at least 30 characters"
+          onChange={handleChange}
+        ></textarea>
+      </div>
+      <div>
+        <h2>Create a title for your spot</h2>
+        <p>Catch guests&apos; attention with a spot title that highlights what makes your place special.</p>
+        {/* <label htmlFor="name">Name</label> */}
+        <input
+          type="text"
+          id="name"
+          name="name"
+          value={spotData.name}
+          placeholder="Name of your spot"
+          onChange={handleChange}
+        />
 
-      <label htmlFor="description">Description</label>
-      <textarea
-        id="description"
-        name="description"
-        value={spotData.description}
-        onChange={handleChange}
-      ></textarea>
+      </div>
 
-      <label htmlFor="price">$</label>
-      <input
+      <div>
+        <h2>Set a base price for your spot</h2>
+        <p>Competitive pricing can help your listing stand out and reank higher in search results.</p>
+
+      {/* <label htmlFor="price">$</label> */}
+      $ <input
         type="text"
         id="price"
         name="price"
-        value={spotData.price}
+          value={spotData.price}
+          placeholder="Prcie per night (USD)"
         onChange={handleChange}
       />
 
+      </div>
+
        {/* Image Upload */}
       <div className="imageUpload">
-        <label htmlFor="previewImage">Upload Preview Image (URL):</label>
+        <h2>Liven up your spot with photots</h2>
+        <p>Submit a link to at least one photo to publish your spot.</p>
+        {/* <label htmlFor="previewImage">Upload Preview Image (URL):</label> */}
         <input
           type="text"
           id="previewImage"
           name="previewImage"
           value={spotData.previewImage}
+          placeholder="Preview Image URL"
           onChange={handleChange}
         />
 
@@ -197,12 +221,13 @@ const handleChange = (e) => {
           </>
         )}
 
-        <label htmlFor="additionalImages">Upload Additional Images (URLs):</label>
+        {/* <label htmlFor="additionalImages">Upload Additional Images (URLs):</label> */}
         {spotData.additionalImages.map((image, index) => (
           <div key={index}>
             <input
               type="text"
               value={image}
+              placeholder="Image URL"
               onChange={(e) => handleAdditionalImageChange(index, e.target.value)}
             />
             <button type="button" onClick={() => handleRemoveImageField(index)}>

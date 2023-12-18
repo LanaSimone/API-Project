@@ -72,23 +72,28 @@ const handleDeleteReview = (reviewId) => {
             <div className="spot-images">
               <img
                 src={spotDetailsState.SpotImages[0]?.url}
+                title={spotDetailsState.name}
                 alt="Large Spot Image"
                 className="large-image"
               />
               <img
                 src={spotDetailsState.SpotImages[1]?.url}
+                title={spotDetailsState.name}
                 className="small-image"
               />
               <img
                 src={spotDetailsState.SpotImages[2]?.url}
+                title={spotDetailsState.name}
                 className="small-image"
               />
               <img
                 src={spotDetailsState.SpotImages[3]?.url}
+                title={spotDetailsState.name}
                 className="small-image"
               />
               <img
                 src={spotDetailsState.SpotImages[4]?.url}
+                title={spotDetailsState.name} 
                 alt="Small Spot Image"
                 className="small-image"
               />
