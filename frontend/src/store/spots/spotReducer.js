@@ -52,17 +52,19 @@ const spotReducer = (state = initialState, action) => {
       };
     }
     case DELETE_SPOTS_SUCCESS: {
-      const updatedUserSpots = state.currentUserSpots.Spots.filter(
-        (spot) => spot.id !== action.payload
-      );
-      return {
-        ...state,
-        currentUserSpots: {
-          ...state.currentUserSpots,
-          Spots: updatedUserSpots,
-        },
-      };
-    }
+  const deletedSpotId = action.payload;
+  const updatedUserSpots = state.currentUserSpots.Spots.filter(
+    (spot) => spot.id !== deletedSpotId
+  );
+
+  return {
+    ...state,
+    currentUserSpots: {
+      ...state.currentUserSpots,
+      Spots: updatedUserSpots,
+    },
+  };
+}
     case POST_REVIEWS_SUCCESS:
       return {
         ...state,
