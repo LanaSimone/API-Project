@@ -1,6 +1,7 @@
 // frontend/src/components/Navigation/ProfileButton.jsx
 
 import { useEffect, useState, useRef } from 'react';
+import { useModal } from '../../context/Modal';
 import { useDispatch} from 'react-redux';
 import * as sessionActions from '../../store/session';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -17,11 +18,10 @@ function ProfileButton({ user }) {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
-  // const loggedInUser = useSelector((state) => state.session.user);
-
+  const { showModalHandler, hideModalHandler } = useModal(); // Use the useModal hook
 
   const toggleMenu = (e) => {
-    e.stopPropagation(); // Keep from bubbling up to document and triggering closeMenu
+    e.stopPropagation();
     setShowMenu(!showMenu);
   };
 
@@ -36,7 +36,7 @@ function ProfileButton({ user }) {
 
     document.addEventListener('click', closeMenu);
 
-    return () => document.removeEventListener("click", closeMenu);
+    return () => document.removeEventListener('click', closeMenu);
   }, [showMenu]);
 
   const closeMenu = () => setShowMenu(false);
@@ -47,14 +47,12 @@ function ProfileButton({ user }) {
     closeMenu();
   };
 
-  // const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
-
   return (
-    <div className='navButtonContainer profile-button'> {/* New container */}
+    <div className='navButtonContainer profile-button'>
       <button onClick={toggleMenu} className='navButtonContainer'>
         <FontAwesomeIcon icon={faUser} />
       </button>
-       <ul className={`profile-dropdown ${showMenu ? 'show' : 'hidden'}`} ref={ulRef}>
+      <ul className={`profile-dropdown ${showMenu ? 'show' : 'hidden'}`} ref={ulRef}>
         {user ? (
           <>
             <li>{user.username}</li>
@@ -68,19 +66,26 @@ function ProfileButton({ user }) {
         ) : (
           <>
             <OpenModalMenuItem
-              itemText="Log In"
-              onItemClick={closeMenu}
-              modalComponent={<LoginFormModal />}
+              itemText='Log In'
+              onItemClick={() => {
+                closeMenu();
+                showModalHandler(); // Show the modal when "Log In" is clicked
+              }}
+              modalComponent={<LoginFormModal onClose={hideModalHandler} />}
             />
             <OpenModalMenuItem
-              itemText="Sign Up"
-              onItemClick={closeMenu}
-              modalComponent={<SignupFormModal />}
-              />
+              itemText='Sign Up'
+              onItemClick={() => {
+                closeMenu();
+                showModalHandler(); // Show the modal when "Sign Up" is clicked
+              }}
+              modalComponent={<SignupFormModal onClose={hideModalHandler} />}
+            />
           </>
         )}
       </ul>
     </div>
   );
 }
+
 export default ProfileButton;
