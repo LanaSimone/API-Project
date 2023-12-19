@@ -95,7 +95,7 @@ function LoginFormModal() {
         <p>
           {' '}
           <a href="#" className="demo-user-link" onClick={handleDemoLogin}>
-            Demo User
+            Log in as Demo User
           </a>
         </p>
       </div>

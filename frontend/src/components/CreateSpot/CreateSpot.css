@@ -1,44 +1,163 @@
 .createspot {
-    text-align: left;
-}
+    display: flex;
+    /* justify-content: flex-end; */
+    align-items: center;
 
+    /* margin: 300px; */
+
+}
 .heading {
     display: flex;
-    justify-content: center;
     flex-direction: column;
-    text-align: left;
-    max-width: 600px;
-    margin-left: 250px;
-    /* Center the heading horizontally */
-}
-
-.heading h2,
-.heading h3,
-.heading p {
-    text-align: left;
+    align-items: center;
     margin-left: 20px;
+
+
 }
 
-/* @media (max-width: 1200px) {
+.locationDetails {
+    /* display: flex; */
+    align-items: center;
+    flex-direction: column;
+    border-bottom: 2px solid black;
+    width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.description {
+    /* display: flex; */
+    align-items: center;
+    flex-direction: column;
+    border-bottom: 2px solid black;
+    width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.description textarea {
+    width: 96%;
+    box-sizing: border-box;
+    /* Include padding and border in the width */
+    margin-bottom: 10px;
+    /* Add margin between the textarea and other elements */
+}
 
 
-    .createspot {
-        /* Adjust the styles as needed for this screen size */
-    /* }
-} */
 
-/* @media (max-width: 800px) {
+.title {
+    align-items: center;
+    flex-direction: column;
+    border-bottom: 2px solid black;
+    width: 1000px;
+    margin-left: auto;
+    margin-right: auto;;
+}
+
+.title textarea {
+    width: 100%;
+    box-sizing: border-box;
+        /* Include padding and border in the width */
+    margin-bottom: 10px;
+}
+
+.price {
+    align-items: center;
+        flex-direction: column;
+        border-bottom: 2px solid black;
+        width: 1000px;
+        margin-left: auto;
+        margin-right: auto;
+}
+
+.imageUpload {
+    align-items: center;
+        flex-direction: column;
+        border-bottom: 2px solid black;
+        width: 1000px;
+        margin-left: auto;
+        margin-right: auto;
+}
+.previewImage {
+    /* display: flex; */
+    align-items: center;
+    flex-direction: column;
+    margin-left: auto;
+        margin-right: auto;
+}
+
+.addImages {
+    /* display: flex; */
+    align-items: center;
+    flex-direction: column;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.removeButton {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 25%;
+    margin-bottom: 10px;
+    border: none;
+    background-color: red;
+    color: lightgrey;
+    height: 30px;
+    border-radius: 20px;
+    padding: 6px;
+    cursor: pointer;
+    /* margin-left: 20px; */
+
+}
+.addButton {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 25%;
+    margin-bottom: 10px;
+    border: none;
+    background-color: red;
+    color: lightgrey;
+    height: 30px;
+    border-radius: 20px;
+    padding: 6px;
+    cursor: pointer;
+    /* margin-left: 20px; */
+}
+.submit {
+    display: block;
+    /* Change from inline-block to block */
+    margin: 0 auto;
+    /* Add margin to center horizontally */
+    padding: 10px 20px;
+    background-color: red;
+    color: lightgrey;
+    text-decoration: none;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-top: 20px;
+    width: 300px;
+}
+
+.cityState {
+    display: flex;
+    width: 100%;
+
+    /* align-items: center; */
+
+}
+
+.cityState .inputContainer {
+    width: 50%;
+    /* Adjust the width as needed */
+}
 
 
-    .createspot {
-        /* Adjust the styles as needed for this screen size */
-    /* }
-} */
 
-/* @media (max-width: 600px) {
-
-
-    .createspot { */
-        /* Adjust the styles as needed for this screen size */
-    /* }
-}  */
+.inputContainer {
+    /* margin-right: 20px; */
+    /* Adjust the spacing between input containers */
+}

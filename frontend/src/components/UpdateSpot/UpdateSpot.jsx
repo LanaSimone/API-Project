@@ -47,7 +47,7 @@ const handleSubmit = async (e) => {
     }
 
     // Handle success, if needed
-    navigate('/');
+    navigate(`/details/${spotId}`);
   } catch (error) {
     console.error("Unexpected error:", error);
     setError(error.message || "Unexpected error. Please try again.");

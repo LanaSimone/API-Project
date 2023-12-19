@@ -18,19 +18,14 @@ function SignupFormModal() {
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
 
+  const isButtonDisabled = username.length < 4 || password.length < 6;
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
     if (password === confirmPassword) {
       setErrors({});
-      return dispatch(
-        sessionActions.signup({
-          email,
-          username,
-          firstName,
-          lastName,
-          password
-        })
-      )
+      dispatch(sessionActions.signup({ email, username, firstName, lastName, password }))
         .then(closeModal)
         .catch(async (res) => {
           const data = await res.json();
@@ -38,80 +33,76 @@ function SignupFormModal() {
             setErrors(data.errors);
           }
         });
+    } else {
+      setErrors({
+        confirmPassword: "Confirm Password field must be the same as the Password field",
+      });
     }
-    return setErrors({
-      confirmPassword: "Confirm Password field must be the same as the Password field"
-    });
   };
 
   return (
     <>
       <h1>Sign Up</h1>
       <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Email"
+          required
+        />
+        {errors.email && <p className="error-message">{errors.email}</p>}
 
-
-          <input
-            type="text"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder='Email'
-            required
-          />
-        {/* </label> */}
-        {errors.email && <p>{errors.email}</p>}
-
-          <input
-            type="text"
-            value={username}
+        <input
+          type="text"
+          value={username}
           onChange={(e) => setUsername(e.target.value)}
-          placeholder='Username'
-            required
-          />
+          placeholder="Username"
+          required
+        />
+        {errors.username && <p className="error-message">{errors.username}</p>}
 
-        {errors.username && <p>{errors.username}</p>}
+        <input
+          type="text"
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+          placeholder="First Name"
+          required
+        />
+        {errors.firstName && <p className="error-message">{errors.firstName}</p>}
 
-          <input
-            type="text"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            placeholder='First Name'
-            required
-          />
-
-        {errors.firstName && <p>{errors.firstName}</p>}
-
-          <input
-            type="text"
-            value={lastName}
+        <input
+          type="text"
+          value={lastName}
           onChange={(e) => setLastName(e.target.value)}
-          placeholder='Last Name'
-            required
-          />
+          placeholder="Last Name"
+          required
+        />
+        {errors.lastName && <p className="error-message">{errors.lastName}</p>}
 
-        {errors.lastName && <p>{errors.lastName}</p>}
-
-          <input
-            type="password"
-            value={password}
+        <input
+          type="password"
+          value={password}
           onChange={(e) => setPassword(e.target.value)}
-          placeholder='Password'
-            required
-          />
+          placeholder="Password"
+          required
+        />
+        {errors.password && <p className="error-message">{errors.password}</p>}
 
-        {errors.password && <p>{errors.password}</p>}
-
-          <input
-            type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            placeholder='Confirm Password'
-            required
-          />
-
+        <input
+          type="password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          placeholder="Confirm Password"
+          required
+        />
         {errors.confirmPassword && (
-          <p>{errors.confirmPassword}</p>
+          <p className="error-message">{errors.confirmPassword}</p>
         )}
-        <button type="submit">Sign Up</button>
+
+        <button type="submit" disabled={isButtonDisabled}>
+          Sign Up
+        </button>
       </form>
     </>
   );
