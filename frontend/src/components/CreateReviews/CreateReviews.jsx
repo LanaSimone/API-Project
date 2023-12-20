@@ -84,7 +84,7 @@ const handlePostReview = async () => {
   return (
     <div className="review-modal">
       <h2>How was your stay?</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>} {/* Display error in the modal */}
+      {error && <p style={{ color: 'red' }}>{error}</p>} 
       <textarea
         value={reviewText}
         onChange={(e) => setReviewText(e.target.value)}

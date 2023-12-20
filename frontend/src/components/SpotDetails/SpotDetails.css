@@ -1,13 +1,76 @@
-/* SpotDetails.css */
-.spot-page-container{
-    max-width: 1250px;
+* {
+    color: #ff8177;
+}
+
+ .spot-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ff8177;
     margin: 20px;
 }
+
+.price-rating-reviews-box{
+    border: 1px solid #ccc;
+    width: 28%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-radius: 30px;
+    padding: 10px;
+}
+
+.star-rating-box{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* margin-left: 20px; */
+    /* margin-right: 20px; */
+}
+
+.reserve-button {
+    font-size: 1rem;
+    background-image: linear-gradient(to right, #f77062 0%, #fe5196 100%);
+    padding: 14px 32px;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    margin-top: 2rem;
+    cursor: pointer;
+    position: relative;
+    outline: none;
+    width: 90%;
+    cursor: pointer;
+    transition: background-image 0.35s ease;
+    margin-left: 30px;
+}
+
+
+/*
+.spot-page-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
 .spot-details-container {
-    padding: 20px;
+    display: flex;
+    justify-content: space-around;
 
 }
 
+.spot-details {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 20px;
+
+ }
+.spotDetails {
+    display: flex;
+   align-items: center;
+   justify-content: space-between;
+}
 
 .spot-info-container {
     display: flex;
@@ -30,114 +93,68 @@
 .location {
     margin: 0;
     font-size: 14px;
-}
+}  */
 
 .spot-images {
     display: grid;
-    grid-template-columns: 60% 25% 25%;
-        /* Three columns: large image and two small images */
-    gap: 20px;
-        /* Add gap between images */
-
-
+    grid-template-columns: 40% 30% 30%;
+    gap: 0px;
 }
 
 .large-image {
-grid-column: 1 / span 1;
-    /* Large image takes one column */
+    grid-column: 1 / span 2;
     grid-row: 1 / span 2;
-    /* Large image takes two rows */
-    width: 100%;
-    /* Ensure the large image takes up the full width of its container */
-    max-width: 100%;
-    /* Ensure the large image does not exceed its original size */
+    width: 90%;
     height: auto;
-    /* Maintain aspect ratio */
-    border-radius: 10px;
+    border-radius: 30px;
+}
+
+.smallImgContainer {
+    grid-column: 3 / span 16;
+    grid-row: 1 / span 2;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    justify-content: center;
+    /* Add this line to center the small images horizontally */
+    align-items: center;
+    /* Add this line to center the small images vertically */
 }
 
 .small-image {
     width: 100%;
-    /* Ensure small images take up the full width of their container */
-    /* max-width: 100%; */
-    /* Ensure small images do not exceed their original size */
-    /* padding-top: 75%; */
-    /* Set a fixed aspect ratio for small images (4:3 in this example) */
-    position: relative;
-
+    height: 100%;
+    border-radius: 30px;
+    object-fit: cover;
 }
 
-/* .spot-images img {
-   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* Maintain aspect ratio and cover the container */
-  /* border-radius: 10px; */
-/* } */
 
-.spot-content {
-    display: flex;
-    flex-wrap: wrap;
-    /* Allow content to wrap to the next line */
-    justify-content: space-between;
-    margin-bottom: 20px;
-    border-bottom: 1px solid black;
-    /* margin: 20px; */
 
-}
-/* .spot-description { */
-    /* margin-top: 40px; */
-    /* Other styles for description */
-/* }
-
-/* .price-rating-reviews-box {
-    border: 1px solid lightgrey;
-    display: flex;
-    padding: 20px;
-    margin-top: 20px;
-    border-radius: 0px;
-    width: 200px;
-    margin-left: auto;
-    margin-right: 20px;
-} */
-
-.description-box {
+/* .description-box {
     width: 60%;
-    /* Adjust the width as needed */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+} */
 
-}
-
-
-.price-rating-reviews-box {
+/* .price-rating-reviews-box {
     display: flex;
+    justify-self: flex-end;
     flex-wrap: wrap;
-    /* Allow content to wrap to the next line */
-    align-items: flex-start;
-    border: 1px solid lightgrey;
-
+    align-items: center;
+    /* align-items: center; */
+    /* border: 1px solid lightgrey;
     padding: 20px;
     margin-top: 20px;
     border-radius: 20px;
     width: 280px;
     white-space: nowrap;
     margin-bottom: 90px;
-    /* margin-left: 50px; */
+}  */
 
-
+.spot-reviews {
+    margin-left: 20px;
 }
-
-.spot-price,
-.spot-reviews,
-.spot-rating {
-    margin-right: 10px;
-    /* Add right margin */
-}
-
 
 .spot-price {
     margin-top: 20px;
@@ -146,72 +163,335 @@ grid-column: 1 / span 1;
 .star-rating-box {
     display: flex;
     align-items: center;
-    margin-left: 90px;
-    justify-content: flex-end;
+    margin-left: 20px;
+    justify-content: space-around;
 }
 
-.spot-reviews,
-.spot-rating {
-    margin-left: 5px;
-    /* Add left margin */
+.starText {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-right: 2px;
 }
 
 .spot-price,
 .spot-reviews,
 .star-rating-box {
     flex: 1;
-    /* Allow items to take equal space */
 }
 
 .spot-rating {
-    margin-left: 10px;
+    margin-left: 1px;
+    margin-right: 5px;
 }
 
 
-.reserve-button {
-    width: 100%;
-    background-color: #FF5A5F;
-    color: white;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-    /* border-radius: 5px; */
-    margin-top: 10px;
+
+.reserve-button:hover {
+    background-image: linear-gradient(to right, #4837ff 100%, #fe5196 0%);
 }
 
 .reviews-container {
     margin-left: 20px;
     margin-right: 20px;
-
 }
 
 .reviews-title {
-    margin-left: 5px
+    margin-left: 5px;
 }
 
 .reviews-header {
-  display: flex;
-  align-items: center;
-
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
 }
 
 .review-icon {
-    /* margin-right: px; */
     width: 13px;
     margin-right: 3px;
-    /* Adjust the value as needed */
 }
 
 .review-text {
     margin-right: 4px;
-    /* Adjust the value as needed */
 }
 
 .review-count {
     margin-right: 10px;
-    /* Adjust the value as needed */
 }
- .circle {
+
+.circle {
     width: 2px;
     margin-left: 3px;
+}
+
+/* Media query for smaller screens */
+@media (max-width: 600px) {
+    .spot-info-container {
+        align-items: center;
+    }
+
+    .spot-name {
+        display: flex;
+        justify-content: flex-start;
+    }
+
+    .spot-images {
+        grid-template-columns: 100%;
+    }
+
+    .large-image {
+        grid-column: 1 / span 2;
+        grid-row: 1 / span 2;
+        width: 100%;
+        /* Adjust the width as needed */
+        height: auto;
+        border-radius: 30px;
+    }
+
+    .smallImgContainer {
+        grid-column: 1 / span 2;
+        grid-row: 3 / span 2;
+        /* Adjust the row span as needed */
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    .small-image {
+        width: 100%;
+        height: auto;
+        border-radius: 30px;
+        object-fit: cover;
+    }
+
+    .spot-content {
+        justify-content: center;
+    }
+
+    .price-rating-reviews-box {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .description-box {
+        width: 100%;
+    }
+}
+/* Medium Screens (601px to 900px) */
+@media (min-width: 601px) and (max-width: 900px) {
+
+        .spot-info-container {
+                align-items: center;
+            }
+
+            /* .spot-name {
+                display: flex;
+                justify-content: flex-end;
+            } */
+
+            .spot-images {
+                grid-template-columns: 100%;
+            }
+
+            .large-image {
+                grid-column: 1 / span 2;
+                grid-row: 1 / span 2;
+                width: 100%;
+                /* Adjust the width as needed */
+                height: auto;
+                border-radius: 30px;
+            }
+
+            .smallImgContainer {
+                grid-column: 1 / span 2;
+                grid-row: 3 / span 2;
+                /* Adjust the row span as needed */
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+
+            .small-image {
+                width: 100%;
+                height: auto;
+                border-radius: 30px;
+                object-fit: cover;
+            }
+
+            /* .spot-content {
+                justify-content: center;
+            } */
+
+            .price-rating-reviews-box {
+                width: 100%;
+                margin-left: 0;
+            }
+
+            .description-box {
+                width: 100%;
+            }
+}
+
+/* Large Screens (901px and above) */
+@media (min-width: 901px) and (max-width: 1200px) {
+.spot-info-container {
+        align-items: center;
+    }
+
+    /* .spot-name {
+                display: flex;
+                justify-content: flex-end;
+            } */
+
+    .spot-images {
+        grid-template-columns: 100%;
+    }
+
+    .large-image {
+        grid-column: 1 / span 2;
+        grid-row: 1 / span 2;
+        width: 100%;
+        /* Adjust the width as needed */
+        height: auto;
+        border-radius: 30px;
+    }
+
+    .smallImgContainer {
+        grid-column: 1 / span 2;
+        grid-row: 3 / span 2;
+        /* Adjust the row span as needed */
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    .small-image {
+        width: 100%;
+        /* height: 10; */
+        border-radius: 30px;
+        object-fit: cover;
+    }
+
+    /* .spot-content {
+                justify-content: center;
+            } */
+
+    .price-rating-reviews-box {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .description-box {
+        width: 100%;
+    }
+}
+
+@media (min-width: 901px) and (max-width: 1200){
+    .spot-info-container {
+            align-items: center;
+        }
+
+        /* .spot-name {
+                    display: flex;
+                    justify-content: flex-end;
+                } */
+
+        .spot-images {
+            grid-template-columns: 100%;
+        }
+
+        .large-image {
+            grid-column: 1 / span 2;
+            grid-row: 1 / span 2;
+            width: 100%;
+            /* Adjust the width as needed */
+            height: auto;
+            border-radius: 30px;
+        }
+
+        .smallImgContainer {
+            grid-column: 1 / span 2;
+            grid-row: 3 / span 2;
+            /* Adjust the row span as needed */
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .small-image {
+            width: 100%;
+            /* height: 10; */
+            border-radius: 30px;
+            object-fit: cover;
+        }
+
+        /* .spot-content {
+                    justify-content: center;
+                } */
+
+        .price-rating-reviews-box {
+            width: 100%;
+            margin-left: 0;
+        }
+
+        .description-box {
+            width: 100%;
+        }
+
+
+
+}
+
+@media (min-width: 1201px) and (max-width: 1700px){
+    /* .spot-info-container {
+            align-items: center;
+        }
+
+        .spot-name {
+                        display: flex;
+                        justify-content: flex-end;
+                    }
+
+        .spot-images {
+            grid-template-columns: 100%;
+        }
+
+        .large-image {
+            grid-column: 1 / span 2;
+            grid-row: 1 / span 2;
+            width: 100%;
+            /* Adjust the width as needed */
+            /* height: auto;
+            border-radius: 30px;
+        }
+
+        .smallImgContainer {
+            grid-column: 1 / span 2;
+            grid-row: 3 / span 2;
+            /* Adjust the row span as needed */
+            /* display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        } */
+
+        /* .small-image {
+            width: 100%;
+            /* height: 10; */
+            /* border-radius: 30px;
+            object-fit: cover;
+        } */
+
+        /* .spot-content {
+                        justify-content: center;
+                    } */
+
+        /* .price-rating-reviews-box {
+            width: 100%;
+            margin-left: 0;
+        }
+
+        .description-box {
+            width: 100%;
+        }  */
+
  }

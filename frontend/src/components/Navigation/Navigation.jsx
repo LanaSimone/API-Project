@@ -1,16 +1,21 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
+import { faHouzz } from '@fortawesome/free-brands-svg-icons'
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 // import OpenModalButton from '../OpenModalButton/OpenModalButton';
 // import LoginFormModal from '../LoginFormModal/LoginFormModal';
 // import SignupFormModal from '../SignupFormModal/SignupFromModal';
-import img1 from '../images/img1.png'
+// import img1 from '../images/img1.png'
 import './Navigation.css';
 
 function Navigation({ isLoaded }) {
   const sessionUser = useSelector((state) => state.session.user);
   const navigate = useNavigate();
 
+  console.log(faHouzz);
   const handleImageClick = () => {
     // Navigate back to the home page
     navigate('/');
@@ -18,13 +23,14 @@ function Navigation({ isLoaded }) {
 
   return (
     <div className='navLinkContainer'>
-      <img src={img1} alt='logo image' className='smaller-image' onClick={handleImageClick} />
+
+      <FontAwesomeIcon icon={faHouzz} alt='logo image' className='logo' onClick={handleImageClick} />
       <ul className='NavBar'>
-        <li className='navLink'>
+        {/* <li className='navLink'>
           <NavLink exact to='/'>
             Home
           </NavLink>
-        </li>
+        </li> */}
         {sessionUser && (
           <li>
             <NavLink to='/create-spot' className='createSpotLink'>

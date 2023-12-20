@@ -1,12 +1,19 @@
-/* Navigation.css */
+* {
+    font-family: 'Kumbh Sans', sans-serif;
+    /* font-weight: 500; */
+}
 
 .profile-dropdown.hidden {
     display: none;
+    /* background-color: transparent; */
 }
 
 .profile-dropdown.show {
-    display: block;
-
+    display: flex;
+    background-color: #131313;
+    border: 1px solid #ccc;
+    margin-right: 100px;
+    margin-top: 10px;
 }
 
 .profile-button {
@@ -14,18 +21,21 @@
     position: relative;
 }
 
+.shown {
+    color: #ccc
+}
+
 .NavBar {
-    /* border: 1px solid black; */
     border-radius: 40px;
-    padding: 5px;
+    /* padding: 5px; */
     list-style: none;
     display: flex;
-    padding-right: 30px;
+    /* padding-right: 30px; */
     align-items: center;
     justify-content: center;
-    padding: 10px;
+    /* padding: 10px; */
     cursor: pointer;
-    margin-right: 20px;
+    /* margin-right: 20px; */
 }
 
 .navLinkContainer {
@@ -33,19 +43,25 @@
     justify-content: space-between;
     align-items: center;
     list-style: none;
-    border-bottom: 2px solid lightgrey;
+    /* border-bottom: 1px solid #ccc; */
     padding-right: 90px;
     width: 100%;
-    height: 70px;
-    /* cursor: pointer; */
-
+    height: 80px;
+    background: #131313;
+    font-size: 1.2rem;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    /* max-width: 1300px; */
+    margin: 0 auto;
+    padding: 0 50;
 }
 
 .navLink {
     padding-right: 10px;
 }
 
-@media (max-width: 600px) {
+/* @media (max-width: 600px) {
     .NavBar {
         align-items: center;
         padding-left: 20px;
@@ -55,7 +71,17 @@
     .navLink {
         padding-bottom: 10px;
     }
+
+    .navLinkContainer {
+        padding-right: 20px;
+    }
 }
+
+@media (max-width: 900px) {
+    .NavBar {
+        padding-right: 20px;
+    }
+} */
 
 .profile-dropdown {
     display: none;
@@ -72,7 +98,9 @@
 }
 
 .profile-dropdown.show {
-    display: block;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 }
 
 .profile-button .profile-dropdown {
@@ -113,19 +141,184 @@
     background-color: #555;
 }
 
-.smaller-image {
+.logo {
     width: 40px;
-        /* Adjust the width to your desired size */
     height: auto;
-        /* Maintain the aspect ratio */
-    transform: rotate(180deg);
     margin-left: 20px;
     cursor: pointer;
+    color: #ff8177;
+    background-image: linear-gradient(to bottom, #ff0844 0%, #ffb199 100%);
+    background-size: 100%;
+    background-clip:text;
+    -webkit-background-clip:text;
+    -moz-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -moz-text-fill-color: transparent;
+
 }
+
+.bars {
+    background-color: transparent;
+    border: none;
+    /* Remove any border */
+    padding: 0;
+    /* Remove any padding */
+    cursor: pointer;
+    color: #ff8177;
+    font-size: 25px;
+}
+
 .navButtonContainer {
     cursor: pointer;
+
+    /* color: #ff8177; */
+    background-color: transparent;
+    /* font-size: 25px; */
+
+
 }
 
 a {
     text-decoration: none;
+}
+
+.createSpotLink {
+    margin-right: 20px;
+    font-size: 25px;
+    color: #ff8177;
+        /* background-image: linear-gradient(to left, #ff0844 0%, #ffb199 100%);
+        background-size: 100%;
+        background-clip: text;
+        -webkit-background-clip: text;
+        -moz-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        -moz-text-fill-color: transparent; */
+}
+
+.logoutButton {
+    font-size: 1rem;
+    background-image: linear-gradient(to right, #f77062 0%, #fe5196 100%);
+    padding: 14px 32px;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    margin-top: 2rem;
+    cursor: pointer;
+    position: relative;
+    transition: background-image 0.35s ease;
+    outline: none;
+}
+
+.logoutButton:hover {
+    background-image: linear-gradient(to right, #4837ff 100%, #fe5196 0%);
+}
+.manage {
+    color: #ccc;
+}
+
+@media (max-width: 600px) {
+    .NavBar {
+        align-items: center;
+        padding-left: 20px;
+        padding-right: 20px;
+        /* Adjust the padding for smaller screens */
+    }
+
+    .navLink {
+        padding-bottom: 10px;
+    }
+
+    .navLinkContainer {
+        padding-right: 20px;
+        /* Adjust the padding for smaller screens */
+    }
+
+    .profile-button {
+        margin-right: 20px;
+    }
+
+    .profile-dropdown.show {
+        margin-right: 50px;
+        /* Adjust the position for smaller screens */
+    }
+}
+
+@media (max-width: 900px) {
+    .NavBar {
+        padding-right: 20px;
+        /* Adjust the padding for medium-sized screens */
+    }
+        .profile-dropdown.show {
+            margin-right: 50px;
+            /* Adjust the position for smaller screens */
+        }
+}
+
+@media (max-width: 1200px) {
+    .spotListItem {
+        flex: 0 0 calc(33.333% - 20px);
+    }
+
+    .spotImage {
+        width: 100%;
+        height: auto;
+        max-width: 300px;
+        max-height: 225px;
+    }
+        .profile-dropdown.show {
+            margin-right: 50px;
+            /* Adjust the position for smaller screens */
+        }
+}
+
+@media (max-width: 800px) {
+    .spotListItem {
+        flex: 0 0 calc(50% - 20px);
+    }
+
+    .spotImage {
+        width: 100%;
+        height: auto;
+        max-width: 300px;
+        max-height: 300px;
+    }
+        .profile-dropdown.show {
+            margin-right: 50px;
+            /* Adjust the position for smaller screens */
+        }
+}
+
+@media (max-width: 600px) {
+    .spotListItem {
+        flex: 0 0 calc(100% - 20px);
+    }
+
+    .spotImage {
+        width: 100%;
+        height: auto;
+        max-width: 400px;
+        max-height: 300px;
+    }
+        .profile-dropdown.show {
+            margin-right: 50px;
+            /* Adjust the position for smaller screens */
+        }
+}
+
+/* Additional media query for smaller screens */
+@media (max-width: 400px) {
+    .spotListItem {
+        flex: 0 0 calc(100% - 20px);
+    }
+
+    .spotImage {
+        width: 100%;
+        height: auto;
+        max-width: 400px;
+        max-height: 400px;
+    }
+        .profile-dropdown.show {
+            margin-right: 50px;
+            /* Adjust the position for smaller screens */
+        }
 }

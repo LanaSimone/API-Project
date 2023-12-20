@@ -7,6 +7,8 @@
     flex-direction: column;
     align-items: center;
     width: 400px;
+    border: 1px solid #CCCCCC;
+    border-radius: 20px;
 
 
 }
@@ -41,7 +43,7 @@ button.disabled-button {
 button.enabled-button {
     margin-bottom: 20px;
     margin-top: 20px;
-    background-color: #FF5A5F;
+    background-image: linear-gradient(to right, #f77062 0%, #fe5196 100%);
     color: white;
     width: calc(100% - 80px);
     height: 30px;

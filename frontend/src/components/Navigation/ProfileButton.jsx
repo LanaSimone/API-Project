@@ -5,7 +5,7 @@ import { useModal } from '../../context/Modal';
 import { useDispatch} from 'react-redux';
 import * as sessionActions from '../../store/session';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser } from '@fortawesome/free-regular-svg-icons';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
 // import OpenModalButton from '../OpenModalButton/OpenModalButton';
 import OpenModalMenuItem from './OpenModalMenuItem';
 import LoginFormModal from '../LoginFormModal/LoginFormModal';
@@ -52,19 +52,19 @@ function ProfileButton({ user }) {
   return (
     <div className='navButtonContainer profile-button'>
       <button onClick={toggleMenu} className='navButtonContainer'>
-        <FontAwesomeIcon icon={faUser} />
+        <FontAwesomeIcon icon={faBars} className='bars'/>
       </button>
       <ul className={`profile-dropdown ${showMenu ? 'show' : 'hidden'}`} ref={ulRef}>
         {user ? (
-          <>
+          <div className='shown'>
             <li>{user.username}</li>
-            <li>Hello, {user.firstName}</li>
+            <li>Hello,  {user.firstName}</li>
             <li>{user.email}</li>
-            <NavLink to={'/manage-spots'}>Manage Spots</NavLink>
+            <NavLink to={'/manage-spots'} className='manage'>Manage Spots</NavLink>
             <li className='centered'>
-              <button onClick={logout}>Log Out</button>
+              <button onClick={logout} className='logoutButton'>Log Out</button>
             </li>
-          </>
+          </div>
         ) : (
           <>
             <OpenModalMenuItem

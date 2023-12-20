@@ -59,7 +59,7 @@ function HomePage() {
             <img src={spot.previewImage} alt={spot.name} className="spotImage" title={spot.name} />
             <div className="textDetails">
               <div>
-                <p className="location">{`${spot.city}, ${spot.state}`}</p>
+                <p className="locations">{`${spot.city}, ${spot.state}`}</p>
                 <p className="price">{`$ ${spot.price}`}/night</p>
               </div>
 

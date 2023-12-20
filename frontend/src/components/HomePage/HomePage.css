@@ -1,5 +1,17 @@
 /* CSS code (HomePage.css) */
+
+* {
+    font-family: 'Kombh Sans', sans-serif;
+    font-weight: 500;
+    background-color: #131313;
+    /* font-size: 18px; */
+}
+
+
 .homePageSpotList {
+    /* background-color: #131313; */
+
+
     list-style: none;
     display: flex;
     flex-wrap: wrap;
@@ -7,6 +19,7 @@
     /* Set to row */
     gap: 20px;
     size: 14px;
+    margin-right: 20px;
     /* Add gap between items */
 }
 
@@ -14,15 +27,35 @@
     flex: 1 0 calc(25% - 20px);
     margin-bottom: 20px;
     cursor: pointer;
+    width: 100%;
+    color: #ff8177;
+}
+
+.spotImageContainer {
+    width: 100%;
+    height: 0;
+    padding-top: 56.25%; /* 16:9 aspect ratio (adjust as needed) */
+    position: relative;
+    overflow: hidden;
+    border-radius: 30px;
+    margin-bottom: 10px;
 }
 
 .spotImage {
     width: 100%;
-    height: auto;
-    display: block;
+    height: 390px;
+    /* Set your desired fixed height */
+    position: relative;
+    overflow: hidden;
+    border-radius: 30px;
     margin-bottom: 10px;
 }
 
+.spotImage img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
 .spotDetails {
     display: flex;
     flex-direction: column;
@@ -37,6 +70,7 @@
     justify-content: space-between;
     /* Add space between location and review */
     width: 100%;
+    font-size: 18px;
     /* Ensure the items take up the full width */
 }
 
@@ -44,8 +78,10 @@
     margin-top: 5px;
     /* Add space between location and price */
 }
-.location {
+.locations {
     margin-bottom: 5px;
+    font-size: 18px;
+
 }
 
 .price {
@@ -61,16 +97,50 @@
     .spotListItem {
         flex: 0 0 calc(33.333% - 20px);
     }
+
+    .spotImage {
+        width: 100%;
+        height: auto;
+        max-width: 300px;
+        max-height: 225px;
+    }
 }
 
 @media (max-width: 800px) {
     .spotListItem {
         flex: 0 0 calc(50% - 20px);
     }
+
+    .spotImage {
+        width: 100%;
+        height: auto;
+        max-width: 300px;
+        max-height: 300px;
+    }
 }
 
 @media (max-width: 600px) {
     .spotListItem {
         flex: 0 0 calc(100% - 20px);
+    }
+
+    .spotImage {
+        width: 100%;
+        height: auto;
+        max-width: 400px;
+        max-height: 300px;
+    }
+}
+
+@media (max-width: 400px) {
+    .spotListItem {
+        flex: 0 0 calc(100% - 20px);
+    }
+
+    .spotImage {
+        width: 100%;
+        height: auto;
+        max-width: 400px;
+        max-height: 400px;
     }
 }

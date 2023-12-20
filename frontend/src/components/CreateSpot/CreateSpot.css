@@ -61,7 +61,7 @@
     margin-bottom: 10px;
 }
 
-.price {
+.prices {
     align-items: center;
         flex-direction: column;
         border-bottom: 2px solid black;
@@ -153,11 +153,4 @@
 .cityState .inputContainer {
     width: 50%;
     /* Adjust the width as needed */
-}
-
-
-
-.inputContainer {
-    /* margin-right: 20px; */
-    /* Adjust the spacing between input containers */
 }

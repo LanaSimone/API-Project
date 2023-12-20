@@ -60,7 +60,7 @@ const validateForm = () => {
 
   return errors;
   };
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -240,7 +240,7 @@ const handleChange = (e) => {
         {errors.name && <p style={{ color: "red" }}>{errors.name}</p>}
       </div>
 
-      <div className="price">
+      <div className="prices">
         <h2>Set a base price for your spot</h2>
         <p>Competitive pricing can help your listing stand out and rank higher in search results.</p>
 
