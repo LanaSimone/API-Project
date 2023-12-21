@@ -47,8 +47,12 @@ function SpotDetails() {
         return <div>Loading...</div>;
   }
 
+  console.log('loggedInUserId:', loggedInUserId);
+console.log('Owner ID:', spotDetailsState.Owner.id);
+  console.log('Spot ID:', spotId);
+
   const reversedReviews = reviewsState ? [...reviewsState].reverse() : [];
-      const isNewReview = reviewsState && Array.isArray(reviewsState) && reviewsState.length === 0 && loggedInUserId && loggedInUserId !== spotDetailsState.Owner.id;
+      // const isNewReview = reviewsState && Array.isArray(reviewsState) && reviewsState.length === 0 && loggedInUserId && loggedInUserId !== spotDetailsState.Owner.id;
   return (
     <div className="spot-page-container">
       {!spotDetailsState.loading && !spotDetailsState.error && (
@@ -56,7 +60,7 @@ function SpotDetails() {
         <div className="spot-details-container">
         <div className="spot-info-container">
         <h2 className="spot-name">{spotDetailsState.name}</h2>
-        <p className="location"> {spotDetailsState.city}, {spotDetailsState.state}, {spotDetailsState.country} </p>
+        <p className="locations"> {spotDetailsState.city}, {spotDetailsState.state}, {spotDetailsState.country} </p>
         </div>
         <div className="spot-images">
         <img src={spotDetailsState.SpotImages[0]?.url} title={spotDetailsState.name} alt="Large Spot Image" className="large-image" />
@@ -70,65 +74,81 @@ function SpotDetails() {
         </div>
         <div className='spot-details-container'>
         <h3>Hosted by {spotDetailsState.Owner.firstName} {spotDetailsState.Owner.lastName}</h3>
-        <p>{spotDetailsState.description}</p> </div> <div className="price-rating-reviews-box">
+        <p>{spotDetailsState.description}</p>
+        </div>
+        <div className="price-rating-reviews-box">
         <div className="star-rating-box">
         <p className="spot-price">${spotDetailsState.price}/night</p>
         <div className='starText'>
-        <FontAwesomeIcon icon={solidStar} className="review-icon" />
-        <p className="spot-rating">{spotDetailsState.avgStarRating.toFixed(1)}</p>
-                {numReviews > 0 && (
-                  <> <FontAwesomeIcon icon={faCircle} className="circle" />
-                  <p className="spot-reviews">{numReviews} review{numReviews !== 1 ? 's' : ''}</p>
-                  </>
-                )}
-                </div>
+  <FontAwesomeIcon icon={solidStar} className="review-icon" />
+  {numReviews === 0 ? (
+    <>
+      <p>New</p>
+    </>
+  ) : (
+    <>
+      <p className="spot-rating">{spotDetailsState.avgStarRating.toFixed(1)}</p>
+      <FontAwesomeIcon icon={faCircle} className="circle" />
+      <p className="spot-reviews">{numReviews} review{numReviews !== 1 ? 's' : ''}</p>
+    </>
+  )}
+</div>
                 </div>
                 <button className="reserve-button" onClick={() => alert('Feature Coming Soon...')}> Reserve </button>
                 </div>
         </div>
       )}
-      <div className="reviews-header">
-      <FontAwesomeIcon icon={solidStar} className="review-icon" />
-      <p className="review-text">{spotDetailsState.avgStarRating.toFixed(1)}</p>
-        {numReviews > 0 &&
-        <FontAwesomeIcon icon={faCircle} className="circle" />
-        }
-        {numReviews > 0 && <p className="reviews-title">{numReviews} review{numReviews !== 1 ? 's' : ''}
-        </p>}
-        </div>
+
+       <div className="reviews-header">
+        {numReviews > 0 && (
+          <>
+            <FontAwesomeIcon icon={solidStar} className="review-icon" />
+            <p className="reviews-title">{numReviews} review{numReviews !== 1 ? 's' : ''}</p>
+            <FontAwesomeIcon icon={faCircle} className="circles" />
+            <p className="review-text">{spotDetailsState.avgStarRating.toFixed(1)}</p>
+          </>
+        )}
+      </div>
+
       <div className="reviews-container">
         {loggedInUser &&
- loggedInUserId !== spotDetailsState.Owner.id &&
- !reviewsState.some(review => review.userId === loggedInUserId) && (
-  <button onClick={openPostReviewModal}>Post Your Review</button>
+  loggedInUserId !== spotDetailsState.Owner.id && (
+    <>
+      <FontAwesomeIcon icon={solidStar} className="review-icon" />
+      {reviewsState && Array.isArray(reviewsState) && reviewsState.length === 0 && <p>New</p>}
+      <button onClick={openPostReviewModal}>Post Your Review</button>
+    </>
 )}
 
-        {reviewsState && Array.isArray(reviewsState) && reviewsState.length > 0 ? (
-   reversedReviews.map((review, index)  => (
-    <div key={index}>
-      <p>First Name: {review.firstName || 'N/A'}</p>
-      <p>Review Text: {review.reviewText || review.review || 'N/A'}</p>
-      <p>Created At: {review.createdAt || review.updatedAt || 'N/A'}</p>
-      {loggedInUserId && loggedInUserId === review.userId && (
-        <button onClick={() => handleDeleteReview(review.id)}>Delete</button>
+{reviewsState && Array.isArray(reviewsState) && reviewsState.length > 0 ? (
+  reversedReviews.map((review, index) => (
+    <div key={index} className='reviewTexts'>
+      <h2>{review.firstName || 'N/A'}</h2>
+      <h3>{review.createdAt || review.updatedAt || 'N/A'}</h3>
+      <p>{review.reviewText || review.review || 'N/A'}</p>
+       {loggedInUserId && loggedInUserId === review.userId && (
+         <div className='buttons'>
+
+           <button onClick={() => handleDeleteReview(review.id)}>Delete</button>
+
+         </div>
       )}
     </div>
   ))
         ) : (
-            <div>
-              <p>New</p>
-               <button onClick={openPostReviewModal}>Post Your Review</button>
+  loggedInUser && loggedInUserId === spotDetailsState.Owner.id && (
+    <div>
+      <FontAwesomeIcon icon={solidStar} className="review-icon" />
+      <p>New</p>
+      {/* <button onClick={openPostReviewModal}>Post Your Review</button> */}
+    </div>
+  )
+)}
+      </div>
 
-              <p>Be the first to review!</p>
-            </div>
-    )}
+      {/* {isNewReview && <p className="new-review-label">New</p>} */}
+    </div>
+  );
+}
 
-          </div>
-          {isNewReview &&
-          <p className="new-review-label">New</p>
-
-        }
-    </div >
-
-);
-} export default SpotDetails;
+export default SpotDetails;

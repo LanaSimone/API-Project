@@ -32,7 +32,8 @@ body {
     padding: 20px;
     border-radius: 60px !important;
     /* Adjust the value as needed for rounded corners */
-    width: 300px;
+    width: 550px;
+    height: 300px;
     /* Adjust the width as needed */
 }
 
@@ -58,10 +59,10 @@ input {
 
 /* Adjusted width of the button */
 .login-form button {
-    width: calc(100% - 6px);
+    /* width: calc(100% - 6px); */
     padding: 10px 15px;
     box-sizing: border-box;
-    border-radius: 4px;
+    /* border-radius: 4px; */
     cursor: pointer;
     margin-top: 10px;
      /* margin-left: 20px; */
@@ -72,9 +73,11 @@ input {
 .login-form button.enabled {
     background-color: #ff5252;
     color: white;
-    width: 100%;
-    /* margin-left: 20px;
-    margin-right:20px; */
+    width: 92%;
+    margin-left: 20px;
+    margin-right:20px;
+    cursor: pointer;
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5)
 }
 
 /* Disabled Button */
@@ -82,14 +85,15 @@ input {
     background-color: white;
     color: #CCCCCC;
     border: 1px solid #CCCCCC;
-    cursor: not-allowed;
     margin-left: 20px;
+    width: 92%;
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
 
 }
 
 /* Demo User Link */
 .demo-link {
-    margin-top: 10px;
+    margin-top: 40px;
     /* Adjust the margin to provide space between the button and the link */
     text-align: center;
 }
@@ -98,6 +102,7 @@ input {
     color:#00525E;
     /* Dark teal color */
     text-decoration: underline;
+    font-size: 20px;
 }
 
 .demo-user-link:hover {
@@ -116,4 +121,3 @@ h1 {
     font-size: 14px;
     margin-top: 5px;
 }
-

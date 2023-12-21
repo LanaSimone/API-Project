@@ -1264,6 +1264,7 @@ router.get('/:spotId/reviews', async (req, res) => {
       ];
 
       return {
+        spotId: review.spotId,
         id: review.id,
         userId: review.userId,
         firstName: review.User.firstName,

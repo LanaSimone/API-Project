@@ -192,6 +192,7 @@ export const fetchReviews = (spotId) => async (dispatch) => {
     }
     const data = await response.json();
     dispatch(fetchReviewsSuccess(data.Reviews));
+  
   } catch (error) {
     console.error('Error fetching reviews:', error.message);
   }

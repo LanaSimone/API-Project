@@ -31,29 +31,34 @@ function HomePage() {
 
 
 
-useEffect(() => {
-  const fetchReviewsForSpot = async (spotId) => {
-    try {
-      const response = await dispatch(fetchReviews(spotId));
 
-      // if (!response || !response.ok) {
-      //   throw new Error(`Failed to fetch reviews (${response ? response.status : 'unknown status'})`);
-      // }
+ useEffect(() => {
+    const fetchReviewsForSpot = async (spotId) => {
+      try {
+        const response = await dispatch(fetchReviews(spotId));
 
-      const data = await response.json();
-      dispatch(fetchReviewsSuccess(data.reviews));
-    } catch (error) {
-      console.error('Error fetching reviews:', error.message);
-    }
-  };
+        if (!response || !response.ok) {
+          throw new Error(`Failed to fetch reviews (${response ? response.status : 'unknown status'})`);
+        }
 
-  // Fetch reviews for each spot
-  spotsState.forEach((spot) => fetchReviewsForSpot(spot.id));
-}, [dispatch, spotsState]);
+        const data = await response.json();
+        dispatch(fetchReviewsSuccess(data.reviews));
+      } catch (error) {
+        console.error('Error fetching reviews:', error.message);
+      }
+    };
+
+    // Fetch reviews for each spot
+    spotsState.forEach((spot) => fetchReviewsForSpot(spot.id));
+  }, [dispatch, spotsState]);
+
+  console.log('Reviews State:', reviewsState); // Log the reviews state
 
   const handleSpotClick = async (spotId) => {
     navigate(`/details/${spotId}`);
   };
+
+  // const hasReviews = reviewsState.length > 0;
 
  return (
   <div className='homePage'>
@@ -67,14 +72,20 @@ useEffect(() => {
                 <p className="locations">{`${spot.city}, ${spot.state}`}</p>
                 <p className="price">{`$ ${spot.price}`}/night</p>
               </div>
-
-              {reviewsState.length  === '0' ? (
-                <p className="new-review-label">New</p>
-              ) : (
-                <p>
-                  <FontAwesomeIcon icon={solidStar} className="review-icon" /> {`${spot.avgRating}`}
-                </p>
-              )}
+              {console.log('Reviews State:', reviewsState.length)}
+              {reviewsState.length === 0 ? (
+  <p>
+    <FontAwesomeIcon icon={solidStar} className="review-icon" /> {`${spot.avgRating}`}
+  </p>
+) : (
+  reviewsState.some((review) => review.spotId === spot.id) ? (
+    <p>
+      <FontAwesomeIcon icon={solidStar} className="review-icon" /> {`${spot.avgRating}`}
+    </p>
+  ) : (
+    <p className="new-review-label">New</p>
+  )
+)}
             </div>
           </div>
         </li>

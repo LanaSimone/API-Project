@@ -97,7 +97,7 @@
 
 .spot-images {
     display: grid;
-    grid-template-columns: 40% 30% 30%;
+    grid-template-columns: 15% 40% 40%;
     gap: 0px;
 }
 
@@ -152,12 +152,28 @@
     margin-bottom: 90px;
 }  */
 
+.spot-name {
+    margin-bottom: 20px;
+}
 .spot-reviews {
     margin-left: 20px;
 }
 
 .spot-price {
     margin-top: 20px;
+}
+
+.spot-details-container {
+    margin-bottom: 20px;
+    padding: 10px
+}
+.spot-details-container p {
+    margin-top: 20px;
+}
+
+
+.locations {
+    margin-bottom: 20px;
 }
 
 .star-rating-box {
@@ -204,11 +220,32 @@
     display: flex;
     align-items: center;
     margin-left: 20px;
+    margin-bottom: 20px;
+    font-size: 35px;
+}
+
+.reviewTexts h2 {
+    margin-bottom: 10px;
+
+}
+.reviewTexts h3 {
+    margin-bottom: 10px;
+
+}
+.reviewTexts p {
+    margin-bottom: 10px;
+
 }
 
 .review-icon {
-    width: 13px;
-    margin-right: 3px;
+    width: 25px;
+    margin-right: 10px;
+}
+
+.circles {
+    width: 7px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 .review-text {
@@ -222,6 +259,15 @@
 .circle {
     width: 2px;
     margin-left: 3px;
+}
+
+.reviewTexts .buttons button{
+    /* display: flex; */
+    /* flex-direction: row; */
+    width: 79px;
+    height: 40px;
+    margin-left: 30px;
+    /* margin-left: 5px; */
 }
 
 /* Media query for smaller screens */
