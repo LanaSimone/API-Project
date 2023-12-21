@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
-import {  fetchSpots } from '../../store/spots/spotActions';
+import {  fetchSpots, fetchReviews, fetchReviewsSuccess } from '../../store/spots/spotActions';
 
 import './HomePage.css'
 
@@ -29,22 +29,27 @@ function HomePage() {
   }, [dispatch]);
 
 
-  useEffect(() => {
-    const fetchReview = async () => {
-      try {
-        // Fetch reviews for each spot using spot IDs
-        for (const spot of spotsState) {
-          // const action = await dispatch(fetchReviews(spot.id));
-          console.log(`Reviews for spot ${spot.id}:`);
-        }
-      } catch (error) {
-        console.error('Error fetching reviews:', error);
-      }
-    };
 
-    fetchReview();
-  }, [dispatch, spotsState]);
 
+useEffect(() => {
+  const fetchReviewsForSpot = async (spotId) => {
+    try {
+      const response = await dispatch(fetchReviews(spotId));
+
+      // if (!response || !response.ok) {
+      //   throw new Error(`Failed to fetch reviews (${response ? response.status : 'unknown status'})`);
+      // }
+
+      const data = await response.json();
+      dispatch(fetchReviewsSuccess(data.reviews));
+    } catch (error) {
+      console.error('Error fetching reviews:', error.message);
+    }
+  };
+
+  // Fetch reviews for each spot
+  spotsState.forEach((spot) => fetchReviewsForSpot(spot.id));
+}, [dispatch, spotsState]);
 
   const handleSpotClick = async (spotId) => {
     navigate(`/details/${spotId}`);
@@ -63,12 +68,13 @@ function HomePage() {
                 <p className="price">{`$ ${spot.price}`}/night</p>
               </div>
 
-
-
+              {reviewsState.length  === '0' ? (
+                <p className="new-review-label">New</p>
+              ) : (
                 <p>
                   <FontAwesomeIcon icon={solidStar} className="review-icon" /> {`${spot.avgRating}`}
                 </p>
-
+              )}
             </div>
           </div>
         </li>
