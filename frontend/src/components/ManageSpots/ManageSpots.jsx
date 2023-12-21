@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
 import ConfirmSpotDelete from "../ConfirmModals/ConfirmSpotDelete";
 import { useModal } from "../../context/Modal";
+import './ManageSpot.css'
 // import UpdateSpot from "../UpdateSpot/UpdateSpot";
 
 
@@ -54,13 +55,14 @@ console.log('!!!!!!!!!!userSpot', currentUserSpots);
 
 
   return (
-    <div>
+    <div className="spotList">
       <h1>Manage Spots</h1>
           <button onClick={handleCreateButtonClick}>Create a New Spot </button>
-          <ul>
+          <ul className="listItem">
               {currentUserSpots.map((spot) => (
-                  <li key={spot.id}>{spot.name}
-                      <img src={spot.previewImage} alt={spot.name} className="spotImage" title={spot.name} />
+                <li key={spot.id}>{spot.name}
+
+                      <img src={spot.previewImage} alt={spot.name} className="spotImages" title={spot.name} />
                       <p>{spot.city}</p>
                       <p>{spot.state}</p>
                       <FontAwesomeIcon icon={solidStar} className="review-icon" /> {`${spot.avgRating}`}

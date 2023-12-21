@@ -45,7 +45,9 @@ function SpotDetails() {
       };
       if (!spotDetailsState) {
         return <div>Loading...</div>;
-      }
+  }
+
+  const reversedReviews = reviewsState ? [...reviewsState].reverse() : [];
       const isNewReview = reviewsState && Array.isArray(reviewsState) && reviewsState.length === 0 && loggedInUserId && loggedInUserId !== spotDetailsState.Owner.id;
   return (
     <div className="spot-page-container">
@@ -95,31 +97,37 @@ function SpotDetails() {
         </p>}
         </div>
       <div className="reviews-container">
-        {loggedInUser && loggedInUserId !== spotDetailsState.Owner.id && (
-        <button onClick={openPostReviewModal}>Post Your Review</button>
-      )}
+        {loggedInUser &&
+ loggedInUserId !== spotDetailsState.Owner.id &&
+ !reviewsState.some(review => review.userId === loggedInUserId) && (
+  <button onClick={openPostReviewModal}>Post Your Review</button>
+)}
 
         {reviewsState && Array.isArray(reviewsState) && reviewsState.length > 0 ? (
-          reviewsState.map((review, index) => (
-          <div key={index}>
-            <p>First Name: {review.firstName || 'N/A'}
-            </p> <p>Review Text: {review.reviewText || review.review || 'N/A'}</p>
-            <p>Created At: {review.createdAt || review.updatedAt || 'N/A'}</p>
-            {loggedInUserId && loggedInUserId === review.userId && (
-              <button onClick={() => handleDeleteReview(review.id)}>Delete</button>
-            )}
-          </div>
-        )
-        )
-        )
-          : (
-            <p>No reviews available.</p>
-          )}
+   reversedReviews.map((review, index)  => (
+    <div key={index}>
+      <p>First Name: {review.firstName || 'N/A'}</p>
+      <p>Review Text: {review.reviewText || review.review || 'N/A'}</p>
+      <p>Created At: {review.createdAt || review.updatedAt || 'N/A'}</p>
+      {loggedInUserId && loggedInUserId === review.userId && (
+        <button onClick={() => handleDeleteReview(review.id)}>Delete</button>
+      )}
+    </div>
+  ))
+        ) : (
+            <div>
+              <p>New</p>
+               <button onClick={openPostReviewModal}>Post Your Review</button>
+
+              <p>Be the first to review!</p>
+            </div>
+    )}
+
           </div>
           {isNewReview &&
           <p className="new-review-label">New</p>
 
-    }
+        }
     </div >
 
 );

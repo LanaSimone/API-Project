@@ -1,26 +1,19 @@
-/* CSS code (HomePage.css) */
-
 * {
     font-family: 'Kombh Sans', sans-serif;
     font-weight: 500;
     background-color: #131313;
-    /* font-size: 18px; */
 }
 
 
 .homePageSpotList {
-    /* background-color: #131313; */
-
-
     list-style: none;
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
-    /* Set to row */
     gap: 20px;
     size: 14px;
     margin-right: 20px;
-    /* Add gap between items */
+
 }
 
 .spotListItem {
@@ -34,7 +27,7 @@
 .spotImageContainer {
     width: 100%;
     height: 0;
-    padding-top: 56.25%; /* 16:9 aspect ratio (adjust as needed) */
+    padding-top: 56.25%;
     position: relative;
     overflow: hidden;
     border-radius: 30px;
@@ -44,7 +37,6 @@
 .spotImage {
     width: 100%;
     height: 390px;
-    /* Set your desired fixed height */
     position: relative;
     overflow: hidden;
     border-radius: 30px;
@@ -66,17 +58,13 @@
     margin-top: 10px;
     display: flex;
     flex-direction: row;
-    /* Change to row to place items side by side */
     justify-content: space-between;
-    /* Add space between location and review */
     width: 100%;
     font-size: 18px;
-    /* Ensure the items take up the full width */
 }
 
 .price {
     margin-top: 5px;
-    /* Add space between location and price */
 }
 .locations {
     margin-bottom: 5px;
