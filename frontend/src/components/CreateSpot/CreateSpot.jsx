@@ -23,7 +23,7 @@ function CreateSpot() {
 
   const navigate = useNavigate();
 
-const validateForm = () => {
+  const validateForm = () => {
   const errors = {};
 
   if (!spotData.country.trim()) {
@@ -52,6 +52,12 @@ const validateForm = () => {
 
   if (!spotData.price.trim()) {
     errors.price = "Price is required.";
+  } else if (isNaN(spotData.price)) {
+    errors.price = "Price must be a number.";
+  }
+
+  if (!spotData.previewImage.trim()) {
+    errors.previewImage = "Preview Image URL is required.";
   }
 
   if (Object.keys(errors).length > 0) {
@@ -59,7 +65,7 @@ const validateForm = () => {
   }
 
   return errors;
-  };
+};
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -90,8 +96,10 @@ const validateForm = () => {
         const errorData = await spotResponse.json();
         throw new Error(`Error creating spot: ${errorData.message}`);
       }
+      const createdSpt = await spotResponse.json()
+      const spotId = createdSpt.id;
 
-      navigate("/");
+      navigate(`/details/${spotId}`);
     } catch (error) {
       if (error.message === "Form validation error" && error.errors) {
         // Set errors based on the validation errors
@@ -103,25 +111,46 @@ const validateForm = () => {
     } finally {
       setLoading(false);
     }
-  }
+  };
 
-const handleChange = (e) => {
-  const { name, value } = e.target;
-  setSpotData((prevData) => ({
-    ...prevData,
-    [name]: value,
-  }));
+  const handleChange = (e) => {
+    const { name, value } = e.target;
 
-  setErrors((prevErrors) => ({
-    ...prevErrors,
-    [name]: value.trim() ? undefined : `${name.charAt(0).toUpperCase() + name.slice(1)} is required.`,
-    unexpected: undefined,
-  }));
-};
+    // Validate price field to ensure it's a number
+    if (name === "price" && isNaN(value)) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: "Price must be a number.",
+        unexpected: undefined,
+      }));
+      return;
+    }
+
+    setSpotData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: value.trim() ? undefined : `${name.charAt(0).toUpperCase() + name.slice(1)} is required.`,
+      unexpected: undefined,
+    }));
+  };
 
   const handleAdditionalImageChange = (index, value) => {
     const updatedAdditionalImages = [...spotData.additionalImages];
     updatedAdditionalImages[index] = value;
+
+    setSpotData((prevData) => ({
+      ...prevData,
+      additionalImages: updatedAdditionalImages,
+    }));
+  };
+
+  const handleRemoveImageField = (index) => {
+    const updatedAdditionalImages = [...spotData.additionalImages];
+    updatedAdditionalImages.splice(index, 1);
 
     setSpotData((prevData) => ({
       ...prevData,
@@ -136,15 +165,6 @@ const handleChange = (e) => {
     }));
   };
 
-  const handleRemoveImageField = (index) => {
-    const updatedAdditionalImages = [...spotData.additionalImages];
-    updatedAdditionalImages.splice(index, 1);
-
-    setSpotData((prevData) => ({
-      ...prevData,
-      additionalImages: updatedAdditionalImages,
-    }));
-  };
 
   return (
     <form onSubmit={handleSubmit} className="createSpot">
@@ -155,6 +175,7 @@ const handleChange = (e) => {
         <p>Guests will only get your exact address once they booked a reservation.</p>
 
         <label htmlFor="country">Country</label>
+        {errors.country && <p style={{ color: "red" }}>{errors.country}</p>}
         <input
           type="text"
           id="country"
@@ -163,9 +184,9 @@ const handleChange = (e) => {
           placeholder="Country"
           onChange={handleChange}
         />
-        {errors.country && <p style={{ color: "red" }}>{errors.country}</p>}
 
         <label htmlFor="address">Street Address</label>
+        {errors.address && <p style={{ color: "red" }}>{errors.address}</p>}
         <input
           type="text"
           id="address"
@@ -174,9 +195,9 @@ const handleChange = (e) => {
           placeholder="Street Address"
           onChange={handleChange}
         />
-        {errors.address && <p style={{ color: "red" }}>{errors.address}</p>}
 
         <div className="cityState">
+            {errors.city && <p style={{ color: "red" }}>{errors.city}</p>}
           <div className="inputContainer">
             <label htmlFor="city" className="city">
               City
@@ -189,10 +210,10 @@ const handleChange = (e) => {
               placeholder="City"
               onChange={handleChange}
             />
-            {errors.city && <p style={{ color: "red" }}>{errors.city}</p>}
           </div>
 
           <div className="inputContainer">
+            {errors.state && <p style={{ color: "red" }}>{errors.state}</p>}
             <label htmlFor="state">State</label>
             <input
               type="text"
@@ -202,7 +223,6 @@ const handleChange = (e) => {
               placeholder="State"
               onChange={handleChange}
             />
-            {errors.state && <p style={{ color: "red" }}>{errors.state}</p>}
           </div>
         </div>
       </div>
@@ -214,6 +234,7 @@ const handleChange = (e) => {
         </p>
 
         <div className="descBox">
+          {errors.description && <p style={{ color: "red" }}>{errors.description}</p>}
           <textarea
             id="description"
             name="description"
@@ -221,7 +242,6 @@ const handleChange = (e) => {
             placeholder="Please write at least 30 characters"
             onChange={handleChange}
           ></textarea>
-          {errors.description && <p style={{ color: "red" }}>{errors.description}</p>}
         </div>
       </div>
 
@@ -229,6 +249,7 @@ const handleChange = (e) => {
         <h2>Create a title for your spot</h2>
         <p>Catch guests&apos; attention with a spot title that highlights what makes your place special.</p>
 
+        {errors.name && <p style={{ color: "red" }}>{errors.name}</p>}
         <input
           type="text"
           id="name"
@@ -237,7 +258,6 @@ const handleChange = (e) => {
           placeholder="Name of your spot"
           onChange={handleChange}
         />
-        {errors.name && <p style={{ color: "red" }}>{errors.name}</p>}
       </div>
 
       <div className="prices">
@@ -245,6 +265,7 @@ const handleChange = (e) => {
         <p>Competitive pricing can help your listing stand out and rank higher in search results.</p>
 
         ${" "}
+        {errors.price && <p style={{ color: "red" }}>{errors.price}</p>}
         <input
           type="text"
           id="price"
@@ -253,7 +274,6 @@ const handleChange = (e) => {
           placeholder="Price per night (USD)"
           onChange={handleChange}
         />
-        {errors.price && <p style={{ color: "red" }}>{errors.price}</p>}
       </div>
 
       {/* Image Upload */}
@@ -261,7 +281,7 @@ const handleChange = (e) => {
         <div className="previewImage">
           <h2>Liven up your spot with photos</h2>
           <p>Submit a link to at least one photo to publish your spot.</p>
-
+          {errors.previewImage && <p style={{ color: "red" }}>{errors.previewImage}</p>}
           <input
             type="text"
             id="previewImage"

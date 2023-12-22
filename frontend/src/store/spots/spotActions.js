@@ -13,6 +13,7 @@ export const POST_REVIEWS_SUCCESS = 'POST_REVIEWS_SUCCESS';
 export const DELETE_REVIEW_SUCCESS = 'DELETE_REVIEW_SUCCESS';
 export const DELETE_SPOTS_SUCCESS = 'DELETE_SPOTS_SUCCESS'
 export const UPDATE_REVIEWS_AFTER_DELETE = 'UPDATE_REVIEWS_AFTER_DELETE';
+export const UPDATE_SPOT_DETAILS = 'UPDATE_SPOT_DETAILS';
 
 export const updateReviewsAfterDelete = (reviewId) => ({
   type: UPDATE_REVIEWS_AFTER_DELETE,
@@ -31,6 +32,8 @@ export const updateSpotsSuccess = (data) => ({
   type: UPDATE_SPOTS_SUCCESS,
   payload: data,
 })
+
+
 
 export const fetchSpotDetailsSuccess = (spotDetails) => ({
   type: FETCH_SPOT_DETAILS_SUCCESS,
@@ -101,7 +104,7 @@ export const fetchCurrentUserSpots = () =>async (dispatch) => {
   }
 }
 
-export const updateSpots = (spotId, address, city, state, country, lat, lng, name, description, price) => async (dispatch) => {
+export const updateSpots = (spotId, address, city, state, country, name, description, price, lat, lng) => async (dispatch) => {
   try {
     const response = await csrfFetch(`/api/spots/${spotId}`, {
       method: 'PUT',
@@ -109,15 +112,15 @@ export const updateSpots = (spotId, address, city, state, country, lat, lng, nam
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
+        country,
         address,
         city,
         state,
-        country,
-        lat,
-        lng,
         name,
         description,
         price,
+        lat,
+        lng
       }),
     });
 
@@ -192,7 +195,7 @@ export const fetchReviews = (spotId) => async (dispatch) => {
     }
     const data = await response.json();
     dispatch(fetchReviewsSuccess(data.Reviews));
-  
+
   } catch (error) {
     console.error('Error fetching reviews:', error.message);
   }

@@ -10,13 +10,19 @@ import { faStar as solidStar, faCircle } from '@fortawesome/free-solid-svg-icons
 import { fetchSpotDetails, fetchReviews } from '../../store/spots/spotActions';
 import DeleteReview from '../CreateReviews/CreateReviewDeleteModal';
 import './SpotDetails.css';
+
+
 function SpotDetails() {
   const { spotId } = useParams();
   const dispatch = useDispatch();
   const { setModalContent } = useModal();
+   const [averageRating, setAverageRating] = useState(0);
 
-  const [numReviews, setNumReviews] = useState(0); useEffect(() => {
-    dispatch(fetchSpotDetails(spotId)); dispatch(fetchReviews(spotId));
+  const [numReviews, setNumReviews] = useState(0);
+
+  useEffect(() => {
+    dispatch(fetchSpotDetails(spotId));
+    dispatch(fetchReviews(spotId));
   }, [spotId, dispatch]);
 
   const spotDetailsState = useSelector((state) => state.spot.spotDetails);
@@ -24,11 +30,17 @@ function SpotDetails() {
     const loggedInUser = useSelector((state) => state.session.user);
     const loggedInUserId = loggedInUser ? loggedInUser.id : null;
 
-    useEffect(() => {
-      if (Array.isArray(reviewsState)) {
-        setNumReviews(reviewsState.length);
-      }
-    }, [reviewsState]);
+     useEffect(() => {
+    if (Array.isArray(reviewsState)) {
+      // Calculate the average rating when reviews change
+      const totalRating = reviewsState.reduce((sum, review) => sum + review.stars, 0);
+      const newNumReviews = reviewsState.length;
+      const newAverageRating = newNumReviews > 0 ? totalRating / newNumReviews : 0;
+
+      setNumReviews(newNumReviews);
+      setAverageRating(newAverageRating);
+    }
+  }, [reviewsState]);
 
 
     const openPostReviewModal = () => {setModalContent(<PostReviewModal spotId={spotId} onClose={() => setModalContent(null)} />);
@@ -46,6 +58,18 @@ function SpotDetails() {
       if (!spotDetailsState) {
         return <div>Loading...</div>;
   }
+
+  // useEffect(() => {
+  //   if (Array.isArray(reviewsState)) {
+  //     setNumReviews(reviewsState.length);
+
+  //     // Calculate the average rating when reviews change
+  //     const totalRating = reviewsState.reduce((sum, review) => sum + review.rating, 0);
+  //     const newAverageRating = numReviews > 0 ? totalRating / numReviews : 0;
+  //     setAverageRating(newAverageRating);
+  //   }
+  // }, [reviewsState, numReviews]);
+
 
   console.log('loggedInUserId:', loggedInUserId);
 console.log('Owner ID:', spotDetailsState.Owner.id);
@@ -78,7 +102,7 @@ console.log('Owner ID:', spotDetailsState.Owner.id);
         </div>
         <div className="price-rating-reviews-box">
         <div className="star-rating-box">
-        <p className="spot-price">${spotDetailsState.price}/night</p>
+        <p className="spot-price">${spotDetailsState.price}/nights</p>
         <div className='starText'>
   <FontAwesomeIcon icon={solidStar} className="review-icon" />
   {numReviews === 0 ? (
@@ -87,7 +111,7 @@ console.log('Owner ID:', spotDetailsState.Owner.id);
     </>
   ) : (
     <>
-      <p className="spot-rating">{spotDetailsState.avgStarRating.toFixed(1)}</p>
+       <p className="spot-rating">{averageRating.toFixed(1)}</p>
       <FontAwesomeIcon icon={faCircle} className="circle" />
       <p className="spot-reviews">{numReviews} review{numReviews !== 1 ? 's' : ''}</p>
     </>
@@ -103,9 +127,9 @@ console.log('Owner ID:', spotDetailsState.Owner.id);
         {numReviews > 0 && (
           <>
             <FontAwesomeIcon icon={solidStar} className="review-icon" />
-            <p className="reviews-title">{numReviews} review{numReviews !== 1 ? 's' : ''}</p>
+            <p className="spot-rating">{averageRating.toFixed(1)}</p>
             <FontAwesomeIcon icon={faCircle} className="circles" />
-            <p className="review-text">{spotDetailsState.avgStarRating.toFixed(1)}</p>
+            <p className="reviews-title">{numReviews} review{numReviews !== 1 ? 's' : ''}</p>
           </>
         )}
       </div>
@@ -114,8 +138,14 @@ console.log('Owner ID:', spotDetailsState.Owner.id);
         {loggedInUser &&
   loggedInUserId !== spotDetailsState.Owner.id && (
     <>
-      <FontAwesomeIcon icon={solidStar} className="review-icon" />
-      {reviewsState && Array.isArray(reviewsState) && reviewsState.length === 0 && <p>New</p>}
+            {reviewsState && Array.isArray(reviewsState) && reviewsState.length === 0 &&
+              <div>
+                <FontAwesomeIcon icon={solidStar} className="review-icon" />
+                <p>New</p>
+                <p>Be the first to post your review!</p>
+
+              </div>
+      }
       <button onClick={openPostReviewModal}>Post Your Review</button>
     </>
 )}
@@ -136,8 +166,8 @@ console.log('Owner ID:', spotDetailsState.Owner.id);
     </div>
   ))
         ) : (
-  loggedInUser && loggedInUserId === spotDetailsState.Owner.id && (
-    <div>
+          loggedInUser && loggedInUserId === spotDetailsState.Owner.id && (
+            <div>
       <FontAwesomeIcon icon={solidStar} className="review-icon" />
       <p>New</p>
       {/* <button onClick={openPostReviewModal}>Post Your Review</button> */}

@@ -39,7 +39,16 @@ console.log('!!!!!!!!!!userSpot', currentUserSpots);
 
     const handleUpdateButtonClick = (spotId) => {
   navigate(`/update-spots/${spotId}`); // Update the path to '/update-spots'
-}
+  }
+
+  const handleSpotClick = async (spotId) => {
+    navigate(`/details/${spotId}`);
+  };
+
+  const handleButtonClick = (event) => {
+  // This prevents the click event from propagating to the parent li element
+  event.stopPropagation();
+};
 
  const openDeleteSpotModal = (spotId, spotName) => {
     // Set the modal content to ConfirmSpotDelete component
@@ -60,7 +69,8 @@ console.log('!!!!!!!!!!userSpot', currentUserSpots);
           <button onClick={handleCreateButtonClick}>Create a New Spot </button>
           <ul className="listItem">
               {currentUserSpots.map((spot) => (
-                <li key={spot.id}>{spot.name}
+                <li key={spot.id} onClick={() => handleSpotClick(spot.id)}>
+                  {spot.name}
 
                       <img src={spot.previewImage} alt={spot.name} className="spotImages" title={spot.name} />
                       <p>{spot.city}</p>
@@ -68,8 +78,8 @@ console.log('!!!!!!!!!!userSpot', currentUserSpots);
                       <FontAwesomeIcon icon={solidStar} className="review-icon" /> {`${spot.avgRating}`}
 
                       <p>$ {spot.price}</p>
-                       <button onClick={() => handleUpdateButtonClick(spot.id)}>Update</button>
-                      <button onClick={() => openDeleteSpotModal(spot.id, spot.name)}>Delete</button>
+                       <button onClick={(e) => { handleButtonClick(e); handleUpdateButtonClick(spot.id); }}>Update</button>
+    <button onClick={(e) => { handleButtonClick(e); openDeleteSpotModal(spot.id, spot.name); }}>Delete</button>
                   </li>
               ))}
           </ul>

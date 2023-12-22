@@ -1,10 +1,11 @@
-import { FETCH_SPOT_SUCCESS, UPDATE_REVIEWS_AFTER_DELETE, FETCH_SPOT_DETAILS_SUCCESS, FETCH_REVIEWS_SUCCESS, UPDATE_SPOTS_SUCCESS, FETCH_CURRENT_USER_SPOTS_SUCCESS ,DELETE_REVIEW_SUCCESS, POST_REVIEWS_SUCCESS, DELETE_SPOTS_SUCCESS } from './spotActions';
+import { FETCH_SPOT_SUCCESS, UPDATE_SPOT_DETAILS,  UPDATE_REVIEWS_AFTER_DELETE, FETCH_SPOT_DETAILS_SUCCESS, FETCH_REVIEWS_SUCCESS, UPDATE_SPOTS_SUCCESS, FETCH_CURRENT_USER_SPOTS_SUCCESS ,DELETE_REVIEW_SUCCESS, POST_REVIEWS_SUCCESS, DELETE_SPOTS_SUCCESS } from './spotActions';
 
 const initialState = {
   spotDetails: null,
   reviews: [],
   spots: [],
-  currentUserSpots: []
+  currentUserSpots: [],
+  // spotDetails: null,
 
 };
 
@@ -22,6 +23,12 @@ const spotReducer = (state = initialState, action) => {
         ...state,
         spots: action.payload
       };
+    case UPDATE_SPOT_DETAILS:
+      return {
+        ...state,
+        spotDetails: action.payload,
+      };
+
     case FETCH_SPOT_DETAILS_SUCCESS:
       return {
         ...state,

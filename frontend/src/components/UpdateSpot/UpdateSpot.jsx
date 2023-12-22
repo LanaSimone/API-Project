@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 
 import { useDispatch } from "react-redux";
@@ -12,12 +12,12 @@ function UpdateSpots() {
   const { spotId } = useParams();
 
   const [spotData, setSpotData] = useState({
+    country: "",
     address: "",
     city: "",
     state: "",
-    country: "",
-    lat: 0,
-    lng: 0,
+    // lat: 0,
+    // lng: 0,
     name: "",
     description: "",
     price: "",
@@ -54,7 +54,40 @@ const handleSubmit = async (e) => {
   } finally {
     setLoading(false);
   }
-};
+  };
+
+    useEffect(() => {
+  const fetchSpotData = async () => {
+    try {
+      const response = await fetch(`/api/spots/${spotId}`);
+      if (!response.ok) {
+        throw new Error(`Error fetching spot data: ${response.statusText}`);
+      }
+      const spot = await response.json();
+
+      // Set the initial state of spotData with specific fields
+      setSpotData({
+        address: spot.address,
+        city: spot.city,
+        state: spot.state,
+        country: spot.country,
+        name: spot.name,
+        description: spot.description,
+        price: spot.price,
+        lat: spot.lat,
+        lng: spot.lng
+
+
+        // Add other fields as needed
+      });
+    } catch (error) {
+      console.error("Error fetching spot data:", error);
+    }
+  };
+
+  fetchSpotData();
+    }, [spotId]);
+
 const handleChange = (e) => {
   const { name, value } = e.target;
 
@@ -68,10 +101,13 @@ const handleChange = (e) => {
     }
   }
 
-  setSpotData((prevData) => ({
-    ...prevData,  // Spread the previous data
-    [name]: updatedValue,  // Update the property directly without nesting
-  }));
+  // Only update specific fields in the state
+  if (["address", "city", "state", "country", "name", "description", "price"].includes(name)) {
+    setSpotData((prevData) => ({
+      ...prevData,
+      [name]: updatedValue,
+    }));
+  }
 };
 //   const handleAdditionalImageChange = (index, value) => {
 //     const updatedAdditionalImages = [...spotData.additionalImages];
@@ -100,10 +136,12 @@ const handleChange = (e) => {
 //     }));
 //   };
 
+
+
   return (
     <form onSubmit={handleSubmit} className="createSpot">
       <div className="heading">
-        <h2>Create a new Spot</h2>
+        <h2>Update your Spot</h2>
         <h3>Where&rsquo;s your place located?</h3>
         <p>
           Guests will only get your exact address once they booked a reservation.
@@ -146,7 +184,11 @@ const handleChange = (e) => {
           onChange={handleChange}
         />
       </div>
-      <label htmlFor="name">Name:</label>
+
+      <div>
+        <h2>Create a title for your spot</h2>
+        <p>Catch guests; attention with a spt title that highlights what makes your place special</p>
+      {/* <label htmlFor="name">Name:</label> */}
       <input
         type="text"
         id="name"
@@ -155,7 +197,11 @@ const handleChange = (e) => {
         onChange={handleChange}
       />
 
-      <label htmlFor="description">Description</label>
+      </div>
+      <div>
+        <h2>Describe your place to guests</h2>
+        <p>Mention the best features of your space, any special amenities like fast wifi or parking, and what you love about the neighborhood</p>
+      {/* <label htmlFor="description">Description</label> */}
       <textarea
         id="description"
         name="description"
@@ -163,6 +209,11 @@ const handleChange = (e) => {
         onChange={handleChange}
       ></textarea>
 
+      </div>
+
+      <div>
+        <h2>Set a base price for your spot</h2>
+        <p>Competitve pricing can help your listing stand out and rank higher in search results.</p>
       <label htmlFor="price">$</label>
       <input
         type="text"
@@ -172,10 +223,13 @@ const handleChange = (e) => {
         onChange={handleChange}
       />
 
+      </div>
+
+
       {loading && <p>Creating spot...</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
 
-      <button type="submit">Update Spot</button>
+      <button type="submit">Update your Spot</button>
     </form>
   );
 }
