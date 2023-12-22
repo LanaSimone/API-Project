@@ -1001,6 +1001,13 @@ router.put('/:spotId',  requireAuth,  async (req, res, next) => {
     existingSpot.description = description;
     existingSpot.price = price;
 
+//     const updatedFields = Object.keys(spotData);
+
+// updatedFields.forEach((field) => {
+//   existingSpot[field] = spotData[field];
+// });
+
+
     try {
       await existingSpot.save();
 
@@ -1264,12 +1271,14 @@ router.get('/:spotId/reviews', async (req, res) => {
       ];
 
       return {
+
         spotId: review.spotId,
         id: review.id,
         userId: review.userId,
         firstName: review.User.firstName,
         createdAt: `${monthNames[createdAt.getMonth()]} ${createdAt.getFullYear()}`,
         reviewText: review.review,
+        stars: review.stars
       };
     });
 
