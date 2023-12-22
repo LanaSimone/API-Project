@@ -1,7 +1,7 @@
 * {
     font-family: 'Kombh Sans', sans-serif;
     font-weight: 500;
-    /* background-color: #131313; */
+    background-color: #131313;
 }
 
 
@@ -38,6 +38,33 @@
     border-radius: 30px;
     margin-bottom: 10px;
 }
+
+.createSpotBtn{
+    margin-left: 70px;
+    width: 14%;
+    height: 30px;
+    margin-bottom: 20px;
+    border: 1px solid;
+    cursor: pointer;
+}
+
+.manageSpot{
+    display: flex;
+    margin-left: 70px;
+    font-size: 40px
+}
+
+.manageButtons button{
+    /* display: flex; */
+    border: 1px solid;
+    margin-right: 20px;
+    width: 100px;
+    height: 30px;
+    margin-top: 20px;
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+
 
 .spotImage {
     width: 100%;

@@ -23,6 +23,7 @@
     width: 1000px;
     margin-left: auto;
     margin-right: auto;
+    border-bottom: 1px solid;
 }
 
 .description {
@@ -33,6 +34,7 @@
     width: 1000px;
     margin-left: auto;
     margin-right: auto;
+    border-bottom: 1px solid;
 }
 
 .description textarea {
@@ -51,7 +53,8 @@
     border-bottom: 2px solid black;
     width: 1000px;
     margin-left: auto;
-    margin-right: auto;;
+    margin-right: auto;
+    border-bottom: 1px solid;
 }
 
 .title textarea {
@@ -68,6 +71,7 @@
         width: 1000px;
         margin-left: auto;
         margin-right: auto;
+        border-bottom: 1px solid;
 }
 
 .imageUpload {

@@ -143,8 +143,9 @@
 
 .logo {
     width: 40px;
+    margin-top: 10px;
     height: auto;
-    margin-left: 20px;
+    margin-left: 70px;
     cursor: pointer;
     color: #ff8177;
     background-image: linear-gradient(to bottom, #ff0844 0%, #ffb199 100%);

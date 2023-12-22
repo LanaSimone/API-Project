@@ -3,8 +3,8 @@
     align-items: center;
     flex-direction: column;
         padding-left: 40px;
-        border: 1px solid white;
-        background-color: #ccc;
+        border: 1px solid #ff8177;
+        background-color: #131313;
         border-radius: 20px;
         width: 450px;
         padding-bottom: 20px;
@@ -34,10 +34,11 @@
     align-items: center;
     justify-content: center;
     background-color: white;
-        color: #CCCCCC;
-        border: 1px solid #CCCCCC;
+        color: #ff8177;
+        border: 1px solid #ff8177;
 
     width: 91%;
+    height: 60px;
     margin-top: 20px;
     box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5)
 
@@ -45,8 +46,10 @@
 
 .signupButton:enabled {
     background-color: #ff5252;
-        color: white;
+    border: 1px solid #ff8177;
+    color: white;
     cursor: pointer;
     width: 91%;
+    height: 60px;
     box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5)
 }

@@ -76,6 +76,8 @@ console.log('Owner ID:', spotDetailsState.Owner.id);
   console.log('Spot ID:', spotId);
 
   const reversedReviews = reviewsState ? [...reviewsState].reverse() : [];
+
+  // const isSingleImage = spotDetailsState.SpotImages.length === 1;
       // const isNewReview = reviewsState && Array.isArray(reviewsState) && reviewsState.length === 0 && loggedInUserId && loggedInUserId !== spotDetailsState.Owner.id;
   return (
     <div className="spot-page-container">
@@ -87,13 +89,15 @@ console.log('Owner ID:', spotDetailsState.Owner.id);
         <p className="locations"> {spotDetailsState.city}, {spotDetailsState.state}, {spotDetailsState.country} </p>
         </div>
         <div className="spot-images">
-        <img src={spotDetailsState.SpotImages[0]?.url} title={spotDetailsState.name} alt="Large Spot Image" className="large-image" />
-        <div className='smallImgContainer '>
-        <img src={spotDetailsState.SpotImages[1]?.url} title={spotDetailsState.name} alt="Small Spot Image" className="small-image" />
-        <img src={spotDetailsState.SpotImages[2]?.url} title={spotDetailsState.name} alt="Small Spot Image" className="small-image" />
-        <img src={spotDetailsState.SpotImages[3]?.url} title={spotDetailsState.name} alt="Small Spot Image" className="small-image" />
-        <img src={spotDetailsState.SpotImages[4]?.url} title={spotDetailsState.name} alt="Small Spot Image" className="small-image" />
-        </div>
+        <img src={spotDetailsState.SpotImages[0]?.url} title={spotDetailsState.name} className='large-image' />
+              {spotDetailsState.SpotImages.length > 1 && (
+                <div className='smallImgContainer '>
+                  <img src={spotDetailsState.SpotImages[1]?.url} title={spotDetailsState.name}  alt='' className="small-image" />
+                  <img src={spotDetailsState.SpotImages[2]?.url} title={spotDetailsState.name}  alt=''className="small-image" />
+                  <img src={spotDetailsState.SpotImages[3]?.url} title={spotDetailsState.name} alt='' className="small-image" />
+                  <img src={spotDetailsState.SpotImages[4]?.url} title={spotDetailsState.name} alt='' className="small-image" />
+                </div>
+              )}
         </div>
         </div>
         <div className='spot-details-container'>
@@ -142,13 +146,25 @@ console.log('Owner ID:', spotDetailsState.Owner.id);
               <div>
                 <FontAwesomeIcon icon={solidStar} className="review-icon" />
                 <p>New</p>
+                <button onClick={openPostReviewModal}>Post Your Review</button>
                 <p>Be the first to post your review!</p>
 
               </div>
       }
-      <button onClick={openPostReviewModal}>Post Your Review</button>
     </>
-)}
+          )}
+        {!loggedInUser && (
+          <>
+            {reviewsState && Array.isArray(reviewsState) && reviewsState.length === 0 &&
+              <div className='notloggedinuserReview'>
+                <FontAwesomeIcon icon={solidStar} className="review-icon" />
+                <p>New</p>
+              </div>
+            }
+
+          </>
+             )}
+
 
 {reviewsState && Array.isArray(reviewsState) && reviewsState.length > 0 ? (
   reversedReviews.map((review, index) => (
@@ -165,15 +181,15 @@ console.log('Owner ID:', spotDetailsState.Owner.id);
       )}
     </div>
   ))
-        ) : (
-          loggedInUser && loggedInUserId === spotDetailsState.Owner.id && (
-            <div>
+  ) : (
+    loggedInUser && loggedInUserId === spotDetailsState.Owner.id && (
+      <div>
       <FontAwesomeIcon icon={solidStar} className="review-icon" />
       <p>New</p>
       {/* <button onClick={openPostReviewModal}>Post Your Review</button> */}
     </div>
   )
-)}
+  )}
       </div>
 
       {/* {isNewReview && <p className="new-review-label">New</p>} */}

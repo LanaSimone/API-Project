@@ -70,7 +70,7 @@ function HomePage() {
             <div className="textDetails">
               <div>
                 <p className="locations">{`${spot.city}, ${spot.state}`}</p>
-                <p className="price">{`$ ${spot.price}`}/night</p>
+                <p className="price">{`$ ${spot.price}`} /night</p>
               </div>
               {console.log('Reviews State:', reviewsState.length)}
               {reviewsState.length === 0 ? (
