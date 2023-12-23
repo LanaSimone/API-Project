@@ -169,10 +169,12 @@ function CreateSpot() {
   return (
     <form onSubmit={handleSubmit} className="createSpot">
       <div className="heading"></div>
-       <div className="locationDetails">
-        <h2>Create a new Spot</h2>
-        <h3>Where&rsquo;s your place located?</h3>
-        <p>Guests will only get your exact address once they booked a reservation.</p>
+        <h1 className="createSpotHeader">Create a new Spot</h1>
+      <div className="locationDetails">
+        <div className="locationHeading ">
+        <h2>Where&rsquo;s your place located?</h2>
+        <h3>Guests will only get your exact address once they booked a reservation.</h3>
+        </div>
 
         <label htmlFor="country">Country</label>
         {errors.country && <p style={{ color: "red" }}>{errors.country}</p>}

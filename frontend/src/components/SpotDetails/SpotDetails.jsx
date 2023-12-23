@@ -143,7 +143,7 @@ function SpotDetails() {
               <p>New</p>
                {/* <button onClick={openPostReviewModal}>Post Your Review</button> */}
 
-              {/* <p>Be the first to review!</p> */}
+              <p>Be the first to review!</p>
             </div>
     )}
 
