@@ -68,11 +68,18 @@ h1 {
     .listItem li {
         width: 100%;
     }
+    .manageStar{
+        margin-right: 0;
+    }
 }
 
 @media (min-width: 601px) and (max-width: 900px) {
     .listItem li {
         width: calc(50% - 20px);
+    }
+    .manageStar {
+        margin-right: 0;
+        margin-left: 40px;
     }
 }
 

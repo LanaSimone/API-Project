@@ -19,6 +19,7 @@ export function ModalProvider({ children }) {
       onModalClose();
     }
   };
+  
 
   const contextValue = {
     modalRef, // reference to modal div
@@ -48,7 +49,7 @@ export function Modal() {
   return ReactDOM.createPortal(
     <div id="modal">
       <div id="modal-background" onClick={closeModal} />
-      <div id="modal-content">{modalContent}</div>
+      <div id="modal-content" >{modalContent}</div>
     </div>,
     modalRef.current
   );

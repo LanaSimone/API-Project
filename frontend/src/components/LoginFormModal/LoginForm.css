@@ -77,6 +77,8 @@ input {
     width: 92%;
     margin-left: 20px;
     margin-right:20px;
+    margin-top: 30px;
+    font-size: 20px;
     cursor: pointer;
     box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5)
 }
@@ -84,17 +86,20 @@ input {
 /* Disabled Button */
 .login-form button.disabled {
     background-color: white;
-    color: #CCCCCC;
-    border: 1px solid #ff8177;
+    color: darkgray;
+    border: 4px solid darkgray;
     margin-left: 20px;
+    margin-top: 30px;
     width: 92%;
     box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+    cursor: not-allowed;
+    font-size: 19px;
 
 }
 
 /* Demo User Link */
 .demo-link {
-    margin-top: 40px;
+    margin-top: 10px;
     /* Adjust the margin to provide space between the button and the link */
     text-align: center;
 
@@ -122,5 +127,5 @@ h1 {
 .error-message {
     color: red;
     font-size: 14px;
-    margin-top: 5px;
+    margin-top: 0px;
 }

@@ -47,7 +47,7 @@ function SpotDetails() {
       const handleDeleteReview = (reviewId) => {
         if (reviewId !== undefined && reviewId !== null) {
 
-        console.log('Deleting review with ID:', reviewId);
+
         setModalContent(<DeleteReview reviewId={reviewId} onCancel={() => setModalContent(null)} />);
       } else {
         console.error('Review ID is undefined or null.');
@@ -69,12 +69,12 @@ function SpotDetails() {
         <p className="locations"> {spotDetailsState.city}, {spotDetailsState.state}, {spotDetailsState.country} </p>
         </div>
         <div className="spot-images">
-        <img src={spotDetailsState.SpotImages[0]?.url} title={spotDetailsState.name} alt="Large Spot Image" className="large-image" />
+        <img src={spotDetailsState.SpotImages[0]?.url} title={spotDetailsState.name} className="large-image" />
         <div className='smallImgContainer '>
-        <img src={spotDetailsState.SpotImages[1]?.url} title={spotDetailsState.name} alt="Small Spot Image" className="small-image" />
-        <img src={spotDetailsState.SpotImages[2]?.url} title={spotDetailsState.name} alt="Small Spot Image" className="small-image" />
-        <img src={spotDetailsState.SpotImages[3]?.url} title={spotDetailsState.name} alt="Small Spot Image" className="small-image" />
-        <img src={spotDetailsState.SpotImages[4]?.url} title={spotDetailsState.name} alt="Small Spot Image" className="small-image" />
+        <img src={spotDetailsState.SpotImages[1]?.url}   className="small-image" />
+        <img src={spotDetailsState.SpotImages[2]?.url}  className="small-image" />
+        <img src={spotDetailsState.SpotImages[3]?.url}  className="small-image" />
+        <img src={spotDetailsState.SpotImages[4]?.url}   className="small-image" />
         </div>
         </div>
         </div>
@@ -119,7 +119,7 @@ function SpotDetails() {
         {loggedInUser &&
   loggedInUserId !== spotDetailsState.Owner.id &&
   !reviewsState.some(review => review.userId === loggedInUserId) && (
-    <button onClick={openPostReviewModal}>Post Your Review</button>
+    <button onClick={openPostReviewModal} className='postreviewButton'>Post Your Review</button>
 )}
       <div className="reviews-container">
         {reviewsState && Array.isArray(reviewsState) && reviewsState.length > 0 ? (
@@ -131,7 +131,7 @@ function SpotDetails() {
        {loggedInUserId && loggedInUserId === review.userId && (
          <div className='buttons'>
 
-           <button onClick={() => handleDeleteReview(review.id)}>Delete</button>
+           <button onClick={() => handleDeleteReview(review.id)} className='deleteButton'>Delete</button>
 
          </div>
       )}
@@ -139,11 +139,17 @@ function SpotDetails() {
   ))
         ) : (
             <div>
+              <div className='idk1'>
                <FontAwesomeIcon icon={solidStar} className="review-icon" />
               <p>New</p>
+
+              </div>
+
                {/* <button onClick={openPostReviewModal}>Post Your Review</button> */}
 
+              {loggedInUser && loggedInUserId !== spotDetailsState.Owner.id && (
               <p>Be the first to review!</p>
+            )}
             </div>
     )}
 

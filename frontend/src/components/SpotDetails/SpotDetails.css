@@ -12,9 +12,7 @@
 }
 
 .notloggedinuserReview{
-    display: flex;
-    align-items: center;
-    font-size: 20px;
+    display:flex;
 }
 
 .price-rating-reviews-box{
@@ -51,6 +49,8 @@
     transition: background-image 0.35s ease;
     margin-left: 30px;
     margin-bottom: 10px;
+    height: 50px;
+    /* font-size: 15px; */
 }
 
 
@@ -105,9 +105,8 @@
 
 .spot-images {
     display: grid;
-
-    grid-template-columns: 15% 40% 40%;
-    gap: 0px;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
 }
 
 .large-image {
@@ -130,26 +129,52 @@
 }
 
 .smallImgContainer {
-    grid-column: 3 / span 16;
+    grid-column: 3 / span 1;
     grid-row: 1 / span 2;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    /* height: 100%; */
+    /* width: 20px; */
+    grid-template-columns: repeat(2,1fr);
     gap: 10px;
-    justify-content: center;
-    /* Add this line to center the small images horizontally */
-    align-items: center;
-    /* Add this line to center the small images vertically */
 }
 
 .small-image {
-    width: 100%;
-    height: 100%;
+    width: 250px;
+    /* Set the width to a fixed pixel value */
+    height: 300px;
+    /* Set the height to a fixed pixel value */
     border-radius: 30px;
     object-fit: cover;
 }
 
+.postreviewButton{
+    margin-left: 20px;
+    height: 40px;
+    width: 14%;
+    /* border: 1px solid; */
+    cursor: pointer;
+    font-size: 15px;
+    /* padding: 30px; */
+    margin-bottom: 20px;
+    background-image: linear-gradient(to right, #f77062 0%, #fe5196 100%);
+    border: 1px solid #f77062;
+    border-radius: 5px;
+    color: #fff;
+    outline: none;
+    transition: background-image 0.35s ease;
+}
 
+.postreviewButton:hover{
+    background-image: linear-gradient(to right, #4837ff 100%, #fe5196 0%);
+    border: 1px solid #4837ff;
 
+}
+
+.idk1 {
+    display: flex;
+    align-items: center;
+    /* justify-content: center; */
+}
 /* .description-box {
     width: 60%;
     white-space: nowrap;
@@ -208,7 +233,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-right: 17px;
+    margin-right: 75px;
 }
 
 .spot-price,
@@ -226,6 +251,7 @@
 
 .reserve-button:hover {
     background-image: linear-gradient(to right, #4837ff 100%, #fe5196 0%);
+    border: 1px solid #4837ff;
 }
 
 .reviews-container {
@@ -254,7 +280,7 @@
 
 }
 .reviewTexts p {
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 
 }
 
@@ -271,7 +297,9 @@
 
 .review-text {
     margin-right: 4px;
+
 }
+
 
 .review-count {
     margin-right: 10px;
@@ -286,15 +314,33 @@
     /* display: flex; */
     /* flex-direction: row; */
     width: 79px;
-    height: 40px;
-    margin-left: 30px;
+    font-size: 14px;
+    padding: auto;
+    height: 30px;
+    margin-bottom: 20px;
+    border: 1px solid #f77062;
+    border-radius: 2px;
+    background-image: linear-gradient(to right, #f77062 0%, #fe5196 100%);
+    color: #fff;
+    outline: none;
+    cursor: pointer;
+    /* margin-left: 30px; */
     /* margin-left: 5px; */
+}
+
+.reviewTexts .buttons button:hover {
+    background-image: linear-gradient(to right, #4837ff 100%, #fe5196 0%);
+    border: 1px solid #4837ff;
+
 }
 
 /* Media query for smaller screens */
 @media (max-width: 600px) {
     .spot-info-container {
         align-items: center;
+    }
+    .homePageSpotList {
+        margin-left: 20px;
     }
 
     .spot-name {
@@ -342,6 +388,16 @@
 
     .description-box {
         width: 100%;
+    }
+    .homereview {
+        margin-right: 125px;
+    }
+    .locations,
+    .price {
+        margin-left: 10px;
+    }
+    .navButtonContainer {
+        margin-right: 20px;
     }
 }
 /* Medium Screens (601px to 900px) */
@@ -510,43 +566,17 @@
 }
 
 @media (min-width: 1201px) and (max-width: 1700px){
-    /* .spot-info-container {
-            align-items: center;
-        }
 
-        .spot-name {
-                        display: flex;
-                        justify-content: flex-end;
-                    }
 
-        .spot-images {
-            grid-template-columns: 100%;
-        }
-
-        .large-image {
-            grid-column: 1 / span 2;
-            grid-row: 1 / span 2;
-            width: 100%;
-            /* Adjust the width as needed */
-            /* height: auto;
+        .small-image {
+            /* width: 100%; */
+            height: 100%;
             border-radius: 30px;
+            /* object-fit: cover; */
         }
-
-        .smallImgContainer {
-            grid-column: 1 / span 2;
-            grid-row: 3 / span 2;
-            /* Adjust the row span as needed */
-            /* display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-        } */
-
-        /* .small-image {
-            width: 100%;
-            /* height: 10; */
-            /* border-radius: 30px;
-            object-fit: cover;
-        } */
+        .large-image {
+            width: 900px;
+        }
 
         /* .spot-content {
                         justify-content: center;
@@ -562,3 +592,21 @@
         }  */
 
  }
+
+
+ @media (min-width: 1701px){
+
+.small-image {
+        /* width: 100%; */
+        height: 100%;
+        width: 90%;
+        /* margin-left: 20px; */
+        border-radius: 30px;
+
+        /* object-fit: cover; */
+    }
+
+    .large-image {
+        width: 90%;
+    }
+}

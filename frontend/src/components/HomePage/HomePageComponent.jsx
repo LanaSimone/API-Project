@@ -68,15 +68,19 @@ function HomePage() {
           <div className="spotDetails">
             <img src={spot.previewImage} alt={spot.name} className="spotImage" title={spot.name} />
             <div className="textDetails">
-              <div>
+              <div className='locationsLower'>
                 <p className="locations">{`${spot.city}, ${spot.state}`}</p>
                 <p className="price">{`$ ${spot.price}`}/night</p>
               </div>
               {console.log('Reviews State:', reviewsState.length)}
               {reviewsState.length === 0 ? (
+                <div className='homereview'>
+
+
   <p>
     <FontAwesomeIcon icon={solidStar} className="review-icon" /> {`${spot.avgRating}`}
   </p>
+                </div>
 ) : (
   reviewsState.some((review) => review.spotId === spot.id) ? (
     <p>

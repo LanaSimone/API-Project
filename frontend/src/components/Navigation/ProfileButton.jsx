@@ -19,7 +19,8 @@ function ProfileButton({ user }) {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
-  const { showModalHandler, hideModalHandler } = useModal(); // Use the useModal hook
+const { showModal, hideModalHandler } = useModal();
+
 
   const toggleMenu = (e) => {
     e.stopPropagation();
@@ -71,7 +72,7 @@ function ProfileButton({ user }) {
               itemText='Log In'
               onItemClick={() => {
                 closeMenu();
-                showModalHandler(); // Show the modal when "Log In" is clicked
+                showModal(); // Show the modal when "Log In" is clicked
               }}
               modalComponent={<LoginFormModal onClose={hideModalHandler} />}
             />
@@ -79,7 +80,7 @@ function ProfileButton({ user }) {
               itemText='Sign Up'
               onItemClick={() => {
                 closeMenu();
-                showModalHandler(); // Show the modal when "Sign Up" is clicked
+                showModal();
               }}
               modalComponent={<SignupFormModal onClose={hideModalHandler} />}
             />

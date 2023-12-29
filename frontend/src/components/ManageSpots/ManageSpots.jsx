@@ -82,8 +82,10 @@ console.log('!!!!!!!!!!userSpot', currentUserSpots);
 
 
                       <p>
+                        <div className="manageStar">
 
                   <FontAwesomeIcon icon={solidStar} className="review-icon" /> {`${spot.avgRating}`}
+                  </div>
                   </p>
                   </div>
                   <div className="manageButtons">

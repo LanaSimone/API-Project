@@ -176,7 +176,7 @@ function CreateSpot() {
         <h3>Guests will only get your exact address once they booked a reservation.</h3>
         </div>
 
-        <label htmlFor="country">Country</label>
+        <label htmlFor="country" className="CountryLavel">Country</label>
         {errors.country && <p style={{ color: "red" }}>{errors.country}</p>}
         <input
           type="text"
@@ -187,7 +187,7 @@ function CreateSpot() {
           onChange={handleChange}
         />
 
-        <label htmlFor="address">Street Address</label>
+        <label htmlFor="address" className="addressLabel">Street Address</label>
         {errors.address && <p style={{ color: "red" }}>{errors.address}</p>}
         <input
           type="text"
@@ -199,11 +199,11 @@ function CreateSpot() {
         />
 
         <div className="cityState">
-            {errors.city && <p style={{ color: "red" }}>{errors.city}</p>}
           <div className="inputContainer">
-            <label htmlFor="city" className="city">
+            <label htmlFor="city">
               City
             </label>
+            <div className="city">
             <input
               type="text"
               id="city"
@@ -211,11 +211,15 @@ function CreateSpot() {
               value={spotData.city}
               placeholder="City"
               onChange={handleChange}
-            />
+              />
+            <p className="comma">,</p>
+
+            </div>
+              {errors.city && <p style={{ color: "red" }}>{errors.city}</p>}
           </div>
 
+
           <div className="inputContainer">
-            {errors.state && <p style={{ color: "red" }}>{errors.state}</p>}
             <label htmlFor="state">State</label>
             <input
               type="text"
@@ -224,7 +228,8 @@ function CreateSpot() {
               value={spotData.state}
               placeholder="State"
               onChange={handleChange}
-            />
+              />
+              {errors.state && <p style={{ color: "red" }}>{errors.state}</p>}
           </div>
         </div>
       </div>
@@ -266,8 +271,8 @@ function CreateSpot() {
         <h2>Set a base price for your spot</h2>
         <p>Competitive pricing can help your listing stand out and rank higher in search results.</p>
 
-        ${" "}
         {errors.price && <p style={{ color: "red" }}>{errors.price}</p>}
+        ${" "}
         <input
           type="text"
           id="price"
@@ -324,7 +329,7 @@ function CreateSpot() {
         {loading && <p>Creating spot...</p>}
         {errors.unexpected && <p style={{ color: "red" }}>{errors.unexpected}</p>}
 
-        <button type="submit" className="submit">
+        <button type="submit" className="CREATEsubmit">
           Create Spot
         </button>
       </div>

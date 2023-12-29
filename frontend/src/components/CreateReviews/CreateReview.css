@@ -8,7 +8,7 @@
     align-items: center;
     width: 400px;
     border: 1px solid #CCCCCC;
-    border-radius: 20px;
+    border-radius: 30px;
 
 
 }
@@ -47,4 +47,63 @@ button.enabled-button {
     color: white;
     width: calc(100% - 80px);
     height: 30px;
+    cursor: pointer;
+    border-radius: 3px;
+    border: 1px solid #f77062;
+    font-size: 16px;
+}
+
+button.enabled-button:hover {
+
+background-image: linear-gradient(to right, #4837ff 100%, #fe5196 0%);
+    border: 1px solid #4837ff;
+
+}
+
+.deleteReviews{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    width: 400px;
+}
+
+.deletetext{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+.confirmReviewButtons{
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 5px;
+}
+
+.confirmReviewButtons button {
+    margin-top: 10px;
+    height: 50px;
+}
+
+.yesdelete{
+    background-image: linear-gradient(to right, #f77062 0%, #fe5196 100%);
+    border: 1px solid;
+    color: white;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.yesdelete:hover {
+background-image: linear-gradient(to right, #4837ff 100%, #fe5196 0%);
+        border: 1px solid #4837ff;
+
+}
+
+.nokeep{
+    color: darkgray;
+    cursor: pointer;
+    font-size: 15px;
 }

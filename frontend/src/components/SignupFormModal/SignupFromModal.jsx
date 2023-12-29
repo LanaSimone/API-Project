@@ -45,26 +45,18 @@ function SignupFormModal() {
       <div className='signUp'>
       <h1>Sign Up</h1>
 
+      {Object.keys(errors).length > 0 && (
+          <div className="error-container">
+            {Object.values(errors).map((error, index) => (
+              <p key={index} className="error-message">
+                {error}
+              </p>
+            ))}
+          </div>
+        )}
+      {/* </div> */}
       </div>
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email"
-          required
-        />
-        {errors.email && <p className="error-message">{errors.email}</p>}
-
-        <input
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          placeholder="Username"
-          required
-        />
-        {errors.username && <p className="error-message">{errors.username}</p>}
-
         <input
           type="text"
           value={firstName}
@@ -72,7 +64,6 @@ function SignupFormModal() {
           placeholder="First Name"
           required
         />
-        {errors.firstName && <p className="error-message">{errors.firstName}</p>}
 
         <input
           type="text"
@@ -81,7 +72,22 @@ function SignupFormModal() {
           placeholder="Last Name"
           required
         />
-        {errors.lastName && <p className="error-message">{errors.lastName}</p>}
+        <input
+          type="text"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Email"
+          required
+        />
+
+        <input
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          placeholder="Username"
+          required
+        />
+
 
         <input
           type="password"
@@ -90,7 +96,6 @@ function SignupFormModal() {
           placeholder="Password"
           required
         />
-        {errors.password && <p className="error-message">{errors.password}</p>}
 
         <input
           type="password"
@@ -99,9 +104,6 @@ function SignupFormModal() {
           placeholder="Confirm Password"
           required
         />
-        {errors.confirmPassword && (
-          <p className="error-message">{errors.confirmPassword}</p>
-        )}
 
         <div >
 

@@ -2,6 +2,7 @@
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import { deleteReview } from "../../store/spots/spotActions";
+import  './CreateReview.css'
 
 function DeleteReview({ reviewId, onCancel }) {
     console.log('Received reviewId:', reviewId);
@@ -24,7 +25,7 @@ function DeleteReview({ reviewId, onCancel }) {
                 // Handle error
                 console.error('Error deleting review:', error.message);
             }
-        
+
     }
 
   const cancelDelete = () => {
@@ -33,12 +34,23 @@ function DeleteReview({ reviewId, onCancel }) {
   };
 
   return (
-    <div>
+    <div className="deleteReviews">
+      <div className="deletetext">
       <h1>Confirm Delete</h1>
       <p>Are you sure you want to delete this review?</p>
-         <button onClick={confirmDelete}>Yes (Delete Review)</button>
-      <button onClick={cancelDelete}>No (Keep Review)</button>
-    </div>
+
+      </div>
+      <div className="confirmReviewButtons">
+
+            <button onClick={confirmDelete} className='yesdelete'>Yes (Delete Review)</button>
+
+
+
+            <button onClick={cancelDelete} className="nokeep">No (Keep Review)</button>
+
+
+      </div>
+     </div>
   );
 }
 

@@ -1,0 +1,37 @@
+#deletecontent {
+    background-color: #1f1f1f;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid;
+    display: flex;
+    flex-direction: column;
+    border-radius: 20px;
+    width: 36rem;
+    height: 20rem;
+}
+
+.deleteButtons{
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+
+}
+
+.deletespotbttn{
+    height: 50px;
+    margin-bottom: 20px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.cancelspotbttn{
+    height: 50px;
+    margin-bottom: 0px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.deletespottext{
+    font-size: 18px;
+    margin-bottom: 20px;
+}

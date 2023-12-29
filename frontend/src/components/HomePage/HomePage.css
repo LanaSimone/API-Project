@@ -1,8 +1,12 @@
 * {
     font-family: 'Kombh Sans', sans-serif;
     font-weight: 500;
-    background-color: #131313;
+    /* background-color: #131313; */
 }
+ body {
+     overflow-x: hidden;
+     /* overflow-y: hidden; */
+ }
 
 
 .homePageSpotList {
@@ -13,6 +17,7 @@
     gap: 20px;
     size: 14px;
     margin-right: 20px;
+    margin-left: 0;
 
 }
 
@@ -21,13 +26,10 @@
     margin-bottom: 20px;
     cursor: pointer;
     width: calc(25% - 20px);
-    /* Adjusted width calculation */
     max-width: calc(25% - 20px);
-    /* Added max-width property */
-    box-sizing: border-box;
-    /* Ensure padding and border don't affect the width */
+    /* box-sizing: border-box; */
     color: #ff8177;
-    margin-left: 20px;
+    /* margin-left: 20px; */
 }
 .spotImageContainer {
     width: 100%;
@@ -40,39 +42,63 @@
 }
 
 .createSpotBtn{
-    margin-left: 70px;
-    width: 14%;
-    height: 30px;
-    margin-bottom: 20px;
+    margin-left: 40px;
+    width: 12%;
+    height: 40px;
+    /* margin-bottom: 20px; */
     border: 1px solid;
     cursor: pointer;
+    border-radius: 10px;
+    background-image: linear-gradient(to right, #f77062 0%, #fe5196 100%);
+    border: 1px solid;
+    color: #fff;
+    font-size: 12px;
+}
+
+.createSpotBtn:hover {
+    background-image: linear-gradient(to right, #4837ff 100%, #fe5196 0%);
+        border: 1px solid #4837ff;
 }
 
 .manageSpot{
     display: flex;
-    margin-left: 70px;
-    font-size: 40px
+    margin-left: 40px;
+    font-size: 35px;
+
+}
+
+.manageStar{
+    margin-right: 50px;
 }
 
 .manageButtons button{
     /* display: flex; */
     border: 1px solid;
-    margin-right: 20px;
-    width: 100px;
+    margin-right: 15px;
+    width: 55px;
     height: 30px;
+    /* margin-left:px; */
     margin-top: 20px;
-    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    font-size: 10px;
+}
+
+.manageButtons button:hover {
+    background-image: linear-gradient(to right, #f77062 0%, #fe5196 100%);
+        border: 1px solid;
+        color: #fff;
 }
 
 
 
 .spotImage {
-    width: 100%;
-    height: 390px;
+    width: 600px;
+    height: 500px;
     position: relative;
     overflow: hidden;
     border-radius: 30px;
     margin-bottom: 10px;
+    margin-top: 40px;
 }
 
 .spotImage img {
@@ -95,12 +121,22 @@
     font-size: 18px;
 }
 
+.locationsLower{
+    margin-left: 25px;
+    font-size: 20px;
+}
+
+.homereview{
+    margin-right: 55px;
+    font-size: 20px;
+}
 .price {
     margin-top: 5px;
+    font-size: 20px;
 }
 .locations {
     margin-bottom: 5px;
-    font-size: 18px;
+    font-size: 20px;
 
 }
 
@@ -113,35 +149,135 @@
 }
 
 /* Adjusted media queries with min-width values */
-@media (max-width: 1200px) {
-    .spotListItem {
-        flex: 0 0 calc(33.333% - 20px);
-        /* max-width: calc(33.333% - 20px); */
+@media (max-width: 3000px) {
+        body {
+            overflow-x: hidden;
+            /* overflow-y: hidden; */
+        }
+
+        .textDetails {
+                font-size: 20px;
+            }
+
+            .textDetails p {
+                font-size: 20px;
+                margin-right: 0px;
+            }
+            .locationsLower {
+                margin-left: 0;
+            }
+
+            .homereview p{
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+                margin-bottom: 40px;
+                font-size: 20px;
+            }
+
+            .spotImage {
+                width: 500px;
+                height: 500px;
+                /* max-width: 300px; */
+                /* max-height: 400px; */
+            }
+
+}
+
+
+@media (max-width: 2999px) {
+    body {
+            overflow-x: hidden;
+            /* overflow-y: hidden; */
+        }
+    .textDetails{
+        font-size: 10px;
+    }
+    .textDetails p {
+        font-size: 15px;
+    }
+
+    .homereview {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 40px;
+        margin-right: 80px;
+        font-size: 15px;
+    }
+    .locationsLower {
+        margin-left: 10px;
     }
 
     .spotImage {
-        width: 100%;
-        height: auto;
+        width: 300px;
+        height: 250px;
+        /* height: auto; */
+        /* max-width: 300px; */
+        /* max-height: 225px; */
+    }
+}
+@media (max-width: 1200px) {
+    body {
+            overflow-x: hidden;
+            /* overflow-y: hidden; */
+        }
+    .textDetails{
+        font-size: 10px;
+    }
+    .textDetails p {
+        font-size: 12px;
+    }
+
+    .homereview {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 40px;
+    }
+
+    .spotImage {
+        width: 198px;
+        /* height: auto; */
         max-width: 300px;
         max-height: 225px;
     }
 }
 
 @media (max-width: 800px) {
+    body {
+            overflow-x: hidden;
+            /* overflow-y: hidden; */
+        }
     .spotListItem {
-        flex: 0 0 calc(50% - 20px);
+        /* flex: 0 0 calc(50% - 20px); */
         /* max-width: calc(50% - 20px); */
     }
 
     .spotImage {
-        width: 100%;
-        height: auto;
+        width: 150px;
+        /* height: auto; */
         max-width: 300px;
-        max-height: 300px;
+        height: 140px;
+        /* max-height: 300px; */
     }
+    .homereview {
+        margin-bottom: 90px;
+    }
+    .manageStar {
+        margin-right: 0;
+    }
+
 }
 
 @media (max-width: 600px) {
+    body {
+            overflow-x: hidden;
+            /* overflow-y: hidden; */
+        }
     .spotListItem {
         flex: 0 0 calc(100% - 20px);
         max-width: calc(100% - 20px);
@@ -156,6 +292,10 @@
 }
 
 @media (max-width: 400px) {
+    body {
+            overflow-x: hidden;
+            /* overflow-y: hidden; */
+        }
     .spotListItem {
         flex: 0 0 calc(100% - 20px);
     }

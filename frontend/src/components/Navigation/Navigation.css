@@ -142,10 +142,10 @@
 }
 
 .logo {
-    width: 40px;
-    margin-top: 10px;
+    width: 30px;
+    margin-top: px;
     height: auto;
-    margin-left: 70px;
+    margin-left: 20px;
     cursor: pointer;
     color: #ff8177;
     background-image: linear-gradient(to bottom, #ff0844 0%, #ffb199 100%);
@@ -166,7 +166,7 @@
     /* Remove any padding */
     cursor: pointer;
     color: #ff8177;
-    font-size: 25px;
+    font-size: 18px;
 }
 
 .navButtonContainer {
@@ -185,7 +185,7 @@ a {
 
 .createSpotLink {
     margin-right: 20px;
-    font-size: 25px;
+    /* font-size: 25px; */
     color: #ff8177;
         /* background-image: linear-gradient(to left, #ff0844 0%, #ffb199 100%);
         background-size: 100%;
@@ -246,13 +246,32 @@ a {
 
 @media (max-width: 900px) {
     .NavBar {
-        padding-right: 20px;
+        /* padding-left: 10px; */
+        margin-right: 0px;
         /* Adjust the padding for medium-sized screens */
     }
         .profile-dropdown.show {
             margin-right: 50px;
             /* Adjust the position for smaller screens */
         }
+    .logo {
+        margin-left: 20px;
+        width: 30px;
+    }
+    .profile-button{
+        margin-right: 0px;
+    }
+    .navButtonContainer {
+        margin-right: 10px;
+    }
+    .createSpotLink {
+        font-size: 15px;
+    }
+    .bars {
+        font-size: 20px;
+    }
+
+
 }
 
 @media (max-width: 1200px) {

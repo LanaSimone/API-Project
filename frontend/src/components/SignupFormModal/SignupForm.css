@@ -22,9 +22,10 @@
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 16px;
+    font-size: 20px;
     cursor: pointer;
     margin-top: 20px;
+
 
 }
 
@@ -34,13 +35,16 @@
     align-items: center;
     justify-content: center;
     background-color: white;
-        color: #ff8177;
-        border: 1px solid #ff8177;
+        color: darkgrey;
+        border: 5px solid darkgray;
 
     width: 91%;
     height: 60px;
     margin-top: 20px;
-    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5)
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+    cursor: not-allowed;
+    font-size: 20px;
+
 
 }
 

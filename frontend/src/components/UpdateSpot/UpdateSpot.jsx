@@ -3,9 +3,10 @@ import { useNavigate, useParams } from "react-router";
 
 import { useDispatch } from "react-redux";
 import { updateSpots } from "../../store/spots/spotActions";
+import { csrfFetch } from "../../store/csrf";
 // import { useParams } from "react-router";
 
-// import './CreateSpot.css'
+import '../CreateSpot/CreateSpot.css'
 
 
 function UpdateSpots() {
@@ -59,7 +60,7 @@ const handleSubmit = async (e) => {
     useEffect(() => {
   const fetchSpotData = async () => {
     try {
-      const response = await fetch(`/api/spots/${spotId}`);
+      const response = await csrfFetch(`/api/spots/${spotId}`);
       if (!response.ok) {
         throw new Error(`Error fetching spot data: ${response.statusText}`);
       }
@@ -140,18 +141,18 @@ const handleChange = (e) => {
 
   return (
     <form onSubmit={handleSubmit} className="createSpot">
-      <div className="heading">
-        <h2>Update your Spot</h2>
-        <h3>Where&rsquo;s your place located?</h3>
-        <p>
-          Guests will only get your exact address once they booked a reservation.
-        </p>
+      <div className="heading1">
+        <h1 className="createSpotHeader">Update your Spot</h1>
+        <div className="locationDetails">
+      <div className="locationHeading">
+        <h2>Where&rsquo;s your place located?</h2>
+        <h3>Guests will only get your exact address once they booked a reservation.</h3>
       </div>
-      <div className="locationDetails">
+
         <label htmlFor="country">Country</label>
         <input
           type="text"
-          id="country"
+          id="country1"
           name="country"
           value={spotData.country}
           onChange={handleChange}
@@ -160,50 +161,59 @@ const handleChange = (e) => {
         <label htmlFor="address">Street Address</label>
         <input
           type="text"
-          id="address"
+          id="address1"
           name="address"
           value={spotData.address}
           onChange={handleChange}
         />
 
-        <label htmlFor="city">City</label>
+        <div className="cityState1">
+
+        <div className="inputContainer1">
+
+              <label htmlFor="city">City</label>
+
+              <div className="city1">
+
         <input
           type="text"
-          id="city"
+          id="city1"
           name="city"
           value={spotData.city}
           onChange={handleChange}
-        />
+              />
+              <p className="comma1">,</p>
+              </div>
+
+
+            </div>
+
+
+          <div className="inputContainer">
 
         <label htmlFor="state">State</label>
         <input
           type="text"
-          id="state"
+          id="state1"
           name="state"
           value={spotData.state}
           onChange={handleChange}
-        />
-      </div>
+              />
 
-      <div>
-        <h2>Create a title for your spot</h2>
-        <p>Catch guests; attention with a spt title that highlights what makes your place special</p>
-      {/* <label htmlFor="name">Name:</label> */}
-      <input
-        type="text"
-        id="name"
-        name="name"
-        value={spotData.name}
-        onChange={handleChange}
-      />
+
+        </div>
 
       </div>
-      <div>
+        </div>
+
+        </div>
+
+      <div className="description1">
         <h2>Describe your place to guests</h2>
-        <p>Mention the best features of your space, any special amenities like fast wifi or parking, and what you love about the neighborhood</p>
+        <p>Mention the best features of your space, any special amenities like fast wifi or parking, and what you love about the neighborhood.</p>
       {/* <label htmlFor="description">Description</label> */}
       <textarea
-        id="description"
+        id="description1"
         name="description"
         value={spotData.description}
         onChange={handleChange}
@@ -211,17 +221,31 @@ const handleChange = (e) => {
 
       </div>
 
-      <div>
-        <h2>Set a base price for your spot</h2>
-        <p>Competitve pricing can help your listing stand out and rank higher in search results.</p>
-      <label htmlFor="price">$</label>
+      <div className="title1">
+        <h2>Create a title for your spot</h2>
+        <p>Catch guests` attention with a spot title that highlights what makes your place special.</p>
+      {/* <label htmlFor="name">Name:</label> */}
       <input
         type="text"
-        id="price"
+        id="name1"
+        name="name"
+        value={spotData.name}
+        onChange={handleChange}
+      />
+
+      </div>
+
+      <div className="prices1">
+        <h2>Set a base price for your spot</h2>
+        <p>Competitve pricing can help your listing stand out and rank higher in search results.</p>
+        ${" "}
+      <input
+        type="text"
+        id="price1"
         name="price"
         value={spotData.price}
         onChange={handleChange}
-      />
+        />
 
       </div>
 
@@ -229,7 +253,7 @@ const handleChange = (e) => {
       {loading && <p>Creating spot...</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
 
-      <button type="submit">Update your Spot</button>
+      <button type="submit" className="CREATEsubmit">Update your Spot</button>
     </form>
   );
 }
