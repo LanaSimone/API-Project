@@ -142,8 +142,8 @@ const handleChange = (e) => {
   return (
     <form onSubmit={handleSubmit} className="createSpot">
       <div className="heading1">
-        <h1 className="createSpotHeader">Update your Spot</h1>
-        <div className="locationDetails">
+        <h1 className="createSpotHeader1">Update your Spot</h1>
+        <div className="locationDetails1">
       <div className="locationHeading">
         <h2>Where&rsquo;s your place located?</h2>
         <h3>Guests will only get your exact address once they booked a reservation.</h3>

@@ -2,7 +2,7 @@
     display: flex;
     align-items: center;
     flex-direction: column;
-    width: px;
+    /* width: 100px; */
 
 
 }
@@ -12,9 +12,10 @@
     align-items: center;
     justify-content: flex-start;
     flex-direction: column;
-    margin-right: 750px;
+    margin-right: 50px;
     margin-bottom: 20px;
     margin-top: 40px;
+    width: 200px;
 }
 
 .locationHeading {
@@ -28,21 +29,24 @@
     margin-left: 20px;
     margin-bottom: 20px;
 }
+
 .heading1 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-left: 20px;
-    margin-bottom: 20px;
+    margin-left: 170px;
+    margin-bottom: 0px;
 
 }
+
 .description1 #description1 {
-    margin-bottom: 40px;
+    margin-bottom: 10px;
     width: 1005px;
     height: 200px;
 
 
 }
+
 .description #description {
     margin-bottom: 40px;
     height: 200px;
@@ -56,6 +60,7 @@
     width: 1001px;
     background-color: #E8F0FE;
 }
+
 #country {
     width: 1001px;
     background-color: #E8F0FE;
@@ -65,6 +70,7 @@
     width: 1001px;
     background-color: #E8F0FE;
 }
+
 #address {
     width: 1001px;
     background-color: #E8F0FE;
@@ -78,17 +84,19 @@
     background-color: #E8F0FE;
 }
 
-#name1{
+#name1 {
     background-color: #E8F0FE;
 }
 
 #price1 {
     background-color: #E8F0FE;
 }
+
 .description1 {
 
     width: 1001px;
     margin-left: 350px;
+    /* border-top: 2px solid; */
 
     /* margin-bottom: 20px; */
 
@@ -103,6 +111,7 @@
     width: 1001px;
     margin-left: 350px;
 }
+
 /* .title{
     border-top: 2px solid;
     width: 1001px;
@@ -112,28 +121,33 @@
 .title1 #name1 {
     width: 1005px;
     margin-bottom: 40px
-
 }
+
 .title #name {
     width: 1005px;
     margin-bottom: 40px
-
 }
+
 .prices1 {
     border-top: 2px solid;
     /* width: 1010px; */
     margin-left: 350px;
+    border-bottom: 2px solid;
 }
- .prices {
+
+.prices {
     /* border-top: 2px solid; */
     width: 1010px;
     margin-left: 350px;
     margin-bottom: 20px;
-/}
+
+}
 
 .prices1 #price1 {
     width: 995px;
+    margin-bottom: 50px;
 }
+
 .prices1 #price {
     width: 995px;
     margin-bottom: 90px;
@@ -228,7 +242,7 @@
     cursor: pointer;
 }
 
-.removeButton{
+.removeButton {
     margin-top: 15px;
     cursor: pointer;
 }
@@ -244,17 +258,43 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    width: 300px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    font-size: 15px;
+
+
+}
+
+.CREATEsubmit:hover {
+    background-image: linear-gradient(to right, #4837ff 100%, #fe5196 0%);
+    border: 1px solid #4837ff;
+    font-size: 15px;
+}
+.CREATEsubmit1 {
+    display: block;
+    margin: 0 auto;
+    padding: 10px 20px;
+    background-image: linear-gradient(to right, #f77062 0%, #fe5196 100%);
+    border: 1px solid;
+    color: #fff;
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
     margin-top: 20px;
     width: 300px;
     margin-bottom: 20px;
     cursor: pointer;
     font-size: 15px;
+
+
 }
 
-.CREATEsubmit:hover {
+.CREATEsubmit1:hover {
     background-image: linear-gradient(to right, #4837ff 100%, #fe5196 0%);
-        border: 1px solid #4837ff;
-        font-size: 15px;
+    border: 1px solid #4837ff;
+    font-size: 15px;
 }
 
 .cityState1 {
@@ -264,6 +304,7 @@
     width: 1040px;
 
 }
+
 .cityState {
     display: flex;
     width: 100%;
@@ -282,13 +323,14 @@
     box-sizing: border-box;
 }
 
-.inputContainer1 .city1  {
+.inputContainer1 .city1 {
     display: flex;
     align-items: center;
 
     height: 45px;
 }
-.inputContainer .city  {
+
+.inputContainer .city {
     display: flex;
     align-items: center;
     height: 45px;
@@ -301,6 +343,7 @@
     margin-left: 10px;
     /* margin-bottom: 1000px; */
 }
+
 .inputContainer .city .comma {
     /* margin-bottom: 40px; */
     font-size: 28px;
@@ -308,16 +351,170 @@
 
     /* margin-bottom: 1000px; */
 }
+.locationDetails1 {
+    border-bottom: 2px solid;
+}
 
 
-@media (min-width: 1200px) {
+@media (min-width: 1201px) {
     .createSpot {
-        width: 1200px;
-    }
+            font-size: 10px;
+        }
 
-    .createSpotHeader {
-        margin-right: 350px;
-    }
+        .createSpotHeader {
+            /* margin-left: 20px; */
+            /* margin-left: px; */
+            margin-right: 460px;
+            /* font-size: 15px; */
+
+        }
+
+        .createSpotHeader1 {
+            /* margin-left: 20px; */
+            /* margin-left: px; */
+            margin-right: 470px;
+            /* font-size: 15px; */
+
+        }
+
+        .locationHeading {
+            /* margin-left: 60px; */
+        }
+        .locationDetails {
+            margin-left: 250px;
+        }
+
+        .locationDetails textarea,
+        .description textarea,
+        .description1 textarea,
+        .title textarea,
+        .title1 textarea,
+        .prices textarea,
+        .prices1 textarea {
+            width: 10px;
+        }
+
+        #country,
+        #address,
+        #city,
+        #state {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+
+            /* margin-bottom: 20px; */
+            /* margin-left: 0px; */
+        }
+
+        #country1,
+        #address1 {
+            width: 95%;
+
+        }
+
+        .cityState .inputContainer {
+            width: 32.5%;
+            /* margin-left: 60px */
+        }
+
+        .cityState1 .inputContainer1 {
+            width: 41.5%;
+        }
+
+
+        .locationDetails {
+            margin-right: 200px;
+        }
+
+
+        .description {
+            margin-left: 425px;
+        }
+        .description1 {
+            /* width: 100%; */
+            margin-left: 530px;
+        }
+
+
+
+        .CountryLavel {
+            margin-left: 60px;
+        }
+
+        .addressLabel {
+            margin-left: 60px;
+        }
+
+
+
+        .title #name,
+        .title1 #name1 {
+            width: 95%;
+            margin-left: 10px;
+        }
+
+        .description #description{
+            margin-left: 80px;
+            width: 680px;
+            height: 100px;
+        }
+        .description1 #description1 {
+            width: 650px;
+            margin-right: 10px;
+            height: 80px;
+        }
+
+        .title {
+            margin-left: 420px;
+        }
+
+
+        .title1 {
+            width: 700px;
+            margin-left: 510px;
+        }
+
+        .prices1 {
+            width: 700px;
+            margin-left: 510px
+        }
+
+        .prices {
+            margin-left: 420px;
+        }
+
+
+
+        .prices #price {
+            width: 63%;
+            /* margin-left: 40px; */
+        }
+
+        .prices1 #price1 {
+            width: 98%;
+        }
+
+        .imageUpload {
+            margin-left: 420px;
+        }
+
+        .locationDetails,
+        .description,
+        .title,
+        .imageUpload {
+            border-bottom: 2px solid;
+            width: 670px;
+            /* margin-left: 400px; */
+        }
+        .imageUpload {
+            margin-left: 410px;
+        }
+
+
+        .CREATEsubmit {
+            margin-left: 700px;
+        }
 
     /* Add more specific styles for larger screens if needed */
 }
@@ -325,28 +522,358 @@
 /* Standard 992px - 1200px */
 @media (min-width: 992px) and (max-width: 1200px) {
     .createSpot {
-        width: 1000px;
-    }
+            font-size: 10px;
+        }
 
-    .createSpotHeader {
-        margin-right: 300px;
-    }
+        .createSpotHeader {
+            /* margin-left: 20px; */
+            /* margin-left: px; */
+            margin-right: 460px;
+            /* font-size: 15px; */
+
+        }
+
+        .createSpotHeader1 {
+            /* margin-left: 20px; */
+            /* margin-left: px; */
+            margin-right: 470px;
+            /* font-size: 15px; */
+
+        }
+
+        .locationHeading {
+            /* margin-left: 60px; */
+        }
+
+        .locationDetails {
+            margin-left: 250px;
+        }
+
+        .locationDetails textarea,
+        .description textarea,
+        .description1 textarea,
+        .title textarea,
+        .title1 textarea,
+        .prices textarea,
+        .prices1 textarea {
+            width: 10px;
+        }
+
+        #country,
+        #address,
+        #city,
+        #state {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+
+            /* margin-bottom: 20px; */
+            /* margin-left: 0px; */
+        }
+
+        #country1,
+        #address1 {
+            width: 95%;
+
+        }
+
+        .cityState .inputContainer {
+            width: 32.5%;
+            /* margin-left: 60px */
+        }
+
+        .cityState1 .inputContainer1 {
+            width: 41.5%;
+        }
+
+
+        .locationDetails {
+            margin-right: 200px;
+        }
+
+
+        .description {
+            margin-left: 425px;
+        }
+
+        .description1 {
+            /* width: 100%; */
+            margin-left: 530px;
+        }
+
+
+
+        .CountryLavel {
+            margin-left: 60px;
+        }
+
+        .addressLabel {
+            margin-left: 60px;
+        }
+
+
+
+        .title #name,
+        .title1 #name1 {
+            width: 95%;
+            margin-left: 10px;
+        }
+
+        .description #description {
+            margin-left: 80px;
+            width: 680px;
+            height: 100px;
+        }
+
+        .description1 #description1 {
+            width: 650px;
+            margin-right: 10px;
+            height: 80px;
+        }
+
+        .title {
+            margin-left: 420px;
+        }
+
+
+        .title1 {
+            width: 700px;
+            margin-left: 510px;
+        }
+
+        .prices1 {
+            width: 700px;
+            margin-left: 510px
+        }
+
+        .prices {
+            margin-left: 420px;
+        }
+
+
+
+        .prices #price {
+            width: 63%;
+            /* margin-left: 40px; */
+        }
+
+        .prices1 #price1 {
+            width: 98%;
+        }
+
+        .imageUpload {
+            margin-left: 420px;
+        }
+
+        .locationDetails,
+        .description,
+        .title,
+        .imageUpload {
+            border-bottom: 2px solid;
+            width: 670px;
+            /* margin-left: 400px; */
+        }
+
+        .imageUpload {
+            margin-left: 410px;
+        }
+
+
+        .CREATEsubmit {
+            margin-left: 700px;
+        }
 
     /* Add more specific styles for medium-sized screens if needed */
 }
 
 /* Tablet 768px - 991px */
 @media (min-width: 768px) and (max-width: 991px) {
+.createSpot {
+        font-size: 10px;
+    }
+
+    .createSpotHeader {
+        /* margin-left: 20px; */
+        /* margin-left: px; */
+        margin-right: 460px;
+        /* font-size: 15px; */
+
+    }
+
+    .createSpotHeader1 {
+        /* margin-left: 20px; */
+        /* margin-left: px; */
+        margin-right: 570px;
+        width: 400px;
+        /* font-size: 15px; */
+
+    }
+
+    .locationHeading {
+        /* margin-left: 60px; */
+    }
+
+    .locationDetails {
+        margin-left: 240px;
+    }
+    .locationDetails1 {
+        margin-right: 120px;
+        width: 600px;
+    }
+
+    .locationDetails textarea,
+    .description textarea,
+    .description1 textarea,
+    .title textarea,
+    .title1 textarea,
+    .prices textarea,
+    .prices1 textarea {
+        width: 10px;
+    }
+
+    #country,
+    #address,
+    #city,
+    #state {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+
+        /* margin-bottom: 20px; */
+        /* margin-left: 0px; */
+    }
+
+    #country1,
+    #address1 {
+        width: 100%;
+
+    }
+
+    .cityState .inputContainer {
+        width: 32.5%;
+        /* margin-left: 60px */
+    }
+
+    .cityState1 .inputContainer1 {
+        width: 38%;
+    }
+
+
+    .locationDetails {
+        margin-right: 200px;
+
+    }
+
+
+    .description {
+        margin-left: 125px;
+    }
+
+    .description1 {
+        /* width: 100%; */
+        margin-left: 170px;
+    }
+
+
+
+    .CountryLavel {
+        margin-left: 60px;
+    }
+
+    .addressLabel {
+        margin-left: 60px;
+    }
+
+
+
+    .title #name,
+    .title1 #name1 {
+        width: 95%;
+        margin-left: 10px;
+    }
+
+    .description #description {
+        /* margin-left: 80px; */
+        width: 680px;
+        height: 100px;
+    }
+
+    .description1 #description1 {
+        width: 650px;
+        margin-right: 10px;
+        height: 80px;
+    }
+
+    .title {
+        margin-left: 120px;
+    }
+
+
+    .title1 {
+        width: 700px;
+        margin-left: 160px;
+    }
+
+    .prices1 {
+        width: 700px;
+        margin-left: 160px
+    }
+
+    .prices {
+        margin-left: 120px;
+    }
+
+
+
+    .prices #price {
+        width: 63%;
+        /* margin-left: 40px; */
+    }
+
+    .prices1 #price1 {
+        width: 98%;
+    }
+
+    .imageUpload {
+        margin-left: 420px;
+    }
+
+    .locationDetails,
+    .description,
+    .title,
+    .imageUpload {
+        border-bottom: 2px solid;
+        width: 670px;
+        /* margin-left: 400px; */
+    }
+
+    .imageUpload {
+        margin-left: 120px;
+    }
+
+
+    .CREATEsubmit {
+        margin-left: 350px;
+    }
+
+}
+
+/* Mobile 767px and below
+@media (max-width: 767px) {
     .createSpot {
         width: 70%;
         font-size: 10px;
     }
 
     .createSpotHeader {
-        /* margin-left: 0px; */
-        margin-right: 210px;
+        margin-left: 20px;
+        margin-right: 0px;
+
     }
-    .locationHeading{
+
+    .locationHeading {
         margin-left: 50px;
     }
 
@@ -357,298 +884,250 @@
     .prices textarea {
         width: 10px;
     }
+
     #country,
     #address,
     #city,
-    #state{
+    #state {
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 80%;
+        width: 50%;
         /* margin-bottom: 20px; */
         /* margin-left: 0px; */
-    }
-   .cityState .inputContainer {
-    width: 30%;
-    margin-left:40px
-   }
-   .locationDetails {
-    margin-left: 70px;
-   }
-   .description {
-    width: 70%;
-    margin-left: 90px;
-   }
-   #country {
-    margin-left: 40px;
-   }
+    /* }
 
-   .CountryLavel{
-    margin-left: 60px;
-   }
-
-   .addressLabel {
-    margin-left: 60px;
-   }
-
-   #address {
-    margin-left: 40px;
-   }
-  .title  #name{
-    width: 70%;
-   }
-
-   .description #description {
-    width: 650px;
-   }
-   .title {
-    width: 70px;
-    margin-left: 90px;
-   }
-
-   .prices {
-    margin-left: 90px;
-   }
-
-   .prices #price {
-    width: 70%;
-    /* margin-left: 40px; */
-   }
-   .imageUpload {
-    margin-left: 100px;
-   }
-
-   .locationDetails,
-   .description,
-   .title,
-   .imageUpload {
-    border-bottom: 2px solid;
-    width: 750px;
-    /* margin-left: 80px; */
-   }
-   .CREATEsubmit {
-    margin-left:350px;
-   }
-
-
-
-    /* Add more specific styles for tablets if needed */
-}
-
-/* Mobile 767px and below */
-@media (max-width: 767px) {
-    .createSpot {
-            width: 70%;
-            font-size: 10px;
-        }
-
-        .createSpotHeader {
-            margin-left: 20px;
-            margin-right: 0px;
-
-        }
-
-        .locationHeading {
-            margin-left: 50px;
-        }
-
-        .locationDetails textarea,
-        .description textarea,
-        .description1 textarea,
-        .title textarea,
-        .prices textarea {
-            width: 10px;
-        }
-
-        #country,
-        #address,
-        #city,
-        #state {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 50%;
-            /* margin-bottom: 20px; */
-            /* margin-left: 0px; */
-        }
-
-        .cityState .inputContainer {
-            width: 21.5%;
-            margin-left: 40px
-        }
-
-        .locationDetails {
-            margin-left: 70px;
-        }
-
-        .description {
-            width: 70%;
-            margin-left: 90px;
-        }
-
-        #country {
-            margin-left: 40px;
-        }
-
-        .CountryLavel {
-            margin-left: 60px;
-        }
-
-        .addressLabel {
-            margin-left: 60px;
-        }
-
-        #address {
-            margin-left: 40px;
-        }
-
-        .title #name {
-            width: 70%;
-        }
-
-        .description #description {
-            width: 400px;
-        }
-
-        .title {
-            width: 70px;
-            margin-left: 90px;
-        }
-
-        .prices {
-            margin-left: 90px;
-        }
-
-        .prices #price {
-            width: 40%;
-            /* margin-left: 40px; */
-        }
-
-        .imageUpload {
-            margin-left: 100px;
-        }
-
-        .locationDetails,
-        .description,
-        .title,
-        .imageUpload {
-            border-bottom: 2px solid;
-            width: 550px;
-            /* margin-left: 80px; */
-        }
-
-        .CREATEsubmit {
-            margin-left: 350px;
-        }
-@media (max-width: 766px) {
-    .createSpot {
-            width: 50%;
-            font-size: 10px;
-
-        }
-
-        .createSpotHeader {
-            margin-left: 20px;
-            margin-left: 40px;
-
-        }
-
-        .locationHeading {
-            margin-left: 50px;
-        }
-
-        .locationDetails textarea,
-        .description textarea,
-        .description1 textarea,
-        .title textarea,
-        .prices textarea {
-            width: 10px;
-        }
-
-        #country,
-        #address,
-        #city,
-        #state {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 80%;
-            /* margin-bottom: 20px; */
-            /* margin-left: 0px; */
-        }
-
-        .cityState .inputContainer {
-            width: 21.5%;
-            margin-left: 40px
-        }
-
-        .locationDetails {
-            margin-left: 70px;
-        }
-
-        .description {
-            /* width: 100%; */
-            margin-left: 90px;
-        }
-
-        #country {
-            margin-left: 40px;
-        }
-
-        .CountryLavel {
-            margin-left: 60px;
-        }
-
-        .addressLabel {
-            margin-left: 60px;
-        }
-
-        #address {
-            margin-left: 40px;
-        }
-
-        .title #name {
-            width: 80%;
-            margin-left: 20px;
-        }
-
-        .description #description {
-            width: 450px;
-            margin-left: 20px;
-            height: 80px;
-        }
-
-        .title {
-            width: 560px;
-            margin-left: 90px;
-        }
-
-        .prices {
-            margin-left: 100px;
-        }
-
-        .prices #price {
-            width: 45%;
-            /* margin-left: 40px; */
-        }
-
-        .imageUpload {
-            margin-left: 100px;
-        }
-
-        .locationDetails,
-        .description,
-        .title,
-        .imageUpload {
-            border-bottom: 2px solid;
-            /* width: 750px; */
-            /* margin-left: 80px; */
-        }
-
-        .CREATEsubmit {
-            margin-left: 400px;
-        }
+    .cityState .inputContainer {
+        width: 21.5%;
+        margin-left: 40px
     }
 
-    /* Add more specific styles for mobile if needed */
+    .locationDetails {
+        margin-left: 70px;
+    }
+
+    .description {
+        width: 70%;
+        margin-left: 90px;
+    }
+
+    #country {
+        margin-left: 40px;
+    }
+
+    .CountryLavel {
+        margin-left: 60px;
+    }
+
+    .addressLabel {
+        margin-left: 60px;
+    }
+
+    #address {
+        margin-left: 40px;
+    }
+
+    .title #name {
+        width: 70%;
+    }
+
+    .description #description {
+        width: 400px;
+    }
+
+    .title {
+        width: 70px;
+        margin-left: 90px;
+    }
+
+    .prices {
+        margin-left: 90px;
+    }
+
+    .prices #price {
+        width: 40%;
+        /* margin-left: 40px; */
+    /* }
+
+    .imageUpload {
+        margin-left: 100px;
+    }
+
+    .locationDetails,
+    .description,
+    .title,
+    .imageUpload {
+        border-bottom: 2px solid;
+        width: 550px;
+        /* margin-left: 80px; */
+    /* }
+
+    .CREATEsubmit {
+        margin-left: 350px;
+    }   */
+
+    @media (max-width: 767px) {
+
+        .createSpot {
+                font-size: 10px;
+            }
+
+            .createSpotHeader {
+                /* margin-left: 20px; */
+                /* margin-left: px; */
+                margin-right: 460px;
+                /* font-size: 15px; */
+
+            }
+
+            .createSpotHeader1 {
+                /* margin-left: 20px; */
+                /* margin-left: px; */
+                margin-right: 670px;
+                /* font-size: 15px; */
+
+            }
+
+            .locationHeading {
+                /* margin-left: 60px; */
+            }
+
+            .locationDetails {
+                margin-left: 50px;
+            }
+
+            .locationDetails textarea,
+            .description textarea,
+            .description1 textarea,
+            .title textarea,
+            .title1 textarea,
+            .prices textarea,
+            .prices1 textarea {
+                width: 10px;
+            }
+
+            #country,
+            #address,
+            #city,
+            #state {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+
+                /* margin-bottom: 20px; */
+                /* margin-left: 0px; */
+            }
+
+            #country1,
+            #address1 {
+                width: 95%;
+
+            }
+
+            .cityState .inputContainer {
+                width: 32.5%;
+                /* margin-left: 60px */
+            }
+
+            .cityState1 .inputContainer1 {
+                width: 41.5%;
+            }
+
+
+            .locationDetails {
+                margin-right: 200px;
+            }
+
+
+            .description {
+                margin-left: 425px;
+            }
+
+            .description1 {
+                /* width: 100%; */
+                margin-left: 30px;
+            }
+
+
+
+            .CountryLavel {
+                margin-left: 60px;
+            }
+
+            .addressLabel {
+                margin-left: 60px;
+            }
+
+
+
+            .title #name,
+            .title1 #name1 {
+                width: 95%;
+                margin-left: 10px;
+            }
+
+            .description #description {
+                margin-left: 80px;
+                width: 680px;
+                height: 100px;
+            }
+
+            .description1 #description1 {
+                width: 650px;
+                margin-right: 10px;
+                height: 80px;
+            }
+
+            .title {
+                margin-left: 420px;
+            }
+
+
+            .title1 {
+                width: 700px;
+                margin-left: 20px;
+            }
+
+            .prices1 {
+                width: 700px;
+                margin-left: 20px
+            }
+
+            .prices {
+                margin-left: 420px;
+            }
+
+
+
+            .prices #price {
+                width: 63%;
+                /* margin-left: 40px; */
+            }
+
+            .prices1 #price1 {
+                width: 98%;
+            }
+
+            .imageUpload {
+                margin-left: 420px;
+            }
+
+            .locationDetails,
+            .description,
+            .title,
+            .imageUpload {
+                border-bottom: 2px solid;
+                width: 670px;
+                /* margin-left: 400px; */
+            }
+
+            .imageUpload {
+                margin-left: 410px;
+            }
+
+
+            .CREATEsubmit {
+                margin-left: 220px;
+            }
 }

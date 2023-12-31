@@ -280,7 +280,7 @@ function CreateSpot() {
           value={spotData.price}
           placeholder="Price per night (USD)"
           onChange={handleChange}
-        />
+          />
       </div>
 
       {/* Image Upload */}
@@ -329,7 +329,7 @@ function CreateSpot() {
         {loading && <p>Creating spot...</p>}
         {errors.unexpected && <p style={{ color: "red" }}>{errors.unexpected}</p>}
 
-        <button type="submit" className="CREATEsubmit">
+        <button type="submit" className="CREATEsubmit1">
           Create Spot
         </button>
       </div>
