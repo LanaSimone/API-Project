@@ -1,4 +1,4 @@
-# Vacation Rentals
+# API Project
 
 <img width="1511" alt="Screenshot 2023-10-29 at 9 53 37 PM" src="./frontend/images/Screenshot 2024-01-01 142058.png">
 
