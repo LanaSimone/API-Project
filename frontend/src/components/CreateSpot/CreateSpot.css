@@ -353,6 +353,7 @@
 }
 .locationDetails1 {
     border-bottom: 2px solid;
+    width: 65%
 }
 
 
@@ -364,7 +365,7 @@
         .createSpotHeader {
             /* margin-left: 20px; */
             /* margin-left: px; */
-            margin-right: 460px;
+            margin-right: 508px;
             /* font-size: 15px; */
 
         }
@@ -372,7 +373,7 @@
         .createSpotHeader1 {
             /* margin-left: 20px; */
             /* margin-left: px; */
-            margin-right: 470px;
+            margin-right: 520px;
             /* font-size: 15px; */
 
         }
@@ -381,7 +382,7 @@
             /* margin-left: 60px; */
         }
         .locationDetails {
-            margin-left: 250px;
+            margin-left: 190px;
         }
 
         .locationDetails textarea,
@@ -414,7 +415,7 @@
         }
 
         .cityState .inputContainer {
-            width: 32.5%;
+            width: 32.3%;
             /* margin-left: 60px */
         }
 
@@ -455,8 +456,8 @@
         }
 
         .description #description{
-            margin-left: 80px;
-            width: 680px;
+            /* margin-left: 80px; */
+            width: 660px;
             height: 100px;
         }
         .description1 #description1 {
@@ -508,7 +509,7 @@
             /* margin-left: 400px; */
         }
         .imageUpload {
-            margin-left: 410px;
+            margin-left: 430px;
         }
 
 
@@ -594,7 +595,7 @@
 
 
         .description {
-            margin-left: 425px;
+            margin-left: 225px;
         }
 
         .description1 {
@@ -621,7 +622,7 @@
         }
 
         .description #description {
-            margin-left: 80px;
+            /* margin-left: 80px; */
             width: 680px;
             height: 100px;
         }
@@ -633,7 +634,7 @@
         }
 
         .title {
-            margin-left: 420px;
+            margin-left: 220px;
         }
 
 
@@ -648,7 +649,7 @@
         }
 
         .prices {
-            margin-left: 420px;
+            margin-left: 220px;
         }
 
 
@@ -676,7 +677,7 @@
         }
 
         .imageUpload {
-            margin-left: 410px;
+            margin-left: 210px;
         }
 
 
@@ -768,7 +769,7 @@
 
 
     .description {
-        margin-left: 125px;
+        margin-left: 75px;
     }
 
     .description1 {
@@ -807,7 +808,7 @@
     }
 
     .title {
-        margin-left: 120px;
+        margin-left: 70px;
     }
 
 
@@ -822,7 +823,7 @@
     }
 
     .prices {
-        margin-left: 120px;
+        margin-left: 70px;
     }
 
 
@@ -850,7 +851,7 @@
     }
 
     .imageUpload {
-        margin-left: 120px;
+        margin-left: 70px;
     }
 
 
@@ -994,6 +995,7 @@
 
             .locationDetails {
                 margin-left: 50px;
+
             }
 
             .locationDetails textarea,
@@ -1026,7 +1028,7 @@
             }
 
             .cityState .inputContainer {
-                width: 32.5%;
+                width: 30%;
                 /* margin-left: 60px */
             }
 
@@ -1036,12 +1038,12 @@
 
 
             .locationDetails {
-                margin-right: 200px;
+                /* margin-right: 200px; */
             }
 
 
             .description {
-                margin-left: 425px;
+                margin-left: 35px;
             }
 
             .description1 {
@@ -1068,8 +1070,8 @@
             }
 
             .description #description {
-                margin-left: 80px;
-                width: 680px;
+                /* margin-left: 80px; */
+                width: 600px;
                 height: 100px;
             }
 
@@ -1080,7 +1082,7 @@
             }
 
             .title {
-                margin-left: 420px;
+                margin-left: 20px;
             }
 
 
@@ -1095,7 +1097,7 @@
             }
 
             .prices {
-                margin-left: 420px;
+                margin-left: 20px;
             }
 
 
@@ -1118,12 +1120,12 @@
             .title,
             .imageUpload {
                 border-bottom: 2px solid;
-                width: 670px;
+                width: 620px;
                 /* margin-left: 400px; */
             }
 
             .imageUpload {
-                margin-left: 410px;
+                margin-left: 30px;
             }
 
 
