@@ -75,6 +75,9 @@ background-image: linear-gradient(to right, #4837ff 100%, #fe5196 0%);
     margin-left: 20px;
     margin-right: 20px;
 }
+.deletetext h1 {
+    margin-bottom: 0;
+}
 .confirmReviewButtons{
     display: flex;
     flex-direction: column;

@@ -77,7 +77,7 @@ console.log('!!!!!!!!!!userSpot', currentUserSpots);
                       <div>
 
                         <p className="locations">{`${spot.city}, ${spot.state}`}</p>
-                        <p className="price">{`$ ${spot.price}`}/night</p>
+                        <p className="price">{`$ ${spot.price}`}/ night</p>
                       </div>
 
 

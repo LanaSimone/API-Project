@@ -228,8 +228,8 @@
     width: 25%;
     margin-bottom: 10px;
     border: none;
-    background-color: red;
-    color: lightgrey;
+    background-color: #f77062;
+    color: #fff;
     height: 30px;
     border-radius: 20px;
     padding: 6px;
@@ -373,7 +373,7 @@
         .createSpotHeader1 {
             /* margin-left: 20px; */
             /* margin-left: px; */
-            margin-right: 520px;
+            margin-right: 50px;
             /* font-size: 15px; */
 
         }
