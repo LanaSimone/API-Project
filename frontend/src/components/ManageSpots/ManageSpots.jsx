@@ -106,4 +106,4 @@ console.log('!!!!!!!!!!userSpot', currentUserSpots);
   );
 }
 
-export default ManageSpots
+export default ManageSpots;
