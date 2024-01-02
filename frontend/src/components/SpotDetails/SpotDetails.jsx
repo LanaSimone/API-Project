@@ -123,10 +123,14 @@ function SpotDetails() {
         )}
       </div>
       {loggedInUser &&
--        loggedInUserId !== spotDetailsState.Owner.id && reviewsState && Array.isArray(reviewsState) && reviewsState.length > 0 &&
-        !reviewsState.some(review => review.userId === loggedInUserId) && (
-          <button onClick={openPostReviewModal} className='postreviewButton'>Post Your Review</button>
-        )}
+  loggedInUserId !== null &&  // Ensure loggedInUserId is not null
+  loggedInUserId !== spotDetailsState.Owner.id &&
+  reviewsState &&
+  Array.isArray(reviewsState) &&
+  reviewsState.length > 0 &&
+  !reviewsState.some(review => review.userId === loggedInUserId) && (
+    <button onClick={openPostReviewModal} className='postreviewButton'>Post Your Review</button>
+)}
       <div className="reviews-container">
         {reviewsState && Array.isArray(reviewsState) && reviewsState.length > 0 ? (
           reversedReviews.map((review, index) => (
