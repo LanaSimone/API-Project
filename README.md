@@ -14,5 +14,5 @@ This API Project is a place where you can rent spots or list your spot for rent.
 ## How to Launch
 You can launch locally by running 'npm start' in the backend folder, and 'npm start' in the front end folder.
 
-## Link to live site
-https://apiproject1-nuyl.onrender.com/
+## Live Demo
+This project is not currently deployed.
